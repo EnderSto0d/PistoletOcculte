@@ -12,6 +12,17 @@ const app        = express();
 const PORT       = process.env.PORT || 3000;
 const gameConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf-8'));
 
+// ─── Solutions (server-side only — never sent to client) ──────────────────────
+
+const SOLUTIONS = {
+    puzzle1: ['\u6b7b', '\u546a', '\u8840', '\u9b42'], // 死 呪 血 魂
+    puzzle2: 'neuf cordes. lumi\u00e8re polaris\u00e9e. corbeau et d\u00e9claration.',
+    puzzle3: [1, 4, 2, 5, 3, 6],
+};
+
+const MAX_ATTEMPTS   = 3;
+const ATTEMPT_WINDOW = 60 * 60 * 1000; // 1 heure en ms
+
 // ─── Progress persistence ─────────────────────────────────────────────────────
 
 const DATA_DIR     = process.env.VERCEL ? '/tmp' : path.join(__dirname, 'data');
@@ -51,6 +62,29 @@ function addSolvedPuzzle(userId, puzzleId) {
     all[userId].lastUpdated = new Date().toISOString();
     saveAllProgress(all);
     return all[userId];
+}
+
+function getRecentAttempts(userId, puzzleId) {
+    const all    = loadAllProgress();
+    const user   = all[userId] || {};
+    const list   = ((user.attempts || {})[puzzleId]) || [];
+    const cutoff = Date.now() - ATTEMPT_WINDOW;
+    return list.filter(t => t > cutoff);
+}
+
+function recordAttempt(userId, puzzleId) {
+    const all    = loadAllProgress();
+    if (!all[userId])                    all[userId] = { solvedPuzzles: [] };
+    if (!all[userId].attempts)           all[userId].attempts = {};
+    if (!all[userId].attempts[puzzleId]) all[userId].attempts[puzzleId] = [];
+    const cutoff = Date.now() - ATTEMPT_WINDOW;
+    all[userId].attempts[puzzleId] = all[userId].attempts[puzzleId].filter(t => t > cutoff);
+    all[userId].attempts[puzzleId].push(Date.now());
+    saveAllProgress(all);
+}
+
+function attemptsLeft(userId, puzzleId) {
+    return Math.max(0, MAX_ATTEMPTS - getRecentAttempts(userId, puzzleId).length);
 }
 
 // ─── Discord OAuth2 ───────────────────────────────────────────────────────────
@@ -161,6 +195,9 @@ app.get('/logout', (req, res) => {
 
 app.get('/api/user', requireAuth, requireRole, (req, res) => {
     const progress = getUserProgress(req.user.id);
+    const puzzles  = ['puzzle1', 'puzzle2', 'puzzle3'];
+    const attempts = {};
+    puzzles.forEach(p => { attempts[p] = attemptsLeft(req.user.id, p); });
     res.json({
         id:            req.user.id,
         username:      req.user.username,
@@ -168,6 +205,7 @@ app.get('/api/user', requireAuth, requireRole, (req, res) => {
         guildNick:     req.user.guildNick,
         discriminator: req.user.discriminator,
         progress:      progress.solvedPuzzles,
+        attempts,
         config: {
             puzzle1Enabled: gameConfig.PUZZLE_1_ENABLED,
             puzzle2Enabled: gameConfig.PUZZLE_2_ENABLED,
@@ -176,12 +214,12 @@ app.get('/api/user', requireAuth, requireRole, (req, res) => {
     });
 });
 
-app.post('/api/unlock', requireAuth, requireRole, (req, res) => {
-    const { puzzleId } = req.body;
+app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
+    const { puzzleId, answer } = req.body;
     const valid = ['puzzle1', 'puzzle2', 'puzzle3'];
 
     if (!valid.includes(puzzleId)) {
-        return res.status(400).json({ success: false, error: 'Invalid puzzle identifier.' });
+        return res.status(400).json({ success: false, error: 'Identifiant invalide.' });
     }
 
     const enabledMap = {
@@ -189,13 +227,45 @@ app.post('/api/unlock', requireAuth, requireRole, (req, res) => {
         puzzle2: gameConfig.PUZZLE_2_ENABLED,
         puzzle3: gameConfig.PUZZLE_3_ENABLED,
     };
-
     if (!enabledMap[puzzleId]) {
-        return res.status(403).json({ success: false, error: 'Puzzle disabled by administrator.' });
+        return res.status(403).json({ success: false, error: 'Puzzle désactivé.' });
     }
 
-    const updated = addSolvedPuzzle(req.user.id, puzzleId);
-    return res.json({ success: true, progress: updated.solvedPuzzles });
+    // Déjà résolu
+    const progress = getUserProgress(req.user.id);
+    if (progress.solvedPuzzles.includes(puzzleId)) {
+        return res.json({ success: true, alreadySolved: true, progress: progress.solvedPuzzles });
+    }
+
+    // Rate limit
+    const recent = getRecentAttempts(req.user.id, puzzleId);
+    if (recent.length >= MAX_ATTEMPTS) {
+        const waitMs  = ATTEMPT_WINDOW - (Date.now() - recent[0]);
+        const waitMin = Math.ceil(waitMs / 60000);
+        return res.json({ success: false, rateLimit: true, waitMinutes: waitMin, attemptsLeft: 0 });
+    }
+
+    // Enregistre la tentative avant validation (anti brute-force)
+    recordAttempt(req.user.id, puzzleId);
+    const left = attemptsLeft(req.user.id, puzzleId);
+
+    // Validation
+    let correct = false;
+    const sol = SOLUTIONS[puzzleId];
+    if (puzzleId === 'puzzle1' || puzzleId === 'puzzle3') {
+        correct = Array.isArray(answer) &&
+                  answer.length === sol.length &&
+                  answer.every((v, i) => String(v) === String(sol[i]));
+    } else if (puzzleId === 'puzzle2') {
+        correct = typeof answer === 'string' && answer.trim().toLowerCase() === sol;
+    }
+
+    if (correct) {
+        const updated = addSolvedPuzzle(req.user.id, puzzleId);
+        return res.json({ success: true, progress: updated.solvedPuzzles, attemptsLeft: left });
+    }
+
+    return res.json({ success: false, attemptsLeft: left });
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────

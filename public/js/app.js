@@ -3,16 +3,13 @@
    All lore content, puzzle logic, navigation, and audio.
    ============================================================ */
 
-// ─── Puzzle Solutions (hardcoded) ─────────────────────────────────────────────
-const KANJI_SOLUTION  = ['\u6b7b', '\u546a', '\u8840', '\u9b42']; // 死, 呪, 血, 魂
-const INCANTATION_SOL = 'neuf cordes. lumi\u00e8re polaris\u00e9e. corbeau et d\u00e9claration.';
-const PATTERN_SOL     = [1, 4, 2, 5, 3, 6];
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const state = {
     user:        null,
     progress:    [],   // ['puzzle1', 'puzzle2', 'puzzle3']
     config:      {},
+    attempts:    {},   // { puzzle1: 3, puzzle2: 2, ... } essais restants
     currentPage: 'training-1',
 };
 
@@ -33,6 +30,7 @@ async function init() {
         state.user     = data;
         state.progress = data.progress || [];
         state.config   = data.config   || {};
+        state.attempts = data.attempts || { puzzle1: 3, puzzle2: 3, puzzle3: 3 };
     } catch {
         window.location = '/';
         return;
@@ -178,21 +176,29 @@ function initPageHandlers(pageId) {
     if (pageId === 'training-4') initPatternPuzzle();
 }
 
-// ─── API: Unlock Puzzle ───────────────────────────────────────────────────────
-async function unlockPuzzle(puzzleId) {
-    const res = await fetch('/api/unlock', {
+// ─── API: Attempt Puzzle ──────────────────────────────────────────────────────
+function getAttemptsLeft(puzzleId) {
+    return state.attempts[puzzleId] ?? 3;
+}
+
+async function attemptPuzzle(puzzleId, answer) {
+    const res  = await fetch('/api/attempt', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ puzzleId }),
+        body:    JSON.stringify({ puzzleId, answer }),
     });
     const data = await res.json();
-    if (data.success) {
-        state.progress = data.progress;
+    if (data.success && !data.alreadySolved) {
+        state.progress             = data.progress;
+        state.attempts[puzzleId]   = data.attemptsLeft ?? 0;
         flashSuccess();
         await sleep(800);
         renderNav();
         navigateTo(state.currentPage);
+    } else if (!data.success && data.attemptsLeft !== undefined) {
+        state.attempts[puzzleId] = data.attemptsLeft;
     }
+    return data;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -449,6 +455,7 @@ function renderPuzzle2Gate() {
         />
         <p class="incantation-hint">Respectez la ponctuation. La casse n'est pas importante.</p>
         <button class="btn-validate" id="incantation-submit">Invoquer</button>
+        <p class="puzzle-attempts" id="incantation-attempts"></p>
     </div>
 </div>`;
 }
@@ -559,7 +566,8 @@ function renderPuzzle3Gate() {
             Connectez-les dans le bon ordre pour synchroniser le barillet occulte.
         </p>
         ${renderPatternSVG()}
-        <div class="pattern-sequence-display" id="pattern-display">— — — — — —</div>
+        <p class="puzzle-attempts" id="pattern-attempts"></p>
+        <div class="pattern-sequence-display" id="pattern-display">○ ○ ○ ○ ○ ○</div>
         <button class="pattern-reset-btn" id="pattern-reset">Réinitialiser</button>
     </div>
 </div>`;
@@ -1025,72 +1033,79 @@ const ALL_KANJIS = [
 
 function renderKanjiGrid() {
     const shuffled = [...ALL_KANJIS].sort(() => Math.random() - 0.5);
-    const cells = shuffled.map(k => `
+    const cells    = shuffled.map(k => `
         <div class="kanji-cell" data-kanji="${k}">${k}</div>
     `).join('');
+    const left         = getAttemptsLeft('puzzle1');
+    const attemptsHtml = left > 0
+        ? `<p class="puzzle-attempts">${left} essai(s) restant(s) cette heure</p>`
+        : `<p class="puzzle-attempts puzzle-attempts--blocked">⛔ Aucun essai restant — réessayez dans moins d'une heure</p>`;
 
     return `
 <div class="kanji-grid-wrap">
+    ${attemptsHtml}
     <p class="kanji-progress" id="kanji-progress">Sélectionnez les quatre sceaux dans l'ordre correct...</p>
-    <div class="kanji-grid" id="kanji-grid">${cells}</div>
+    <div class="kanji-grid" id="kanji-grid" ${left === 0 ? 'style="pointer-events:none;opacity:0.5;"' : ''}>${cells}</div>
     <button class="kanji-reset-btn" id="kanji-reset">Réinitialiser la sélection</button>
 </div>`;
 }
 
 function initKanjiPuzzle() {
     if (isSolved('puzzle1')) return;
-
-    const grid = document.getElementById('kanji-grid');
-    if (!grid) return;
+    const grid     = document.getElementById('kanji-grid');
+    const progress = document.getElementById('kanji-progress');
+    if (!grid || !progress) return;
 
     let sequence = [];
-    const progress = document.getElementById('kanji-progress');
 
-    grid.addEventListener('click', e => {
+    function resetKanjiUI() {
+        document.querySelectorAll('.kanji-cell.selected, .kanji-cell.wrong').forEach(c => {
+            c.classList.remove('selected', 'wrong');
+            delete c.dataset.order;
+        });
+    }
+
+    grid.addEventListener('click', async e => {
         const cell = e.target.closest('.kanji-cell');
-        if (!cell) return;
+        if (!cell || cell.classList.contains('selected') || sequence.length >= 4) return;
 
-        const kanji = cell.dataset.kanji;
-        const expected = KANJI_SOLUTION[sequence.length];
+        sequence.push(cell.dataset.kanji);
+        cell.classList.add('selected');
+        cell.dataset.order = sequence.length;
+        sound.playClick();
+        progress.textContent = `${sequence.length} / 4 sceaux activés`;
 
-        if (kanji === expected) {
-            sequence.push(kanji);
-            cell.classList.add('selected');
-            cell.dataset.order = sequence.length;
+        if (sequence.length === 4) {
+            grid.style.pointerEvents = 'none';
+            progress.textContent = 'Activation en cours...';
 
-            const symbols = KANJI_SOLUTION.slice(0, sequence.length).join(' → ');
-            progress.textContent = symbols;
-            sound.playClick();
+            const result = await attemptPuzzle('puzzle1', [...sequence]);
+            if (result.success) return;
 
-            if (sequence.length === KANJI_SOLUTION.length) {
-                progress.textContent = '✦ Séquence correcte — Activation en cours... ✦';
-                setTimeout(() => unlockPuzzle('puzzle1'), 800);
-            }
-        } else {
-            // Wrong — flash red and reset
-            cell.classList.add('wrong');
-            setTimeout(() => {
-                sequence = [];
-                document.querySelectorAll('.kanji-cell.selected').forEach(c => {
-                    c.classList.remove('selected');
-                    delete c.dataset.order;
-                });
-                cell.classList.remove('wrong');
-                progress.textContent = 'Séquence incorrecte — Recommencez...';
-                setTimeout(() => { progress.textContent = 'Sélectionnez les quatre sceaux dans l\'ordre correct...'; }, 1500);
-            }, 400);
+            document.querySelectorAll('.kanji-cell.selected').forEach(c => c.classList.add('wrong'));
             sound.playError();
+
+            const msg = result.rateLimit
+                ? `⛔ Accès verrouillé — réessayez dans ${result.waitMinutes} min`
+                : result.attemptsLeft > 0
+                    ? `Séquence incorrecte — ${result.attemptsLeft} essai(s) restant(s)`
+                    : '⛔ Aucun essai restant cette heure';
+
+            setTimeout(() => {
+                resetKanjiUI();
+                sequence = [];
+                grid.style.pointerEvents = (result.attemptsLeft > 0 && !result.rateLimit) ? '' : 'none';
+                progress.textContent = msg;
+            }, 1000);
         }
     });
 
     document.getElementById('kanji-reset')?.addEventListener('click', () => {
+        if (sequence.length >= 4) return;
+        resetKanjiUI();
         sequence = [];
-        document.querySelectorAll('.kanji-cell.selected').forEach(c => {
-            c.classList.remove('selected');
-            delete c.dataset.order;
-        });
         progress.textContent = 'Sélection réinitialisée.';
-        setTimeout(() => { progress.textContent = 'Sélectionnez les quatre sceaux dans l\'ordre correct...'; }, 1000);
+        setTimeout(() => { progress.textContent = 'Sélectionnez les quatre sceaux dans l\'ordre correct...'; }, 800);
     });
 }
 
@@ -1101,22 +1116,44 @@ function initKanjiPuzzle() {
 function initIncantationPuzzle() {
     if (isSolved('puzzle2')) return;
 
-    const input  = document.getElementById('incantation-input');
-    const submit = document.getElementById('incantation-submit');
+    const input    = document.getElementById('incantation-input');
+    const submit   = document.getElementById('incantation-submit');
+    const attDisp  = document.getElementById('incantation-attempts');
     if (!input || !submit) return;
 
-    const checkIncantation = () => {
-        const val = input.value.trim().toLowerCase();
-        if (val === INCANTATION_SOL) {
-            input.classList.remove('error');
-            input.classList.add('success');
-            sound.playClick();
-            setTimeout(() => unlockPuzzle('puzzle2'), 600);
+    const left = getAttemptsLeft('puzzle2');
+    if (attDisp) attDisp.textContent = left > 0
+        ? `${left} essai(s) restant(s) cette heure`
+        : '⛔ Aucun essai restant — réessayez dans moins d\'une heure';
+    if (left <= 0) { submit.disabled = true; input.disabled = true; }
+
+    const checkIncantation = async () => {
+        const val = input.value.trim();
+        if (!val || submit.disabled) return;
+        submit.disabled = true;
+        input.disabled  = true;
+
+        const result = await attemptPuzzle('puzzle2', val);
+        if (result.success) return;
+
+        input.classList.add('error');
+        sound.playError();
+        setTimeout(() => input.classList.remove('error'), 800);
+
+        if (result.rateLimit) {
+            if (attDisp) attDisp.textContent = `⛔ Accès verrouillé — réessayez dans ${result.waitMinutes} min`;
+            submit.textContent = '⛔ Bloqué';
         } else {
-            input.classList.remove('success');
-            input.classList.add('error');
-            sound.playError();
-            setTimeout(() => input.classList.remove('error'), 800);
+            const rem = result.attemptsLeft;
+            if (attDisp) attDisp.textContent = rem > 0
+                ? `${rem} essai(s) restant(s) cette heure`
+                : '⛔ Aucun essai restant — réessayez dans moins d\'une heure';
+            if (rem > 0) {
+                submit.disabled = false;
+                input.disabled  = false;
+            } else {
+                submit.textContent = '⛔ Bloqué';
+            }
         }
     };
 
@@ -1142,22 +1179,28 @@ for (let i = 1; i <= 6; i++) {
 function initPatternPuzzle() {
     if (isSolved('puzzle3')) return;
 
-    const svg   = document.getElementById('pattern-svg');
-    const disp  = document.getElementById('pattern-display');
-    const reset = document.getElementById('pattern-reset');
+    const svg      = document.getElementById('pattern-svg');
+    const disp     = document.getElementById('pattern-display');
+    const reset    = document.getElementById('pattern-reset');
+    const attDisp  = document.getElementById('pattern-attempts');
     if (!svg) return;
 
-    let sequence = [];
+    const left = getAttemptsLeft('puzzle3');
+    if (attDisp) attDisp.textContent = left > 0
+        ? `${left} essai(s) restant(s) cette heure`
+        : '⛔ Aucun essai restant — réessayez dans moins d\'une heure';
+    if (left <= 0) svg.style.pointerEvents = 'none';
 
+    let sequence = [];
     const linesGroup = document.getElementById('pattern-lines');
 
-    function drawLine(fromDot, toDot, errored) {
+    function drawLine(fromDot, toDot) {
         const from = DOT_POSITIONS[fromDot];
         const to   = DOT_POSITIONS[toDot];
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', from.x); line.setAttribute('y1', from.y);
         line.setAttribute('x2', to.x);   line.setAttribute('y2', to.y);
-        line.setAttribute('class', errored ? 'pattern-line error' : 'pattern-line');
+        line.setAttribute('class', 'pattern-line');
         linesGroup.appendChild(line);
     }
 
@@ -1165,45 +1208,56 @@ function initPatternPuzzle() {
         sequence = [];
         linesGroup.innerHTML = '';
         document.querySelectorAll('.pattern-dot').forEach(d => d.classList.remove('active', 'error'));
-        disp.textContent = '— — — — — —';
+        disp.textContent = '○ ○ ○ ○ ○ ○';
     }
 
-    svg.addEventListener('click', e => {
+    svg.addEventListener('click', async e => {
         const dot = e.target.closest('.pattern-dot');
-        if (!dot) return;
-
+        if (!dot || sequence.length >= 6) return;
         const num = parseInt(dot.dataset.dot, 10);
-        if (sequence.includes(num)) return; // already used
+        if (sequence.includes(num)) return;
 
-        if (sequence.length > 0) {
-            drawLine(sequence[sequence.length - 1], num, false);
-        }
-
+        if (sequence.length > 0) drawLine(sequence[sequence.length - 1], num);
         sequence.push(num);
         dot.classList.add('active');
-        disp.textContent = sequence.join(' → ');
+        disp.textContent = Array(sequence.length).fill('●').join(' ') +
+                           Array(6 - sequence.length).fill('○').join(sequence.length < 6 ? ' ' : '');
         sound.playClick();
 
         if (sequence.length === 6) {
-            const correct = PATTERN_SOL.every((v, i) => v === sequence[i]);
-            if (correct) {
-                disp.textContent = '✦ Synchronisation réussie ✦';
-                setTimeout(() => unlockPuzzle('puzzle3'), 800);
-            } else {
-                // Flash error
-                document.querySelectorAll('.pattern-dot.active').forEach(d => {
-                    d.classList.add('error');
-                    d.classList.remove('active');
-                });
-                document.querySelectorAll('.pattern-line').forEach(l => l.classList.add('error'));
-                disp.textContent = 'Séquence incorrecte — Réinitialisez.';
-                sound.playError();
-                setTimeout(resetPattern, 1200);
-            }
+            svg.style.pointerEvents = 'none';
+            disp.textContent = 'Synchronisation en cours...';
+
+            const result = await attemptPuzzle('puzzle3', [...sequence]);
+            if (result.success) return;
+
+            document.querySelectorAll('.pattern-dot.active').forEach(d => d.classList.add('error'));
+            sound.playError();
+
+            const msg = result.rateLimit
+                ? `⛔ Accès verrouillé — réessayez dans ${result.waitMinutes} min`
+                : result.attemptsLeft > 0
+                    ? `Séquence incorrecte — ${result.attemptsLeft} essai(s) restant(s)`
+                    : '⛔ Aucun essai restant cette heure';
+
+            if (attDisp) attDisp.textContent = result.rateLimit
+                ? `⛔ Accès verrouillé — réessayez dans ${result.waitMinutes} min`
+                : result.attemptsLeft > 0
+                    ? `${result.attemptsLeft} essai(s) restant(s) cette heure`
+                    : '⛔ Aucun essai restant — réessayez dans moins d\'une heure';
+
+            setTimeout(() => {
+                resetPattern();
+                svg.style.pointerEvents = (result.attemptsLeft > 0 && !result.rateLimit) ? '' : 'none';
+                disp.textContent = msg;
+            }, 1200);
         }
     });
 
-    reset?.addEventListener('click', resetPattern);
+    reset?.addEventListener('click', () => {
+        if (sequence.length >= 6) return;
+        resetPattern();
+    });
 }
 
 // ═══════════════════════════════════════════════════════════

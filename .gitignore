@@ -11,3 +11,6 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Solutions — never commit
+SOLUTIONS.md
