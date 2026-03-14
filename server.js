@@ -14,7 +14,7 @@ const gameConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'
 
 // ─── Progress persistence ─────────────────────────────────────────────────────
 
-const DATA_DIR     = path.join(__dirname, 'data');
+const DATA_DIR     = process.env.VERCEL ? '/tmp' : path.join(__dirname, 'data');
 const PROGRESS_FILE = path.join(DATA_DIR, 'users_progress.json');
 
 function ensureDataDir() {
@@ -200,12 +200,16 @@ app.post('/api/unlock', requireAuth, requireRole, (req, res) => {
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 
-app.listen(PORT, () => {
-    console.log('');
-    console.log('  ╔══════════════════════════════════════════════════╗');
-    console.log('  ║     ARCHIVES OCCULTES — INSPECTEUR DELACROIX     ║');
-    console.log('  ║                  Serveur Actif                   ║');
-    console.log(`  ║         http://localhost:${PORT}                    ║`);
-    console.log('  ╚══════════════════════════════════════════════════╝');
-    console.log('');
-});
+module.exports = app;
+
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log('');
+        console.log('  ╔══════════════════════════════════════════════════╗');
+        console.log('  ║     ARCHIVES OCCULTES — INSPECTEUR DELACROIX     ║');
+        console.log('  ║                  Serveur Actif                   ║');
+        console.log(`  ║         http://localhost:${PORT}                    ║`);
+        console.log('  ╚══════════════════════════════════════════════════╝');
+        console.log('');
+    });
+}
