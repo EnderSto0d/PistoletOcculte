@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const express   = require('express');
-const session   = require('express-session');
+const cookieSession = require('cookie-session');
 const passport  = require('passport');
 const Discord   = require('passport-discord');
 const axios     = require('axios');
@@ -89,15 +89,25 @@ passport.use(new Discord.Strategy(
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 
+app.set('trust proxy', 1);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-    secret:            process.env.SESSION_SECRET || 'delacroix-occult-archives-fallback',
-    resave:            false,
-    saveUninitialized: false,
-    cookie:            { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true },
+app.use(cookieSession({
+    name:    'session',
+    keys:    [process.env.SESSION_SECRET || 'delacroix-occult-archives-fallback'],
+    maxAge:  7 * 24 * 60 * 60 * 1000,
+    secure:  true,
+    httpOnly: true,
+    sameSite: 'lax',
 }));
+
+// Passport compatibility shim for cookie-session
+app.use((req, res, next) => {
+    if (req.session && !req.session.regenerate) req.session.regenerate = (cb) => cb();
+    if (req.session && !req.session.save)       req.session.save       = (cb) => cb();
+    next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
