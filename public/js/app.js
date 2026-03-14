@@ -92,9 +92,9 @@ function renderUserPanel() {
 const NAV_ITEMS = [
     // Training
     { id: 'training-1', label: 'Chap. I — Introduction',    section: 'training', icon: '📜', req: null },
-    { id: 'training-2', label: 'Chap. II — Énergie Occulte', section: 'training', icon: '✦',  req: 'puzzle1' },
-    { id: 'training-3', label: 'Chap. III — Serment',        section: 'training', icon: '✦',  req: 'puzzle2' },
-    { id: 'training-4', label: 'Chap. IV — Maîtrise',        section: 'training', icon: '✦',  req: 'puzzle3' },
+    { id: 'training-2', label: 'Chap. II — Énergie Occulte', section: 'training', icon: '✦',  req: null },
+    { id: 'training-3', label: 'Chap. III — Serment',        section: 'training', icon: '✦',  req: null },
+    { id: 'training-4', label: 'Chap. IV — Maîtrise',        section: 'training', icon: '✦',  req: null },
     // Journal
     { id: 'journal-1',  label: 'Entrée I — L\'Éveil',        section: 'journal',  icon: '📖', req: null },
     { id: 'journal-2',  label: 'Entrée II — La Forge',        section: 'journal',  icon: '📖', req: 'puzzle1' },
