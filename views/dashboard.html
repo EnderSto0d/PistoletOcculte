@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives Occultes — Dossier Delacroix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Special+Elite&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-dashboard">
+    <div class="noise-overlay"></div>
+    <div class="scanlines"></div>
+
+    <!-- Loading screen -->
+    <div id="loading-screen">
+        <div class="loading-seal">☩</div>
+        <div class="loading-text">Consultation des archives...</div>
+        <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    </div>
+
+    <!-- Main application (hidden until loaded) -->
+    <div id="app" style="display:none;">
+
+        <aside id="sidebar">
+            <div id="user-panel">
+                <div id="user-avatar-wrap">
+                    <img id="user-avatar" src="" alt="Avatar" />
+                    <div class="user-status-dot"></div>
+                </div>
+                <div id="user-name"></div>
+                <div id="user-badge">INITIÉ</div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <nav id="main-nav">
+                <div class="nav-section-label">Manuel d'Entraînement</div>
+                <ul class="nav-list" id="nav-training"></ul>
+
+                <div class="nav-section-label" style="margin-top:1.5rem;">Journal Intime</div>
+                <ul class="nav-list" id="nav-journal"></ul>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-bottom">
+                <button id="sound-toggle" class="btn-sound" title="Activer/désactiver l'ambiance sonore">
+                    ♪ Ambiance
+                </button>
+                <a href="/logout" class="btn-logout">Déconnexion</a>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <div id="content-area">
+                <!-- Rendered dynamically by app.js -->
+            </div>
+        </main>
+
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

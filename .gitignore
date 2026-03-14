@@ -1,0 +1,13 @@
+# Environment — never commit secrets
+.env
+
+# User progress data — server-managed at runtime
+data/users_progress.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

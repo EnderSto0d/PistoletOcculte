@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCÈS REFUSÉ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-denied">
+    <div class="noise-overlay"></div>
+    <div class="scanlines"></div>
+
+    <main class="denied-container">
+        <div class="denied-content">
+
+            <div class="denied-blink" id="deniedBlink">■ ■ ■</div>
+
+            <h1 class="denied-title" id="deniedTitle">NON AUTORISÉ</h1>
+
+            <div class="denied-code">ERREUR 403 — ACCÈS REFUSÉ</div>
+
+            <div class="denied-rule"></div>
+
+            <p class="denied-msg">
+                Votre identité a été vérifiée.<br>
+                Vous ne possédez pas les accréditations requises<br>
+                pour accéder aux Archives Occultes.
+            </p>
+
+            <p class="denied-msg italic" id="deniedQuote">
+                « Certaines vérités ne sont pas faites pour tous les regards.<br>
+                Celle qui tente de les saisir sans être prête<br>
+                ne verra que le vide qu'elles laissent derrière elles. »
+            </p>
+
+            <div class="denied-rule"></div>
+
+            <a href="/logout" class="btn-denied">Déconnexion</a>
+
+            <div class="denied-footer">
+                PRÉFECTURE DE POLICE — SECTION RÉSERVÉE<br>
+                <span class="denied-ref">REF: DEL/1893/OCCULTE/ACCÈS-REFUSÉ</span>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Glitch effect on title
+        const title = document.getElementById('deniedTitle');
+        const glitchChars = '!@#$%^&*<>?░▒▓█';
+        const original = title.textContent;
+
+        function glitchText(el, orig) {
+            if (Math.random() > 0.97) {
+                const arr = orig.split('');
+                const numGlitch = Math.floor(Math.random() * 4) + 1;
+                for (let i = 0; i < numGlitch; i++) {
+                    const idx = Math.floor(Math.random() * arr.length);
+                    if (arr[idx] !== ' ') arr[idx] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                }
+                el.textContent = arr.join('');
+                setTimeout(() => { el.textContent = orig; }, 80 + Math.random() * 120);
+            }
+        }
+
+        setInterval(() => glitchText(title, original), 150);
+
+        // Flickering blink
+        const blink = document.getElementById('deniedBlink');
+        setInterval(() => {
+            blink.style.opacity = blink.style.opacity === '0' ? '1' : '0';
+        }, 500);
+
+        // Red screen flash
+        setInterval(() => {
+            if (Math.random() < 0.04) {
+                document.body.style.backgroundColor = '#200000';
+                setTimeout(() => { document.body.style.backgroundColor = ''; }, 80);
+            }
+        }, 300);
+    </script>
+</body>
+</html>
