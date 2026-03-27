@@ -20,8 +20,9 @@ const SOLUTIONS = {
     puzzle3: [1, 4, 2, 5, 3, 6],
 };
 
-const MAX_ATTEMPTS   = 3;
-const ATTEMPT_WINDOW = 60 * 60 * 1000; // 1 heure en ms
+const MAX_ATTEMPTS      = 3;
+const ATTEMPT_WINDOW    = 60 * 60 * 1000; // 1 heure en ms
+const SUPERADMIN_ROLE_ID = '1487136331522900020';
 
 // ─── Progress persistence ─────────────────────────────────────────────────────
 
@@ -110,10 +111,12 @@ passport.use(new Discord.Strategy(
                 }
             );
             const member = memberRes.data;
-            profile.hasRequiredRole = member.roles.includes(process.env.REQUIRED_ROLE_ID);
+            profile.isSuperAdmin    = member.roles.includes(SUPERADMIN_ROLE_ID);
+            profile.hasRequiredRole = profile.isSuperAdmin || member.roles.includes(process.env.REQUIRED_ROLE_ID);
             profile.guildNick       = member.nick || profile.global_name || profile.username;
         } catch {
             // User is not in the guild, or bot token is misconfigured
+            profile.isSuperAdmin    = false;
             profile.hasRequiredRole = false;
             profile.guildNick       = profile.global_name || profile.username;
         }
@@ -194,16 +197,20 @@ app.get('/logout', (req, res) => {
 // ─── API ──────────────────────────────────────────────────────────────────────
 
 app.get('/api/user', requireAuth, requireRole, (req, res) => {
-    const progress = getUserProgress(req.user.id);
-    const puzzles  = ['puzzle1', 'puzzle2', 'puzzle3'];
-    const attempts = {};
-    puzzles.forEach(p => { attempts[p] = attemptsLeft(req.user.id, p); });
+    const progress    = getUserProgress(req.user.id);
+    const puzzles     = ['puzzle1', 'puzzle2', 'puzzle3'];
+    const isSuperAdmin = req.user.isSuperAdmin === true;
+    const attempts    = {};
+    puzzles.forEach(p => {
+        attempts[p] = isSuperAdmin ? 999 : attemptsLeft(req.user.id, p);
+    });
     res.json({
         id:            req.user.id,
         username:      req.user.username,
         avatar:        req.user.avatar,
         guildNick:     req.user.guildNick,
         discriminator: req.user.discriminator,
+        isSuperAdmin,
         progress:      progress.solvedPuzzles,
         attempts,
         config: {
@@ -237,17 +244,18 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
         return res.json({ success: true, alreadySolved: true, progress: progress.solvedPuzzles });
     }
 
-    // Rate limit
-    const recent = getRecentAttempts(req.user.id, puzzleId);
-    if (recent.length >= MAX_ATTEMPTS) {
-        const waitMs  = ATTEMPT_WINDOW - (Date.now() - recent[0]);
-        const waitMin = Math.ceil(waitMs / 60000);
-        return res.json({ success: false, rateLimit: true, waitMinutes: waitMin, attemptsLeft: 0 });
+    // Rate limit (superadmin bypass)
+    const isSuperAdmin = req.user.isSuperAdmin === true;
+    if (!isSuperAdmin) {
+        const recent = getRecentAttempts(req.user.id, puzzleId);
+        if (recent.length >= MAX_ATTEMPTS) {
+            const waitMs  = ATTEMPT_WINDOW - (Date.now() - recent[0]);
+            const waitMin = Math.ceil(waitMs / 60000);
+            return res.json({ success: false, rateLimit: true, waitMinutes: waitMin, attemptsLeft: 0 });
+        }
+        recordAttempt(req.user.id, puzzleId);
     }
-
-    // Enregistre la tentative avant validation (anti brute-force)
-    recordAttempt(req.user.id, puzzleId);
-    const left = attemptsLeft(req.user.id, puzzleId);
+    const left = isSuperAdmin ? 999 : attemptsLeft(req.user.id, puzzleId);
 
     // Validation
     let correct = false;

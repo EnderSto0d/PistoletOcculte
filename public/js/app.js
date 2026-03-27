@@ -11,6 +11,8 @@ const state = {
     config:      {},
     attempts:    {},   // { puzzle1: 3, puzzle2: 2, ... } essais restants
     currentPage: 'training-1',
+    isSuperAdmin: false,
+    playerView:   false, // superadmin toggle: see site as normal player
 };
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -27,10 +29,11 @@ async function init() {
         const res = await fetch('/api/user');
         if (!res.ok) { window.location = '/'; return; }
         const data = await res.json();
-        state.user     = data;
-        state.progress = data.progress || [];
-        state.config   = data.config   || {};
-        state.attempts = data.attempts || { puzzle1: 3, puzzle2: 3, puzzle3: 3 };
+        state.user        = data;
+        state.progress    = data.progress    || [];
+        state.config      = data.config      || {};
+        state.attempts    = data.attempts    || { puzzle1: 3, puzzle2: 3, puzzle3: 3 };
+        state.isSuperAdmin = data.isSuperAdmin === true;
     } catch {
         window.location = '/';
         return;
@@ -57,8 +60,10 @@ async function init() {
 // ─── Utilities ────────────────────────────────────────────────────────────────
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-function isSolved(puzzleId)  { return state.progress.includes(puzzleId); }
+function isSuperAdminUnlocked() { return state.isSuperAdmin && !state.playerView; }
+function isSolved(puzzleId)  { return isSuperAdminUnlocked() || state.progress.includes(puzzleId); }
 function isEnabled(puzzleId) {
+    if (isSuperAdminUnlocked()) return true;
     const map = { puzzle1: state.config.puzzle1Enabled, puzzle2: state.config.puzzle2Enabled, puzzle3: state.config.puzzle3Enabled };
     return map[puzzleId] !== false;
 }
@@ -81,9 +86,30 @@ function renderUserPanel() {
     document.getElementById('user-avatar').src = avatarUrl;
     document.getElementById('user-name').textContent = guildNick || username;
 
-    const solved = state.progress.length;
-    const badges = ['INITIÉ', 'PRATIQUANT', 'ÉVEILLÉ', 'MAÎTRE OCCULTE'];
-    document.getElementById('user-badge').textContent = badges[Math.min(solved, 3)];
+    if (state.isSuperAdmin) {
+        const badgeEl = document.getElementById('user-badge');
+        badgeEl.textContent = state.playerView ? 'VUE JOUEUR' : 'SUPERADMIN';
+        badgeEl.style.color = state.playerView ? '' : 'var(--gold)';
+
+        let toggleBtn = document.getElementById('superadmin-toggle');
+        if (!toggleBtn) {
+            toggleBtn = document.createElement('button');
+            toggleBtn.id = 'superadmin-toggle';
+            toggleBtn.style.cssText = 'margin-top:0.5rem;width:100%;font-size:0.7rem;padding:0.3rem 0.5rem;background:transparent;border:1px solid var(--gold);color:var(--gold);cursor:pointer;font-family:inherit;letter-spacing:0.05em;';
+            document.getElementById('user-badge').insertAdjacentElement('afterend', toggleBtn);
+            toggleBtn.addEventListener('click', () => {
+                state.playerView = !state.playerView;
+                renderUserPanel();
+                renderNav();
+                navigateTo(state.currentPage);
+            });
+        }
+        toggleBtn.textContent = state.playerView ? '⚙ MODE SUPERADMIN' : '👁 VUE JOUEUR';
+    } else {
+        const solved = state.progress.length;
+        const badges = ['INITIÉ', 'PRATIQUANT', 'ÉVEILLÉ', 'MAÎTRE OCCULTE'];
+        document.getElementById('user-badge').textContent = badges[Math.min(solved, 3)];
+    }
 }
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
@@ -178,6 +204,7 @@ function initPageHandlers(pageId) {
 
 // ─── API: Attempt Puzzle ──────────────────────────────────────────────────────
 function getAttemptsLeft(puzzleId) {
+    if (state.isSuperAdmin) return 999;
     return state.attempts[puzzleId] ?? 3;
 }
 
