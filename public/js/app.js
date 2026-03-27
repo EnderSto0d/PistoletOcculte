@@ -105,6 +105,35 @@ function renderUserPanel() {
             });
         }
         toggleBtn.textContent = state.playerView ? '⚙ MODE SUPERADMIN' : '👁 VUE JOUEUR';
+
+        let resetBtn = document.getElementById('superadmin-reset');
+        if (!resetBtn) {
+            resetBtn = document.createElement('button');
+            resetBtn.id = 'superadmin-reset';
+            resetBtn.style.cssText = 'margin-top:0.3rem;width:100%;font-size:0.7rem;padding:0.3rem 0.5rem;background:transparent;border:1px solid #8b1a1a;color:#8b1a1a;cursor:pointer;font-family:inherit;letter-spacing:0.05em;';
+            toggleBtn.insertAdjacentElement('afterend', resetBtn);
+            resetBtn.addEventListener('click', async () => {
+                const userId = prompt('Discord User ID du joueur à réinitialiser :');
+                if (!userId || !userId.trim()) return;
+                if (!confirm(`Réinitialiser toute la progression de ${userId.trim()} ?`)) return;
+                try {
+                    const r = await fetch('/api/admin/reset', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: userId.trim() }),
+                    });
+                    const data = await r.json();
+                    if (data.success) {
+                        alert('Progression réinitialisée.');
+                    } else {
+                        alert('Erreur : ' + (data.error || 'inconnue'));
+                    }
+                } catch {
+                    alert('Erreur réseau.');
+                }
+            });
+        }
+        resetBtn.textContent = '↺ RÉINITIALISER PROGRESSION';
     } else {
         const solved = state.progress.length;
         const badges = ['INITIÉ', 'PRATIQUANT', 'ÉVEILLÉ', 'MAÎTRE OCCULTE'];

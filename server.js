@@ -276,6 +276,31 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
     return res.json({ success: false, attemptsLeft: left });
 });
 
+// ─── Admin ────────────────────────────────────────────────────────────────────
+
+app.post('/api/admin/reset', requireAuth, requireRole, (req, res) => {
+    if (!req.user.isSuperAdmin) {
+        return res.status(403).json({ success: false, error: 'Accès refusé.' });
+    }
+
+    const { userId } = req.body;
+    if (!userId || typeof userId !== 'string') {
+        return res.status(400).json({ success: false, error: 'userId manquant.' });
+    }
+
+    const all = loadAllProgress();
+    if (!all[userId]) {
+        return res.status(404).json({ success: false, error: 'Joueur introuvable.' });
+    }
+
+    all[userId].solvedPuzzles = [];
+    all[userId].attempts      = {};
+    all[userId].lastUpdated   = new Date().toISOString();
+    saveAllProgress(all);
+
+    return res.json({ success: true });
+});
+
 // ─── Start ────────────────────────────────────────────────────────────────────
 
 module.exports = app;
