@@ -18,6 +18,7 @@ const SOLUTIONS = {
     puzzle1: ['\u6b7b', '\u546a', '\u8840', '\u9b42'], // 死 呪 血 魂
     puzzle2: 'neuf cordes. lumi\u00e8re polaris\u00e9e. corbeau et d\u00e9claration.',
     puzzle3: [1, 4, 2, 5, 3, 6],
+    puzzle4: 'le corps doit survivre \u00e0 l\'\u00e2me.',
 };
 
 const MAX_ATTEMPTS      = 3;
@@ -198,7 +199,7 @@ app.get('/logout', (req, res) => {
 
 app.get('/api/user', requireAuth, requireRole, (req, res) => {
     const progress    = getUserProgress(req.user.id);
-    const puzzles     = ['puzzle1', 'puzzle2', 'puzzle3'];
+    const puzzles     = ['puzzle1', 'puzzle2', 'puzzle3', 'puzzle4'];
     const isSuperAdmin = req.user.isSuperAdmin === true;
     const attempts    = {};
     puzzles.forEach(p => {
@@ -217,13 +218,14 @@ app.get('/api/user', requireAuth, requireRole, (req, res) => {
             puzzle1Enabled: gameConfig.PUZZLE_1_ENABLED,
             puzzle2Enabled: gameConfig.PUZZLE_2_ENABLED,
             puzzle3Enabled: gameConfig.PUZZLE_3_ENABLED,
+            puzzle4Enabled: gameConfig.PUZZLE_4_ENABLED,
         },
     });
 });
 
 app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
     const { puzzleId, answer } = req.body;
-    const valid = ['puzzle1', 'puzzle2', 'puzzle3'];
+    const valid = ['puzzle1', 'puzzle2', 'puzzle3', 'puzzle4'];
 
     if (!valid.includes(puzzleId)) {
         return res.status(400).json({ success: false, error: 'Identifiant invalide.' });
@@ -233,6 +235,7 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
         puzzle1: gameConfig.PUZZLE_1_ENABLED,
         puzzle2: gameConfig.PUZZLE_2_ENABLED,
         puzzle3: gameConfig.PUZZLE_3_ENABLED,
+        puzzle4: gameConfig.PUZZLE_4_ENABLED,
     };
     if (!enabledMap[puzzleId]) {
         return res.status(403).json({ success: false, error: 'Puzzle désactivé.' });
@@ -264,8 +267,9 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
         correct = Array.isArray(answer) &&
                   answer.length === sol.length &&
                   answer.every((v, i) => String(v) === String(sol[i]));
-    } else if (puzzleId === 'puzzle2') {
-        correct = typeof answer === 'string' && answer.trim().toLowerCase() === sol;
+    } else if (puzzleId === 'puzzle2' || puzzleId === 'puzzle4') {
+        const norm = s => s.trim().toLowerCase().replace(/\u2019/g, "'");
+        correct = typeof answer === 'string' && norm(answer) === norm(sol);
     }
 
     if (correct) {

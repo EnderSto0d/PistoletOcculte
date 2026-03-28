@@ -32,7 +32,7 @@ async function init() {
         state.user        = data;
         state.progress    = data.progress    || [];
         state.config      = data.config      || {};
-        state.attempts    = data.attempts    || { puzzle1: 3, puzzle2: 3, puzzle3: 3 };
+        state.attempts    = data.attempts    || { puzzle1: 3, puzzle2: 3, puzzle3: 3, puzzle4: 3 };
         state.isSuperAdmin = data.isSuperAdmin === true;
     } catch {
         window.location = '/';
@@ -64,7 +64,7 @@ function isSuperAdminUnlocked() { return state.isSuperAdmin && !state.playerView
 function isSolved(puzzleId)  { return isSuperAdminUnlocked() || state.progress.includes(puzzleId); }
 function isEnabled(puzzleId) {
     if (isSuperAdminUnlocked()) return true;
-    const map = { puzzle1: state.config.puzzle1Enabled, puzzle2: state.config.puzzle2Enabled, puzzle3: state.config.puzzle3Enabled };
+    const map = { puzzle1: state.config.puzzle1Enabled, puzzle2: state.config.puzzle2Enabled, puzzle3: state.config.puzzle3Enabled, puzzle4: state.config.puzzle4Enabled };
     return map[puzzleId] !== false;
 }
 
@@ -235,6 +235,7 @@ function initPageHandlers(pageId) {
     if (pageId === 'training-2') initKanjiPuzzle();
     if (pageId === 'training-3') initIncantationPuzzle();
     if (pageId === 'training-4') initPatternPuzzle();
+    if (pageId === 'training-5') initLetterPuzzle();
 }
 
 // ─── API: Attempt Puzzle ──────────────────────────────────────────────────────
@@ -751,7 +752,9 @@ function renderChapter4Content() {
 function renderTraining5() {
     if (!isEnabled('puzzle3')) return renderCorrupted();
     if (!isSolved('puzzle3'))  return renderLockedChapter('puzzle3', 'Méthode III', 'training-4');
+    if (!isEnabled('puzzle4')) return renderCorrupted();
 
+    const solved = isSolved('puzzle4');
     return `
 <div class="doc-paper">
     <div class="doc-header">
@@ -765,95 +768,134 @@ function renderTraining5() {
     </div>
 
     <div class="doc-body">
-        <div class="doc-section">
-            <div class="doc-section-title">VOUS RECEVEZ L'ARME</div>
-            <p class="doc-p">
-                Si vous lisez ces lignes, vous avez franchi les trois premiers verrous. Votre
-                Fondation est établie. Votre Précision est formée. Votre Sang-Froid est forgé.
-                L'arme vous est maintenant remise — non plus comme un concept décrit dans ces
-                pages, mais comme un outil concret dans votre main.
-            </p>
-            <p class="doc-p">
-                Prenez-en soin. Ne la confiez à personne qui n'ait pas assimilé l'intégralité
-                de ce manuel. Ne la laissez jamais hors de portée dans un environnement à risque.
-                Et ne tirez jamais plus de deux balles imprégnées simultanément.
-                <strong>Jamais.</strong>
-            </p>
-        </div>
-
-        <hr class="doc-rule">
-
-        <div class="doc-section">
-            <div class="doc-section-title">LA BALLE INCENDIAIRE — AVERTISSEMENT</div>
-            <p class="doc-p">
-                Le Pistolet Occulte recèle une technique destructrice que je n'ai utilisée qu'une
-                seule fois — et qui m'a valu deux jours d'inconscience. Je l'appelle la
-                <strong>Balle Incendiaire</strong> : une concentration maximale d'Énergie Maudite,
-                compressée dans une seule munition jusqu'à saturation complète du circuit des sceaux,
-                puis libérée en une fraction de seconde.
-            </p>
-            <p class="doc-p">
-                L'effet sur la cible est décisif. Sur le tireur, en l'absence de préparation
-                adéquate, il est dévastateur. Le recul généré n'est pas celui d'un pistolet.
-                C'est celui d'un corps qui concentre l'énergie d'un canal occulte complet en un
-                seul point de contact. Un bras non préparé, une épaule non préparée, des côtes
-                non préparées — tout cela se fracasse instantanément.
-            </p>
-            <div class="doc-warning">
-                ⚠ La Balle Incendiaire n'est pas accessible à ce stade de votre entraînement.
-                Ce n'est pas un jugement de vos capacités — c'est une réalité physiologique.
-                Votre corps et votre canal énergétique doivent d'abord être préparés à absorber
-                un impact de cette magnitude. Tentez-la sans cette préparation, et vous n'aurez
-                plus de bras.
-            </div>
-        </div>
-
-        <hr class="doc-rule">
-
-        <div class="doc-section">
-            <div class="doc-section-title">CE QUI VOUS RESTE À APPRENDRE</div>
-            <p class="doc-p">
-                La Quatrième Méthode vise un objectif précis : renforcer votre enveloppe charnelle
-                grâce à l'Énergie Occulte pour qu'elle survive à votre propre attaque. Il s'agit
-                de la répartition d'impact — utiliser l'Énergie Maudite non comme projectile ou
-                amplificateur, mais comme armure momentanée, un amortisseur interne qui redistribue
-                l'onde de choc sur l'ensemble du corps plutôt qu'en un seul point.
-            </p>
-            <ul class="doc-list">
-                <li><strong>Exercice I — L'Amortisseur Passif :</strong> Apprendre à diffuser un impact reçu via l'Énergie Maudite plutôt que de l'absorber purement physiquement. S'exposer à des chocs cinétiques croissants — chutes, arrêts d'objets lourds, assauts d'adversaires puissants. La technique se développe progressivement.</li>
-                <li><strong>Exercice II — L'Armure Momentanée :</strong> Activer délibérément l'amortisseur énergétique en <em>anticipation</em> d'un impact — pas en réaction, mais en préparation. La fenêtre d'activation est brève. Avec l'entraînement, elle devient instinctive.</li>
-                <li><strong>Exercice III — La Répétition du Contrecoup :</strong> Simuler, à fraction de la puissance réelle, le type d'onde de choc que génère la Balle Incendiaire. Habituer le canal énergétique à ce retour brutal sans être déstabilisé. Ce n'est pas confortable. C'est nécessaire.</li>
-            </ul>
-            <div class="doc-warning">
-                ⚠ Cette méthode n'a pas de verrou dans ces pages. Elle se certifie sur le terrain,
-                la première fois que vous tirez une Balle Incendiaire et que votre bras tient.
-                <strong>Prenez votre temps.</strong>
-            </div>
-        </div>
-
-        <hr class="doc-rule">
-
-        <div class="doc-section">
-            <div class="doc-section-title">UN DERNIER MOT</div>
-            <p class="doc-p">
-                Vous êtes arrivé au terme de ce manuel. Ce que vous faites de cette arme et de
-                ces connaissances vous appartient désormais. Je ne peux pas vous guider plus loin.
-            </p>
-            <p class="doc-p">
-                Utilisez l'arme avec discernement. Le Serment d'Entrave n'est pas une limite
-                imposée de l'extérieur — c'est un rappel permanent que la puissance sans
-                contrainte se retourne toujours contre celui qui la détient. Ne le défiez jamais.
-                <strong>C'est la seule leçon qui compte vraiment.</strong>
-            </p>
-            <p class="doc-p">
-                Il y a des choses dans ce monde que personne d'autre que vous ne peut
-                protéger désormais. Faites-le bien.
-            </p>
-        </div>
-
-        <div class="diary-final-line">— H. Delacroix, Inspecteur Principal, Paris, 1893</div>
+        ${solved ? renderChapter5Content() : renderPuzzle4Gate()}
     </div>
 </div>`;
+}
+
+function renderPuzzle4Gate() {
+    return `
+<div class="doc-section">
+    <div class="doc-section-title">VOUS RECEVEZ L'ARME</div>
+    <p class="doc-p">
+        Si vous lisez ces lignes, vous avez franchi les trois premiers verrous. Votre
+        Fondation est établie. Votre Précision est formée. Votre Sang-Froid est forgé.
+        L'arme vous est maintenant remise — non plus comme un concept décrit dans ces
+        pages, mais comme un outil concret dans votre main.
+    </p>
+    <p class="doc-p">
+        Prenez-en soin. Ne la confiez à personne qui n'ait pas assimilé l'intégralité
+        de ce manuel. Ne la laissez jamais hors de portée dans un environnement à risque.
+        Et ne tirez jamais plus de deux balles imprégnées simultanément.
+        <strong>Jamais.</strong>
+    </p>
+</div>
+
+<hr class="doc-rule">
+
+<div class="doc-section">
+    <div class="doc-section-title">LA BALLE INCENDIAIRE — AVERTISSEMENT</div>
+    <p class="doc-p">
+        Le Pistolet Occulte recèle une technique destructrice que je n'ai utilisée qu'une
+        seule fois — et qui m'a valu deux jours d'inconscience. Je l'appelle la
+        <strong>Balle Incendiaire</strong> : une concentration maximale d'Énergie Maudite,
+        compressée dans une seule munition jusqu'à saturation complète du circuit des sceaux,
+        puis libérée en une fraction de seconde.
+    </p>
+    <p class="doc-p">
+        L'effet sur la cible est décisif. Sur le tireur, en l'absence de préparation
+        adéquate, il est dévastateur. Le recul généré n'est pas celui d'un pistolet.
+        C'est celui d'un corps qui concentre l'énergie d'un canal occulte complet en un
+        seul point de contact. Un bras non préparé, une épaule non préparée, des côtes
+        non préparées — tout cela se fracasse instantanément.
+    </p>
+    <div class="doc-warning">
+        ⚠ La Balle Incendiaire n'est pas accessible à ce stade de votre entraînement.
+        Votre corps et votre canal énergétique doivent d'abord être préparés à absorber
+        un impact de cette magnitude. Ce qui suit vous y prépare — à condition de lire
+        ce qui reste dans l'étui.
+    </div>
+</div>
+
+<hr class="doc-rule">
+
+<div class="puzzle-gate">
+    <div class="puzzle-gate-title">LA LETTRE SCELLÉE</div>
+    <div class="puzzle-gate-subtitle">VERROU IV — LE MOT DU PROFESSEUR LIÚ</div>
+    <div class="puzzle-divider"></div>
+    <div class="incantation-wrap">
+        <p class="incantation-lore">
+            <em>Vous trouverez ceci au fond de l'étui.</em><br><br>
+            Je n'ai consigné dans le manuel que ce qui s'enseigne. Il existe une chose que
+            le Professeur Liú m'a dite la nuit de la Balle Incendiaire — une chose qu'il
+            n'a jamais répétée et que je n'ai jamais écrite, parce qu'elle ne s'explique
+            pas. Elle se comprend ou elle ne se comprend pas.<br><br>
+            Cette nuit-là, j'ai survécu parce que j'avais gardé ses mots dans ma tête au
+            moment du tir. Je vous les laisse ici, mais dans le désordre. Si vous avez
+            traversé les trois méthodes avec honnêteté, l'ordre vous sera évident.<br><br>
+            <strong>à — l'âme — doit survivre — le corps</strong><br><br>
+            <em>— H. Delacroix, Paris, 1893</em>
+        </p>
+        <input
+            type="text"
+            id="letter-input"
+            class="incantation-input"
+            placeholder="Remettez les mots dans l'ordre..."
+            autocomplete="off"
+            spellcheck="false"
+        />
+        <p class="incantation-hint">Respectez la ponctuation. La casse n'est pas importante.</p>
+        <button class="btn-validate" id="letter-submit">Transmettre</button>
+        <p class="puzzle-attempts" id="letter-attempts"></p>
+    </div>
+</div>`;
+}
+
+function renderChapter5Content() {
+    return `
+<div class="puzzle-solved-banner">✦ LETTRE LUE ✦ ACCÈS ACCORDÉ ✦</div>
+<br>
+<div class="doc-section">
+    <div class="doc-section-title">CE QUI VOUS RESTE À APPRENDRE</div>
+    <p class="doc-p">
+        La Quatrième Méthode vise un objectif précis : renforcer votre enveloppe charnelle
+        grâce à l'Énergie Occulte pour qu'elle survive à votre propre attaque. Il s'agit
+        de la répartition d'impact — utiliser l'Énergie Maudite non comme projectile ou
+        amplificateur, mais comme armure momentanée, un amortisseur interne qui redistribue
+        l'onde de choc sur l'ensemble du corps plutôt qu'en un seul point.
+    </p>
+    <ul class="doc-list">
+        <li><strong>Exercice I — L'Amortisseur Passif :</strong> Apprendre à diffuser un impact reçu via l'Énergie Maudite plutôt que de l'absorber purement physiquement. S'exposer à des chocs cinétiques croissants — chutes, arrêts d'objets lourds, assauts d'adversaires puissants. La technique se développe progressivement.</li>
+        <li><strong>Exercice II — L'Armure Momentanée :</strong> Activer délibérément l'amortisseur énergétique en <em>anticipation</em> d'un impact — pas en réaction, mais en préparation. La fenêtre d'activation est brève. Avec l'entraînement, elle devient instinctive.</li>
+        <li><strong>Exercice III — La Répétition du Contrecoup :</strong> Simuler, à fraction de la puissance réelle, le type d'onde de choc que génère la Balle Incendiaire. Habituer le canal énergétique à ce retour brutal sans être déstabilisé. Ce n'est pas confortable. C'est nécessaire.</li>
+    </ul>
+    <div class="doc-warning">
+        ⚠ Cette méthode se certifie sur le terrain, la première fois que vous tirez une
+        Balle Incendiaire et que votre bras tient. <strong>Prenez votre temps.</strong>
+    </div>
+</div>
+
+<hr class="doc-rule">
+
+<div class="doc-section">
+    <div class="doc-section-title">UN DERNIER MOT</div>
+    <p class="doc-p">
+        Vous êtes arrivé au terme de ce manuel. Ce que vous faites de cette arme et de
+        ces connaissances vous appartient désormais. Je ne peux pas vous guider plus loin.
+    </p>
+    <p class="doc-p">
+        Utilisez l'arme avec discernement. Le Serment d'Entrave n'est pas une limite
+        imposée de l'extérieur — c'est un rappel permanent que la puissance sans
+        contrainte se retourne toujours contre celui qui la détient. Ne le défiez jamais.
+        <strong>C'est la seule leçon qui compte vraiment.</strong>
+    </p>
+    <p class="doc-p">
+        Il y a des choses dans ce monde que personne d'autre que vous ne peut
+        protéger désormais. Faites-le bien.
+    </p>
+</div>
+
+<div class="diary-final-line">— H. Delacroix, Inspecteur Principal, Paris, 1893</div>`;
 }
 
 // ─── Helpers for locked/corrupted states ──────────────────────────────────────
@@ -1363,6 +1405,58 @@ function initIncantationPuzzle() {
 
     submit.addEventListener('click', checkIncantation);
     input.addEventListener('keydown', e => { if (e.key === 'Enter') checkIncantation(); });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PUZZLE 4 — LETTRE SCELLÉE
+// ═══════════════════════════════════════════════════════════
+
+function initLetterPuzzle() {
+    if (isSolved('puzzle4')) return;
+
+    const input   = document.getElementById('letter-input');
+    const submit  = document.getElementById('letter-submit');
+    const attDisp = document.getElementById('letter-attempts');
+    if (!input || !submit) return;
+
+    const left = getAttemptsLeft('puzzle4');
+    if (attDisp) attDisp.textContent = left > 0
+        ? `${left} essai(s) restant(s) cette heure`
+        : '⛔ Aucun essai restant — réessayez dans moins d\'une heure';
+    if (left <= 0) { submit.disabled = true; input.disabled = true; }
+
+    const checkLetter = async () => {
+        const val = input.value.trim();
+        if (!val || submit.disabled) return;
+        submit.disabled = true;
+        input.disabled  = true;
+
+        const result = await attemptPuzzle('puzzle4', val);
+        if (result.success) return;
+
+        input.classList.add('error');
+        sound.playError();
+        setTimeout(() => input.classList.remove('error'), 800);
+
+        if (result.rateLimit) {
+            if (attDisp) attDisp.textContent = `⛔ Accès verrouillé — réessayez dans ${result.waitMinutes} min`;
+            submit.textContent = '⛔ Bloqué';
+        } else {
+            const rem = result.attemptsLeft;
+            if (attDisp) attDisp.textContent = rem > 0
+                ? `${rem} essai(s) restant(s) cette heure`
+                : '⛔ Aucun essai restant — réessayez dans moins d\'une heure';
+            if (rem > 0) {
+                submit.disabled = false;
+                input.disabled  = false;
+            } else {
+                submit.textContent = '⛔ Bloqué';
+            }
+        }
+    };
+
+    submit.addEventListener('click', checkLetter);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') checkLetter(); });
 }
 
 // ═══════════════════════════════════════════════════════════

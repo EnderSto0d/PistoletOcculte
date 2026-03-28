@@ -2,5 +2,6 @@
   "_comment": "Game Master control panel — set to false to lock a puzzle for all users",
   "PUZZLE_1_ENABLED": true,
   "PUZZLE_2_ENABLED": true,
-  "PUZZLE_3_ENABLED": true
+  "PUZZLE_3_ENABLED": true,
+  "PUZZLE_4_ENABLED": true
 }
