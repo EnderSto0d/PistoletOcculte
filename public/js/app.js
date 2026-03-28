@@ -383,6 +383,14 @@ function renderChapter2Content() {
     </p>
 </div>
 <hr class="doc-rule">
+<div class="doc-warning" style="border-color:#7a6a2a; background:rgba(122,106,42,0.08); margin-bottom:1.2rem;">
+    ✦ ADAPTATION — ENTRAÎNEMENT SANS L'ARME<br><br>
+    Si l'arme ne vous a pas encore été remise, ces exercices restent praticables. Procurez-vous
+    un objet de substitution : un cylindre lesté, une barre courte, tout objet pouvant être tenu
+    en prise pistolet et dont la masse est comparable à celle d'un revolver de service — environ
+    huit cents grammes. La main et le canal énergétique s'ouvrent à la pratique, pas à la possession.
+    L'arme reconnaîtra un porteur dont la Fondation est déjà établie.
+</div>
 <div class="doc-section">
     <div class="doc-section-title">EXERCICE I — LE PORT STATIQUE</div>
     <p class="doc-p">
@@ -395,6 +403,13 @@ function renderChapter2Content() {
         dans le plan physique d'abord, puis — à mesure que votre concentration s'approfondit —
         sentez l'autre poids. La densité de l'énergie qui imprègne le métal. Elle est là.
         Vous apprendrez à la percevoir.
+    </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : tenez votre objet de substitution dans la même prise, au même angle, le bras
+        tendu vers l'avant. Concentrez-vous sur la masse dans votre paume — sa résistance, son
+        centre de gravité. Puis, progressivement, imaginez un second poids sous le premier :
+        dense, asymétrique, qui tire légèrement vers le bas et vers l'intérieur. C'est ainsi que
+        l'arme pèse. Habituez votre bras à cette sensation avant même de la tenir réellement.
     </p>
 </div>
 <hr class="doc-rule">
@@ -411,6 +426,13 @@ function renderChapter2Content() {
         progressivement. Quand vous pourrez courir en maintenant un flux continu à travers l'arme,
         vous êtes prêt pour l'étape suivante.
     </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : effectuez le même exercice avec l'objet de substitution, ou à mains nues —
+        la main dominante fermée en prise imaginaire, bras tendu, pouce relevé. Ce qui compte
+        n'est pas l'objet, c'est le maintien du flux énergétique à travers le bras pendant le
+        mouvement. Concentrez-vous sur votre canal : sentez-le rester ouvert malgré les changements
+        de rythme. C'est cette continuité que vous entraînez ici.
+    </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
@@ -426,6 +448,13 @@ function renderChapter2Content() {
         Une légère résistance d'abord, puis une ouverture. Quand la synchronisation est réussie,
         l'arme n'est plus un objet tenu : elle devient une extension de votre bras, aussi naturelle
         que les doigts qui la saisissent.
+    </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : ouvrez la paume de votre main dominante, doigts légèrement écartés.
+        Visualisez les quatre sceaux — <strong>死 呪 血 魂</strong> — gravés dans l'air devant vous,
+        à l'endroit exact où reposerait le canon. Projetez délibérément votre Énergie Maudite vers
+        ce point précis. Vous ne synchronisez pas encore — vous ouvrez le chemin. L'arme
+        reconnaîtra un canal déjà orienté vers elle.
     </p>
     <div class="doc-warning">
         ⚠ Ne sautez aucune des trois étapes. Un tireur dont la synchronisation est incomplète
@@ -521,6 +550,13 @@ function renderChapter3Content() {
     </p>
 </div>
 <hr class="doc-rule">
+<div class="doc-warning" style="border-color:#7a6a2a; background:rgba(122,106,42,0.08); margin-bottom:1.2rem;">
+    ✦ ADAPTATION — ENTRAÎNEMENT SANS L'ARME<br><br>
+    La précision occulte se construit d'abord dans l'esprit. Les deux premiers exercices de cette
+    méthode ne nécessitent pas l'arme — ils en sont même le préalable. Le troisième peut être
+    pratiqué à mains nues ou avec un objet de substitution tenu en prise pistolet.
+    Ce que vous forgez ici, c'est le canal de perception. L'arme ne fait qu'en amplifier la portée.
+</div>
 <div class="doc-section">
     <div class="doc-section-title">EXERCICE I — LA PERCEPTION DES SIGNATURES</div>
     <p class="doc-p">
@@ -532,6 +568,13 @@ function renderChapter3Content() {
         L'arme elle-même est un excellent point de départ : ses sceaux émettent une signature
         distincte que vous apprendrez à reconnaître les yeux fermés. Cette capacité de perception
         est le préalable indispensable à toute précision occulte.
+    </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : cet exercice est entièrement praticable tel quel. Commencez par votre
+        propre signature — fermez les yeux, posez votre attention sur votre main dominante et
+        sentez le flux d'Énergie Maudite qui s'y concentre. Progressez vers les objets autour
+        de vous. Tout objet ayant été exposé à une énergie intense ou ancienne porte une trace.
+        Apprenez à la distinguer du silence ordinaire.
     </p>
 </div>
 <hr class="doc-rule">
@@ -548,6 +591,13 @@ function renderChapter3Content() {
         À mesure que la perception s'affine, la précision s'améliore de façon spectaculaire.
         La cible que vous ne voyez pas est celle que vous devez apprendre à ne jamais manquer.
     </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : isolez mentalement la signature occulte de votre cible. Verrouillez sa
+        position dans l'espace — pas avec les yeux, avec la perception. Puis désignez ce point
+        avec votre index tendu, bras levé en ligne de mire imaginaire. L'index n'est pas l'arme :
+        c'est la répétition du geste de focalisation. Ce que vous entraînez ici, c'est la
+        précision du verrouillage mental, indépendamment de tout tir réel.
+    </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
@@ -557,6 +607,14 @@ function renderChapter3Content() {
         percevoir la cible <em>ou</em> à maintenir un flux d'énergie stable, mais pas les deux
         simultanément. L'Exercice III travaille spécifiquement cette séparation — apprendre à mener
         les deux processus en parallèle, à tenir la perception et le flux dans le même acte mental.
+    </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : tenez votre objet de substitution ou adoptez la prise imaginaire — bras tendu,
+        main fermée. Maintenez un flux d'Énergie Maudite actif à travers votre canal tout en
+        percevant activement la signature d'un point devant vous. L'un ne doit pas effacer l'autre.
+        Si le flux s'interrompt dès que vous focalisez la perception, recommencez. Ce parallélisme
+        est la compétence centrale de cette méthode — elle se développe avec la répétition, pas
+        avec la force.
     </p>
     <div class="doc-warning">
         ⚠ C'est l'exercice le plus long et le plus exigeant de cette méthode. En concentrant toute
@@ -673,6 +731,13 @@ function renderChapter4Content() {
     </p>
 </div>
 <hr class="doc-rule">
+<div class="doc-warning" style="border-color:#7a6a2a; background:rgba(122,106,42,0.08); margin-bottom:1.2rem;">
+    ✦ ADAPTATION — ENTRAÎNEMENT SANS L'ARME<br><br>
+    Le Sang-Froid est une discipline intérieure avant d'être une posture physique. Ces trois
+    exercices peuvent être intégralement pratiqués sans l'arme — l'objet de substitution remplace
+    le pistolet pour les exercices corporels ; la visualisation remplace le tir réel. Ce que vous
+    forgez ici ne dépend pas de l'arme. Il dépend de vous.
+</div>
 <div class="doc-section">
     <div class="doc-section-title">EXERCICE I — L'EXPOSITION PROGRESSIVE</div>
     <p class="doc-p">
@@ -684,6 +749,13 @@ function renderChapter4Content() {
     <p class="doc-p">
         L'objectif n'est pas de ne pas ressentir la peur. L'objectif est de ne pas la laisser se
         traduire dans le corps. Sentez-la. Enregistrez-la. Et continuez à viser.
+    </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : adoptez la posture de tir avec votre objet de substitution ou à mains nues.
+        Exposez-vous délibérément à ce qui perturbe votre calme — une présence occulte, un
+        environnement hostile, une pensée difficile — et imposez-vous de maintenir le bras tendu,
+        le flux ouvert, sans que la peur ne se traduise dans vos muscles. L'arme n'est pas
+        nécessaire pour apprendre à ne pas trembler.
     </p>
 </div>
 <hr class="doc-rule">
@@ -700,6 +772,13 @@ function renderChapter4Content() {
         l'ébranler. Ce n'est pas de la cruauté. C'est de la préparation. Sur le terrain,
         l'hésitation tue.
     </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : cet exercice est purement mental. Placez-vous en situation simulée — réelle
+        ou imaginée — face à une entité qui parle, qui vous regarde, qui cherche à vous ébranler.
+        Maintenez mentalement la décision de tir : bras imaginairement levé, intention verrouillée.
+        La résolution ne réside pas dans la gâchette. Elle réside dans la décision qui précède le geste.
+        C'est cette décision que vous entraînez.
+    </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
@@ -715,6 +794,13 @@ function renderChapter4Content() {
         Quand vous pouvez rester dans cet état pendant trente minutes face à une présence
         occulte active sans que votre bras ne tremble d'un millimètre, la Troisième Méthode
         est acquise.
+    </p>
+    <p class="doc-p" style="font-style:italic; border-left:2px solid var(--ink-light); padding-left:0.8rem; color:var(--ink-light); margin-top:0.6rem;">
+        Sans l'arme : tenez votre objet de substitution, ou posez simplement la main à plat sur
+        votre genou, paume ouverte, comme si l'arme y reposait. Entrez en état de conscience
+        élargie. Exposez-vous à une perturbation occulte ou émotionnelle. Trente minutes.
+        Sans que le corps ne réagisse. Si vous n'avez pas encore l'arme le jour où vous réussissez
+        cela — vous serez prêt à la tenir.
     </p>
     <div class="doc-warning">
         ⚠ La première fois que j'ai réussi l'Exercice III dans sa totalité, j'ai compris pour
