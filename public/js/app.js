@@ -143,21 +143,25 @@ function renderUserPanel() {
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
-    // Training
-    { id: 'training-1', label: 'Chap. I — Introduction',    section: 'training', icon: '📜', req: null },
-    { id: 'training-2', label: 'Chap. II — Énergie Occulte', section: 'training', icon: '✦',  req: null },
-    { id: 'training-3', label: 'Chap. III — Serment',        section: 'training', icon: '✦',  req: null },
-    { id: 'training-4', label: 'Chap. IV — Maîtrise',        section: 'training', icon: '✦',  req: null },
+    // Introduction
+    { id: 'training-1', label: 'Introduction',                    section: 'intro',    icon: '📜', req: null },
+    // Méthodes d'Entraînement
+    { id: 'training-2', label: 'Méthode I — Fondation',           section: 'training', icon: '✦',  req: null },
+    { id: 'training-3', label: 'Méthode II — Précision',          section: 'training', icon: '✦',  req: null },
+    { id: 'training-4', label: 'Méthode III — Sang-Froid',        section: 'training', icon: '✦',  req: null },
+    { id: 'training-5', label: 'Méthode IV — Contrecoup',         section: 'training', icon: '✦',  req: null },
     // Journal
-    { id: 'journal-1',  label: 'Entrée I — L\'Éveil',        section: 'journal',  icon: '📖', req: null },
-    { id: 'journal-2',  label: 'Entrée II — La Forge',        section: 'journal',  icon: '📖', req: 'puzzle1' },
-    { id: 'journal-3',  label: 'Entrée III — Les Reliques',   section: 'journal',  icon: '📖', req: 'puzzle2' },
-    { id: 'journal-4',  label: 'Entrée IV — Le Grand Départ', section: 'journal',  icon: '📖', req: 'puzzle3' },
+    { id: 'journal-1',  label: 'Entrée I — L\'Éveil',             section: 'journal',  icon: '📖', req: null },
+    { id: 'journal-2',  label: 'Entrée II — La Forge',            section: 'journal',  icon: '📖', req: 'puzzle1' },
+    { id: 'journal-3',  label: 'Entrée III — Les Reliques',       section: 'journal',  icon: '📖', req: 'puzzle2' },
+    { id: 'journal-4',  label: 'Entrée IV — Le Grand Départ',     section: 'journal',  icon: '📖', req: 'puzzle3' },
 ];
 
 function renderNav() {
+    const introList    = document.getElementById('nav-intro');
     const trainingList = document.getElementById('nav-training');
     const journalList  = document.getElementById('nav-journal');
+    introList.innerHTML    = '';
     trainingList.innerHTML = '';
     journalList.innerHTML  = '';
 
@@ -192,8 +196,9 @@ function renderNav() {
             li.addEventListener('click', () => navigateTo(item.id));
         }
 
-        if (item.section === 'training') trainingList.appendChild(li);
-        else                             journalList.appendChild(li);
+        if (item.section === 'intro')         introList.appendChild(li);
+        else if (item.section === 'training') trainingList.appendChild(li);
+        else                                  journalList.appendChild(li);
     });
 }
 
@@ -209,6 +214,7 @@ function navigateTo(pageId) {
         'training-2': renderTraining2,
         'training-3': renderTraining3,
         'training-4': renderTraining4,
+        'training-5': renderTraining5,
         'journal-1':  renderJournal1,
         'journal-2':  renderJournal2,
         'journal-3':  renderJournal3,
@@ -266,8 +272,8 @@ function renderTraining1() {
 <div class="doc-paper">
     <div class="doc-header">
         <div class="doc-classification">DOSSIER CONFIDENTIEL — NIVEAU ABSOLU</div>
-        <div class="doc-title">MANUEL D'ENTRAÎNEMENT</div>
-        <div class="doc-subtitle">Chapitre I — Introduction aux Archives Occultes</div>
+        <div class="doc-title">MANUEL D'ENTRAÎNEMENT AU PISTOLET OCCULTE</div>
+        <div class="doc-subtitle">Introduction — Lettre au Successeur</div>
         <div class="doc-meta">
             <span>Rédigé par : Insp. H. DELACROIX</span>
             <span>Réf : DEL/1893/MAN/I</span>
@@ -276,86 +282,102 @@ function renderTraining1() {
 
     <div class="doc-body">
         <div class="doc-section">
-            <div class="doc-section-title">AVERTISSEMENT PRÉLIMINAIRE</div>
+            <div class="doc-section-title">À CELUI OU CELLE QUI TIENT CES PAGES</div>
             <p class="doc-p">
-                Si ces mots vous parviennent, c'est que vous avez été jugé digne de connaître
-                la vérité que la République préfère enterrer. Ne cherchez pas à la nier.
-                Ne cherchez pas à la rationaliser. Acceptez simplement ce qui est.
+                Si ce dossier est entre vos mains, c'est que quelqu'un a jugé que vous méritez de connaître
+                la vérité — ou que la vérité, impatiente, a décidé de vous trouver elle-même. Les deux cas
+                sont arrivés à des gens que j'ai connus. Ils n'y étaient pas davantage préparés que vous.
             </p>
             <p class="doc-p">
-                Ce manuel n'est pas un simple document. C'est un héritage. Le fruit de
-                douze années de recherches menées dans le secret le plus absolu, au péril
-                de ma raison et de ma vie.
+                Je suis Henri Delacroix, Inspecteur Principal de la Brigade Criminelle de Paris. Ou je
+                l'étais. Le temps qu'a mis ce dossier pour vous atteindre m'est inconnu. Ce qui m'est
+                connu, en revanche, c'est ce que vous portez — ou ce que vous vous apprêtez à recevoir —
+                et ce que cela implique.
+            </p>
+            <p class="doc-p">
+                L'arme que l'on vous a confiée n'est pas un pistolet. C'est un héritage. Le fruit de
+                douze années d'enquête, d'une nuit qui a failli me tuer dans une ruelle du 13ème
+                arrondissement, et de l'enseignement d'un homme que je n'ai jamais entièrement compris
+                mais à qui je dois tout. Ce dossier est la somme de ce que j'ai appris. Il est à vous
+                maintenant.
             </p>
             <div class="doc-warning">
-                ⚠ Ce que vous apprendrez ici est réel. Ce que vous verrez est réel.
-                La douleur, le danger, le sacrifice — tout cela est réel.
+                ⚠ Ce que vous apprendrez ici est réel. Ce que vous verrez est réel. La douleur, le danger,
+                le deuil — tout cela est réel. Je ne vous demande pas de m'en remercier. Je vous demande
+                de ne pas gaspiller ce que j'ai mis toute ma vie à comprendre.
             </div>
         </div>
 
         <hr class="doc-rule">
 
         <div class="doc-section">
-            <div class="doc-section-title">COMMENT UTILISER CES ARCHIVES</div>
+            <div class="doc-section-title">CE QU'EST LE PISTOLET OCCULTE</div>
             <p class="doc-p">
-                Les pages qui suivent sont organisées en quatre Chapitres Opérationnels.
-                Chacun décrit une propriété spécifique de l'armement que vous avez reçu
-                ou que vous vous apprêtez à recevoir. Ces propriétés semblent défier la
-                physique ordinaire. Elles ne la défient pas — elles obéissent simplement
-                à des lois que la science officielle refuse encore d'admettre.
+                En apparence, c'est un revolver Modèle 1892 de l'armée française. N'importe quel
+                observateur non initié le tiendrait pour une arme ordinaire — bien entretenue, certes,
+                mais ordinaire. Ce n'est pas le cas.
             </p>
             <p class="doc-p">
-                Les chapitres suivants sont protégés par des <strong>Sceaux de Connaissance</strong> —
-                des verrous occultes qui ne s'ouvrent que lorsque l'esprit du lecteur est
-                prêt à recevoir la vérité suivante. Chaque sceau prend une forme différente.
-                Observez. Réfléchissez. Ne tentez pas de forcer ce qui doit venir naturellement.
+                Son âme a été forgée à partir du noyau maudit d'un Fléau de Grade 1, vaincu en
+                avril 1893 dans les caves de la Bibliothèque Sainte-Geneviève. Ce noyau — le cœur
+                cristallisé d'une entité qui avait mis vingt-trois personnes dans un état végétatif
+                en deux semaines — a été fondu dans l'acier de Tolède de l'arme. Quatre sceaux y
+                ont été gravés selon les enseignements du Professeur Liú :
+                <strong>死 呪 血 魂</strong>. Mort. Malédiction. Sang. Âme.
             </p>
             <p class="doc-p">
-                En parallèle à ce manuel, vous avez accès à mon <em>Journal Intime</em>.
-                Ces entrées personnelles fournissent le contexte narratif et émotionnel
-                que ce document technique ne peut pas vous donner. Je vous conseille de
-                les lire dans l'ordre — chaque chapitre du manuel correspond à une
-                période précise de mon journal.
+                Ces sceaux font de l'arme un conduit d'amplification. Une balle ordinaire tirée par
+                ce revolver n'affectera pas plus un Fléau que la mienne ne l'affectait en novembre
+                1892. Mais une balle imprégnée de votre Énergie Maudite, traversant les sceaux au
+                moment du tir, devient quelque chose d'entièrement différent.
+            </p>
+            <p class="doc-p">
+                Il y a un Serment lié à cette arme — une contrainte occulte qui en détermine les
+                limites et en garantit la puissance. Ce Serment est documenté dans la Troisième
+                Méthode. Lisez-la. Comprenez-la. Ne la défiez jamais.
             </p>
         </div>
 
         <hr class="doc-rule">
 
         <div class="doc-section">
-            <div class="doc-section-title">PROPRIÉTÉS DE BASE DE L'ARMEMENT</div>
+            <div class="doc-section-title">LES QUATRE MÉTHODES — APERÇU</div>
             <p class="doc-p">
-                L'arme en votre possession est, en apparence, un revolver Modèle 1892
-                de l'armée française. En apparence seulement. Sa fabrication réelle est
-                décrite dans les chapitres suivants. Pour l'heure, sachez simplement ceci :
+                Ce manuel décrit quatre méthodes d'entraînement. Elles sont ordonnées. Elles sont
+                progressives. Chacune suppose que la précédente est acquise.
             </p>
             <ul class="doc-list">
-                <li>Elle a l'apparence d'une arme ordinaire pour tout observateur non initié.</li>
-                <li>Elle ne se comporte <strong>pas</strong> comme une arme ordinaire face aux Fléaux.</li>
-                <li>Elle nécessite une préparation spéciale pour fonctionner pleinement.</li>
-                <li>Son utilisation à pleine capacité a des limites précises et absolues.</li>
-                <li>Ces limites ne sont pas des défauts. Elles sont intentionnelles. Elles vous protègent.</li>
+                <li><strong>Première Méthode — Fondation et Ancrage :</strong> Apprendre à exister avec l'arme. Son poids surnaturel exige que vous réorganisiez votre propre énergie autour d'elle avant de penser à tirer.</li>
+                <li><strong>Deuxième Méthode — Focalisation et Précision de l'Âme :</strong> Apprendre à viser avec l'énergie, pas seulement avec les yeux. Une balle occulte n'a de valeur que si elle frappe là où elle doit frapper.</li>
+                <li><strong>Troisième Méthode — L'Art du Sang-Froid :</strong> Forger l'impassibilité nécessaire pour tirer sans hésiter face à ce que vous allez rencontrer. La peur fait trembler le canon. Un canon qui tremble manque sa cible.</li>
+                <li><strong>Quatrième Méthode — L'Encaissement du Contrecoup :</strong> Préparer corps et canal énergétique au recul de la technique ultime. La Balle Incendiaire broierait un bras non préparé.</li>
             </ul>
+            <p class="doc-p">
+                Chaque méthode se clôt par une épreuve — un verrou qui confirme votre maîtrise avant de
+                vous laisser avancer. Ne tentez pas de forcer ce qui doit venir naturellement. Ces verrous
+                ne jugent pas votre courage. Ils jugent votre compréhension.
+            </p>
         </div>
 
         <hr class="doc-rule">
 
         <div class="doc-section">
-            <div class="doc-section-title">LES FLÉAUX — DÉFINITION OPÉRATIONNELLE</div>
+            <div class="doc-section-title">LES FLÉAUX — RAPPEL OPÉRATIONNEL</div>
             <p class="doc-p">
-                Les entités que vous combattrez sont officiellement désignées dans mes
-                archives sous le terme de <strong>Fléaux</strong> (<em>cursed spirits</em> dans la
-                terminologie japonaise). Ce sont des manifestations de l'Énergie Maudite
-                accumulée — émotions négatives humaines condensées en formes semi-conscientes.
+                Les entités que vous combattrez sont des manifestations de l'Énergie Maudite accumulée —
+                émotions négatives humaines condensées en formes semi-conscientes, existant simultanément
+                dans le plan physique et dans le plan occulte. Les balles ordinaires les traversent comme
+                à travers du brouillard. Seule une matière elle-même imprégnée d'Énergie Maudite peut les
+                atteindre là où ils existent vraiment.
             </p>
             <p class="doc-p">
-                Leur degré de puissance varie. Les Fléaux de grades inférieurs sont
-                abattables avec une munition correctement préparée. Les Fléaux de
-                <strong>Grade 1 et au-delà</strong> requièrent une expertise complète de
-                toutes les techniques décrites dans ce manuel.
+                Les Fléaux de Grade 1 et au-delà ne peuvent pas être vaincus sans une maîtrise complète
+                de toutes les méthodes décrites dans ces pages. Je l'ai appris à mes dépens.
             </p>
             <div class="doc-warning">
-                ⚠ Ne jamais affronter un Fléau de Grade 1 sans avoir assimilé la
-                totalité de ces archives. J'ai failli ne pas survivre à ma propre ignorance.
+                ⚠ Ne jamais affronter un Fléau de Grade 1 sans avoir assimilé la totalité de ces méthodes.
+                J'ai failli ne pas survivre à ma propre ignorance. Vous ne disposez peut-être pas d'un
+                Professeur Liú pour vous ramener.
             </div>
         </div>
 
@@ -375,8 +397,8 @@ function renderTraining2() {
 <div class="doc-paper">
     <div class="doc-header">
         <div class="doc-classification">DOSSIER CONFIDENTIEL — INITIÉ CONFIRMÉ</div>
-        <div class="doc-title">MANUEL D'ENTRAÎNEMENT</div>
-        <div class="doc-subtitle">Chapitre II — Maîtrise de l'Énergie Occulte</div>
+        <div class="doc-title">MANUEL D'ENTRAÎNEMENT AU PISTOLET OCCULTE</div>
+        <div class="doc-subtitle">Première Méthode — Fondation et Ancrage</div>
         <div class="doc-meta">
             <span>Rédigé par : Insp. H. DELACROIX</span>
             <span>Réf : DEL/1893/MAN/II</span>
@@ -393,18 +415,19 @@ function renderPuzzle1Gate() {
     return `
 <div style="text-align:center; margin-bottom:1.5rem;">
     <p class="doc-p" style="font-style:italic;">
-        Ce chapitre est scellé. Pour accéder à son contenu, vous devez activer le
-        <strong>Sceau de Kanjis</strong> — quatre caractères occultes dissimulés parmi d'autres.
-        Leur ordre est la clé.
+        Cette méthode est scellée par les <strong>Quatre Sceaux du Pistolet Occulte</strong>.
+        Avant de porter l'arme, prouvez que vous en connaissez l'âme : identifiez les quatre
+        kanjis gravés sur son canon, dans leur ordre exact de gravure.
     </p>
     <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
-        Lisez le Journal Intime correspondant pour comprendre leur signification.
+        Ces symboles condensent la nature de l'arme. Si vous avez lu l'introduction avec attention,
+        vous les connaissez déjà. Le Journal Intime confirme leur signification.
     </p>
 </div>
 
 <div class="puzzle-gate">
-    <div class="puzzle-gate-title">LE SCEAU DE KANJIS</div>
-    <div class="puzzle-gate-subtitle">VERROU I — ACTIVATION PAR SÉQUENCE</div>
+    <div class="puzzle-gate-title">LES QUATRE SCEAUX</div>
+    <div class="puzzle-gate-subtitle">VERROU I — IDENTIFICATION PAR SÉQUENCE</div>
     <div class="puzzle-divider"></div>
     ${renderKanjiGrid()}
 </div>`;
@@ -412,48 +435,76 @@ function renderPuzzle1Gate() {
 
 function renderChapter2Content() {
     return `
-<div class="puzzle-solved-banner">✦ SCEAU DE KANJIS — ACTIVÉ ✦ ACCÈS ACCORDÉ ✦</div>
+<div class="puzzle-solved-banner">✦ LES QUATRE SCEAUX — RECONNUS ✦ ACCÈS ACCORDÉ ✦</div>
 <br>
 <div class="doc-section">
-    <div class="doc-section-title">MAÎTRISE DE L'ÉNERGIE OCCULTE — NIVEAU AVANCÉ</div>
+    <div class="doc-section-title">PREMIÈRE MÉTHODE — FONDATION ET ANCRAGE</div>
+    <p class="doc-p" style="font-style:italic; color:var(--ink-light);">
+        Objectif : Trouver son centre de gravité et stabiliser sa posture physique et spirituelle.
+    </p>
     <p class="doc-p">
-        La compétence <em>«&nbsp;Maîtrise de l'Énergie Occulte (Niveau Avancé)&nbsp;»</em>
-        qui figure dans votre dossier de capacités n'est pas une compétence conventionnelle.
-        Elle décrit votre aptitude à imprégner vos munitions d'Énergie Maudite concentrée
-        avant de les charger dans l'arme.
+        Le Pistolet Occulte n'est pas une simple arme à feu. La densité de l'énergie maudite qui
+        imprègne son canon lui confère un poids surnaturel et asymétrique — un poids qui ne s'exerce
+        pas uniquement sur vos muscles, mais sur votre canal énergétique tout entier. Les premiers
+        jours où je le portais, mon bras gauche accusait une fatigue que six heures d'effort intense
+        ne m'auraient pas infligée. Ce n'est pas que l'arme soit lourde au sens ordinaire. C'est
+        qu'elle pèse sur deux plans simultanément.
+    </p>
+    <p class="doc-p">
+        Avant même de penser à tirer, vous devez apprendre à <em>exister</em> avec l'arme. À la porter.
+        À la synchroniser avec votre propre énergie jusqu'à ce qu'elle devienne une extension naturelle
+        de votre bras plutôt qu'un objet étranger qui épuise vos réserves rien qu'en étant tenu.
     </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
-    <div class="doc-section-title">POURQUOI EST-CE NÉCESSAIRE ?</div>
+    <div class="doc-section-title">EXERCICE I — LE PORT STATIQUE</div>
     <p class="doc-p">
-        Le revolver Modèle 1892 que vous avez reçu est, sous son apparence ordinaire,
-        un <strong>conduit</strong> — un canal pour l'Énergie Maudite. Les sceaux gravés
-        sur son canon et son barillet (documentés dans le Journal Intime correspondant)
-        servent d'amplificateurs. Mais un conduit sans matière à conduire est inutile.
+        Tenez l'arme en position de tir. Ne visez rien. Ne pensez pas à tirer. Contentez-vous
+        d'exister avec elle dans votre main pendant des durées progressivement croissantes — cinq
+        minutes d'abord, puis dix, puis une demi-heure, puis une heure complète.
     </p>
     <p class="doc-p">
-        Une balle ordinaire, même tirée par cette arme, n'affectera pas un Fléau.
-        Les Fléaux existent partiellement en dehors du plan physique standard. Seule
-        une matière elle-même imprégnée d'Énergie Maudite peut les atteindre dans
-        les deux plans simultanément.
+        L'objectif n'est pas l'endurance physique : c'est l'accoutumance occulte. Sentez son poids
+        dans le plan physique d'abord, puis — à mesure que votre concentration s'approfondit —
+        sentez l'autre poids. La densité de l'énergie qui imprègne le métal. Elle est là.
+        Vous apprendrez à la percevoir.
     </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
-    <div class="doc-section-title">LE PROCESSUS D'IMPRÉGNATION</div>
-    <p class="doc-p">Avant de charger une balle dans le revolver :</p>
-    <ul class="doc-list">
-        <li>Tenez la balle dans votre paume fermée.</li>
-        <li>Concentrez votre Énergie Maudite — sentez-la monter depuis le centre de votre thorax, descendre dans votre bras, dans votre main.</li>
-        <li>Maintenez la concentration jusqu'à ce que la balle soit perceptiblement plus lourde dans votre main. Ce n'est pas de l'imagination — l'imprégnation augmente réellement la masse occulte de la munition.</li>
-        <li>Chargez la balle ainsi traitée dans le barillet.</li>
-    </ul>
+    <div class="doc-section-title">EXERCICE II — LE PORT EN MOUVEMENT</div>
+    <p class="doc-p">
+        Répétez le port statique, mais en mouvement. Marchez. Courez. Traversez des espaces
+        encombrés. Montez des escaliers. Changez de rythme brusquement. L'objectif est de ne
+        plus laisser le poids de l'arme interrompre votre flux d'Énergie Maudite.
+    </p>
+    <p class="doc-p">
+        Au début, chaque mouvement brusque rompt la circulation énergétique — vous sentirez votre
+        énergie se disperser à chaque changement de tempo. L'entraînement corrige cela
+        progressivement. Quand vous pourrez courir en maintenant un flux continu à travers l'arme,
+        vous êtes prêt pour l'étape suivante.
+    </p>
+</div>
+<hr class="doc-rule">
+<div class="doc-section">
+    <div class="doc-section-title">EXERCICE III — LA SYNCHRONISATION</div>
+    <p class="doc-p">
+        L'étape finale de la Fondation. Tenez l'arme. Concentrez délibérément votre Énergie Maudite
+        dans votre main, jusque dans vos doigts, jusque dans le métal. Sentez les sceaux gravés
+        sur le canon — <strong>死 呪 血 魂</strong> — répondre à votre énergie. Ce n'est pas une
+        métaphore. Les sceaux réagissent au contact énergétique de leur porteur de la même façon
+        qu'une serrure réagit à la bonne clé.
+    </p>
+    <p class="doc-p">
+        Une légère résistance d'abord, puis une ouverture. Quand la synchronisation est réussie,
+        l'arme n'est plus un objet tenu : elle devient une extension de votre bras, aussi naturelle
+        que les doigts qui la saisissent.
+    </p>
     <div class="doc-warning">
-        ⚠ Ce processus consomme de l'Énergie Maudite. Ne préparez pas plus de balles
-        que nécessaire. La dépense inutile d'Énergie Maudite vous affaiblit — et sur
-        le terrain, la faiblesse tue. La limite maximale de munitions simultanées
-        est détaillée dans le Chapitre III.
+        ⚠ Ne sautez aucune des trois étapes. Un tireur dont la synchronisation est incomplète
+        verra son énergie se disperser à chaque tir, réduisant l'efficacité de l'imprégnation
+        à presque rien. La Fondation n'est pas un préambule. Elle est le socle de tout ce qui suit.
     </div>
 </div>
 <div class="diary-final-line">— H. Delacroix, 1893</div>`;
@@ -463,15 +514,15 @@ function renderChapter2Content() {
 
 function renderTraining3() {
     if (!isEnabled('puzzle2')) return renderCorrupted();
-    if (!isSolved('puzzle1'))  return renderLockedChapter('puzzle1', 'Chapitre II', 'training-2');
+    if (!isSolved('puzzle1'))  return renderLockedChapter('puzzle1', 'Méthode I', 'training-2');
 
     const solved = isSolved('puzzle2');
     return `
 <div class="doc-paper">
     <div class="doc-header">
         <div class="doc-classification">DOSSIER CONFIDENTIEL — OPÉRATEUR CONFIRMÉ</div>
-        <div class="doc-title">MANUEL D'ENTRAÎNEMENT</div>
-        <div class="doc-subtitle">Chapitre III — Le Serment d'Entrave</div>
+        <div class="doc-title">MANUEL D'ENTRAÎNEMENT AU PISTOLET OCCULTE</div>
+        <div class="doc-subtitle">Deuxième Méthode — Focalisation et Précision de l'Âme</div>
         <div class="doc-meta">
             <span>Rédigé par : Insp. H. DELACROIX</span>
             <span>Réf : DEL/1893/MAN/III</span>
@@ -487,14 +538,18 @@ function renderPuzzle2Gate() {
     return `
 <div style="text-align:center; margin-bottom:1.5rem;">
     <p class="doc-p" style="font-style:italic;">
-        Ce chapitre est scellé par une <strong>Incantation de Reconnaissance</strong>.
-        Les mots exacts que vous devez prononcer vous ont été transmis à travers
-        les expériences documentées dans le Journal Intime.
+        La précision requiert une clarté d'expression totale. Ce verrou prend la forme d'une
+        <strong>incantation</strong> — les mots exacts qui ancrent le tireur dans l'espace
+        occulte au moment de viser. Prononcer cette phrase sans hésitation ni approximation
+        est en soi un acte de précision.
+    </p>
+    <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
+        Les indices se trouvent dans les entrées du Journal Intime correspondant à cette période.
     </p>
 </div>
 <div class="puzzle-gate">
-    <div class="puzzle-gate-title">L'INCANTATION</div>
-    <div class="puzzle-gate-subtitle">VERROU II — RECONNAISSANCE VOCALE OCCULTE</div>
+    <div class="puzzle-gate-title">L'INCANTATION DE FOCALISATION</div>
+    <div class="puzzle-gate-subtitle">VERROU II — FORMULATION OCCULTE EXACTE</div>
     <div class="puzzle-divider"></div>
     <div class="incantation-wrap">
         <p class="incantation-lore">
@@ -518,63 +573,72 @@ function renderPuzzle2Gate() {
 
 function renderChapter3Content() {
     return `
-<div class="puzzle-solved-banner">✦ INCANTATION — RECONNUE ✦ ACCÈS ACCORDÉ ✦</div>
+<div class="puzzle-solved-banner">✦ INCANTATION DE FOCALISATION — RECONNUE ✦ ACCÈS ACCORDÉ ✦</div>
 <br>
 <div class="doc-section">
-    <div class="doc-section-title">LIMITE DE CHARGEMENT — MAXIMUM 0/2</div>
-    <p class="doc-p">
-        Le barillet du revolver Modèle 1892 standard comporte six chambres.
-        Vous constaterez que cette arme ne peut accepter que <strong>deux (2)</strong>
-        balles imprégnées simultanément. Charger une troisième munition occulte —
-        ou tenter de le faire — aura des conséquences immédiates et catastrophiques.
+    <div class="doc-section-title">DEUXIÈME MÉTHODE — FOCALISATION ET PRÉCISION DE L'ÂME</div>
+    <p class="doc-p" style="font-style:italic; color:var(--ink-light);">
+        Objectif : Atteindre une précision chirurgicale tout en canalisant un flux constant d'énergie.
     </p>
     <p class="doc-p">
-        Ce n'est pas un défaut de fabrication. C'est un
-        <strong>Serment d'Entrave</strong> (<em>縛りの誓い — Shibari no Chikai</em>).
-    </p>
-</div>
-<hr class="doc-rule">
-<div class="doc-section">
-    <div class="doc-section-title">QU'EST-CE QU'UN SERMENT D'ENTRAVE ?</div>
-    <p class="doc-p">
-        Un Serment d'Entrave est un accord occulte par lequel le praticien renonce
-        volontairement à une capacité en échange d'une puissance amplifiée dans
-        un autre domaine. C'est un paradoxe fondamental de l'occultisme pratique :
-        la contrainte crée la puissance.
+        Dans l'exorcisme, viser avec les yeux ne suffit pas. Les Fléaux — et particulièrement les
+        Fléaux de grade élevé — n'occupent pas le plan physique de façon uniforme. Leur masse visible
+        peut n'être qu'une projection, une excroissance superficielle de leur forme réelle. Leur centre
+        vital — le nœud d'énergie qui les maintient en existence — peut se trouver à un emplacement
+        radicalement différent de leur forme apparente.
     </p>
     <p class="doc-p">
-        Dans le cas de ce revolver, le créateur de l'arme a volontairement lié
-        la limite de deux munitions au système d'amplification des sceaux.
-        En acceptant de ne jamais utiliser plus de deux balles simultanément,
-        le circuit d'amplification devient exponentiellement plus puissant
-        pour ces deux balles. <strong>Deux balles imprégnées et amplifiées par
-        le Serment valent largement plus que six balles imprégnées ordinaires.</strong>
+        Une balle tirée à l'aveugle dans la masse d'un Fléau peut le blesser. Elle ne le détruira
+        pas. Pour un résultat décisif, vous devez viser avec votre énergie autant qu'avec votre
+        œil — percevoir la signature occulte de votre cible et y loger votre balle avec une
+        précision millimétrée.
     </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
-    <div class="doc-section-title">CONSÉQUENCES DE LA VIOLATION DU SERMENT</div>
-    <p class="doc-p">Si une troisième balle imprégnée est introduite dans le barillet :</p>
-    <ul class="doc-list">
-        <li>Le circuit d'amplification entre en surcharge immédiate.</li>
-        <li>L'Énergie Maudite cherche une sortie hors du circuit scellé.</li>
-        <li>L'arme et le porteur constituent le chemin de moindre résistance.</li>
-    </ul>
+    <div class="doc-section-title">EXERCICE I — LA PERCEPTION DES SIGNATURES</div>
+    <p class="doc-p">
+        Avant de tirer quoi que ce soit, apprenez à percevoir les signatures énergétiques. Commencez
+        par vous-même — sentez votre propre Énergie Maudite, sa couleur, sa texture, son rythme.
+        Puis exercez-vous à percevoir celle des objets imprégnés autour de vous.
+    </p>
+    <p class="doc-p">
+        L'arme elle-même est un excellent point de départ : ses sceaux émettent une signature
+        distincte que vous apprendrez à reconnaître les yeux fermés. Cette capacité de perception
+        est le préalable indispensable à toute précision occulte.
+    </p>
+</div>
+<hr class="doc-rule">
+<div class="doc-section">
+    <div class="doc-section-title">EXERCICE II — TIR SUR CIBLES PARTIELLEMENT INVISIBLES</div>
+    <p class="doc-p">
+        Le Professeur Liú utilisait des résidus occultes — fragments d'énergie maudite désincarnée —
+        comme cibles d'entraînement. Ils n'ont pas de forme physique stable mais une présence
+        occulte détectable. L'exercice consiste à localiser leur signature dans l'espace, à verrouiller
+        mentalement cette localisation, puis à tirer sur ce point précis en ignorant délibérément
+        les distractions visuelles.
+    </p>
+    <p class="doc-p">
+        À mesure que la perception s'affine, la précision s'améliore de façon spectaculaire.
+        La cible que vous ne voyez pas est celle que vous devez apprendre à ne jamais manquer.
+    </p>
+</div>
+<hr class="doc-rule">
+<div class="doc-section">
+    <div class="doc-section-title">EXERCICE III — LE FLUX CONTINU</div>
+    <p class="doc-p">
+        Le danger dans l'exercice précédent est la discontinuité : certains tireurs réussissent à
+        percevoir la cible <em>ou</em> à maintenir un flux d'énergie stable, mais pas les deux
+        simultanément. L'Exercice III travaille spécifiquement cette séparation — apprendre à mener
+        les deux processus en parallèle, à tenir la perception et le flux dans le même acte mental.
+    </p>
     <div class="doc-warning">
-        ⚠ L'explosion qui en résulte est documentée. Je ne l'ai pas vécue moi-même —
-        j'ai vu ce qu'il en restait. Cela suffit.<br>
-        <strong>Ne chargez jamais plus de deux balles imprégnées. Jamais.</strong>
+        ⚠ C'est l'exercice le plus long et le plus exigeant de cette méthode. En concentrant toute
+        mon attention sur la perception de la cible, j'ai une fois laissé mon canal se fermer
+        partiellement au tir. Le reflux d'énergie a été brutal — douleur aiguë dans le bras, perte
+        de conscience momentanée. Ne forcez pas la perception au point d'oublier le flux.
+        Les deux doivent coexister.
     </div>
-</div>
-<hr class="doc-rule">
-<div class="doc-section">
-    <div class="doc-section-title">LES CHAMBRES RESTANTES</div>
-    <p class="doc-p">
-        Les quatre autres chambres du barillet peuvent contenir des balles ordinaires
-        non imprégnées. Ces balles n'affecteront pas les Fléaux, mais elles restent
-        utiles contre les menaces humaines — car il arrive, hélas, que nos ennemis
-        aient un visage humain. Cela, j'en ai fait l'expérience.
-    </p>
 </div>
 <div class="diary-final-line">— H. Delacroix, 1893</div>`;
 }
@@ -583,15 +647,15 @@ function renderChapter3Content() {
 
 function renderTraining4() {
     if (!isEnabled('puzzle3')) return renderCorrupted();
-    if (!isSolved('puzzle2'))  return renderLockedChapter('puzzle2', 'Chapitre III', 'training-3');
+    if (!isSolved('puzzle2'))  return renderLockedChapter('puzzle2', 'Méthode II', 'training-3');
 
     const solved = isSolved('puzzle3');
     return `
 <div class="doc-paper">
     <div class="doc-header">
         <div class="doc-classification">DOSSIER CONFIDENTIEL — OPÉRATEUR EXPERT</div>
-        <div class="doc-title">MANUEL D'ENTRAÎNEMENT</div>
-        <div class="doc-subtitle">Chapitre IV — Maîtrise des Armes à Distance & Posture du Pendu</div>
+        <div class="doc-title">MANUEL D'ENTRAÎNEMENT AU PISTOLET OCCULTE</div>
+        <div class="doc-subtitle">Troisième Méthode — L'Art du Sang-Froid</div>
         <div class="doc-meta">
             <span>Rédigé par : Insp. H. DELACROIX</span>
             <span>Réf : DEL/1893/MAN/IV</span>
@@ -607,19 +671,25 @@ function renderPuzzle3Gate() {
     return `
 <div style="text-align:center; margin-bottom:1.5rem;">
     <p class="doc-p" style="font-style:italic;">
-        Ce chapitre final est scellé par la <strong>Synchronisation du Barillet</strong>.
-        La séquence exacte vous est connue si vous avez étudié la mécanique
-        de l'arme et les visions documentées dans le Journal Intime.
+        Vous avez atteint la Troisième Méthode. L'art de maîtriser cet artefact repose avant tout
+        sur la lucidité et le sang-froid. Les Fléaux que vous affronterez useront de tout pour
+        vous empêcher de tirer. La peur, le doute, la pitié feront trembler votre canon.
+        <strong>Votre esprit doit être une mer d'huile.</strong>
+    </p>
+    <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
+        Ce verrou mesure l'exactitude de vos mains. La synchronisation du barillet ne tolère
+        aucune hésitation, aucune correction. Un seul faux mouvement révèle ce que cette méthode
+        cherche à éliminer.
     </p>
 </div>
 <div class="puzzle-gate">
     <div class="puzzle-gate-title">LA SYNCHRONISATION DU BARILLET</div>
-    <div class="puzzle-gate-subtitle">VERROU III — ACTIVATION DU CYLINDRE OCCULTE</div>
+    <div class="puzzle-gate-subtitle">VERROU III — MAINS ASSURÉES, SÉQUENCE EXACTE</div>
     <div class="puzzle-divider"></div>
     <div class="pattern-wrap">
         <p class="pattern-lore">
             Six chambres. Six points de puissance.<br>
-            Connectez-les dans le bon ordre pour synchroniser le barillet occulte.
+            Connectez-les dans le bon ordre, sans trembler.
         </p>
         ${renderPatternSVG()}
         <p class="puzzle-attempts" id="pattern-attempts"></p>
@@ -660,52 +730,183 @@ function renderChapter4Content() {
 <div class="puzzle-solved-banner">✦ BARILLET SYNCHRONISÉ ✦ ACCÈS ACCORDÉ ✦</div>
 <br>
 <div class="doc-section">
-    <div class="doc-section-title">MAÎTRISE DES ARMES À DISTANCE & SPÉCIALISATION EN ARME DE POING</div>
+    <div class="doc-section-title">TROISIÈME MÉTHODE — L'ART DU SANG-FROID</div>
+    <p class="doc-p" style="font-style:italic; color:var(--ink-light);">
+        Objectif : Ne jamais hésiter face à l'horreur pure ou au poids de la mort.
+    </p>
     <p class="doc-p">
-        Ces deux compétences sont documentées ensemble parce qu'elles sont indissociables
-        de la technique qui les génère : <strong>La Posture du Pendu</strong> — en référence
-        au Tarot, non à l'instrument de mort, bien que la distinction soit parfois mince
-        dans notre domaine.
+        « Vous avez donc atteint la 3ème méthode d'entraînement. L'art de maîtriser cet artefact
+        repose avant tout sur la lucidité et le sang-froid. Les fléaux terrifiants que vous
+        tenterez d'exorciser, ou bien les maîtres du fléau aux intentions malveillantes, useront
+        de tout pour vous empêcher de tirer la balle fatale. La peur, le doute ou la pitié feront
+        trembler votre canon, et chaque balle tirée peut signifier la fin de votre propre avenir
+        ou de celui de votre cible. C'est pourquoi votre esprit doit être une mer d'huile. »
+    </p>
+    <p class="doc-p" style="text-align:right; font-size:0.85rem; color:var(--ink-light); font-style:italic;">
+        — Professeur Liú, quatrième mois d'entraînement
     </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
-    <div class="doc-section-title">POURQUOI UNE POSTURE EST-ELLE NÉCESSAIRE ?</div>
+    <div class="doc-section-title">EXERCICE I — L'EXPOSITION PROGRESSIVE</div>
     <p class="doc-p">
-        Tirer une balle imprégnée avec l'amplification des sceaux produit un
-        <strong>recul spirituel</strong>. Pas le recul ordinaire d'une arme à feu —
-        celui-là, vous le gérez comme tout tireur entraîné. Non : quand une balle
-        imprégnée quitte le canon, une portion de votre Énergie Maudite est expulsée
-        avec elle. Cette expulsion produit une onde inverse dans votre canal énergétique.
+        On ne forme pas l'impassibilité dans un environnement confortable. Le Professeur Liú m'a
+        soumis à des expositions graduées à des manifestations occultes de faible intensité —
+        présences, échos d'énergie maudite, ombres de Fléaux dissipés — tout en m'imposant de
+        maintenir ma posture de tir et mon flux énergétique constants.
     </p>
-    <p class="doc-p">Sans préparation, cette onde peut :</p>
-    <ul class="doc-list">
-        <li>Désorienter complètement votre perception des deux plans simultanément.</li>
-        <li>Provoquer une fuite incontrôlée d'Énergie Maudite hors du canal.</li>
-        <li>Dans les cas extrêmes, <strong>fracturer le canal énergétique de façon permanente</strong>.</li>
-    </ul>
+    <p class="doc-p">
+        L'objectif n'est pas de ne pas ressentir la peur. L'objectif est de ne pas la laisser se
+        traduire dans le corps. Sentez-la. Enregistrez-la. Et continuez à viser.
+    </p>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
-    <div class="doc-section-title">LA POSTURE DU PENDU — PROTOCOLE DÉTAILLÉ</div>
+    <div class="doc-section-title">EXERCICE II — LE POIDS DES DÉCISIONS FATALES</div>
     <p class="doc-p">
-        Mise au point au cours de ma deuxième année de pratique, après plusieurs
-        fractures de canal douloureuses et instructives :
+        Un aspect que les textes techniques omettent systématiquement : le poids psychologique de
+        tirer sur quelque chose — ou quelqu'un. Les Fléaux qui ont absorbé de la conscience
+        humaine vous regarderont avec des yeux. Certains parleront. Certains supplieront.
     </p>
-    <ul class="doc-list">
-        <li><strong>JAMBES :</strong> Légèrement écartées, genou avant légèrement fléchi. Le poids du corps est porté sur la jambe arrière, permettant un léger balancement vers l'arrière lors du tir pour absorber le recul physique.</li>
-        <li><strong>TORSE :</strong> Légèrement incliné vers l'avant, comme si vous vous penchiez vers l'ombre d'un pendu imaginaire — d'où le nom.</li>
-        <li><strong>BRAS :</strong> Tendu, mais pas rigide. Le coude doit pouvoir absorber le recul. Pensez « canal ouvert », pas « barrage fermé ».</li>
-        <li><strong>ESPRIT :</strong> Au moment du tir, votre esprit doit être à la fois concentré sur la cible et ouvert au flux de l'Énergie qui revient. Ce n'est pas une contradiction — c'est le paradoxe central de toute pratique occulte avancée.</li>
-    </ul>
+    <p class="doc-p">
+        L'entraînement à cet exercice confronte le tireur à des simulations de ces situations,
+        en mesurant sa capacité à maintenir la décision de tir face à des stimuli conçus pour
+        l'ébranler. Ce n'est pas de la cruauté. C'est de la préparation. Sur le terrain,
+        l'hésitation tue.
+    </p>
+</div>
+<hr class="doc-rule">
+<div class="doc-section">
+    <div class="doc-section-title">EXERCICE III — LA MER D'HUILE</div>
+    <p class="doc-p">
+        La technique finale de la Troisième Méthode. Méditation active au bord du tir : tenez
+        l'arme chargée, cible verrouillée, dans un état de conscience élargie où la peur, le
+        doute et le jugement moral sont perçus comme des informations mais ne commandent plus
+        les actions. L'esprit n'est pas vide — il est calme. Pas une absence d'émotion, mais
+        une maîtrise totale de leur traduction corporelle.
+    </p>
+    <p class="doc-p">
+        Quand vous pouvez rester dans cet état pendant trente minutes face à une présence
+        occulte active sans que votre bras ne tremble d'un millimètre, la Troisième Méthode
+        est acquise.
+    </p>
     <div class="doc-warning">
-        ⚠ Cette posture ne s'apprend pas en lisant. Elle s'apprend en tirant,
-        en subissant les conséquences de l'échec, et en ajustant. Les premières
-        fois seront désagréables. Mais vous apprendrez. Ou vous ne tirerez plus jamais.
-        La sélection naturelle, dans notre domaine, est rigoureuse.
+        ⚠ La première fois que j'ai réussi l'Exercice III dans sa totalité, j'ai compris pour
+        la première fois ce que le Professeur Liú entendait par « la mer d'huile ». C'est la
+        chose la plus difficile que j'ai apprise. Et la plus utile.
     </div>
 </div>
 <div class="diary-final-line">— H. Delacroix, Inspecteur Principal, Paris, 1893</div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderTraining5() {
+    if (!isEnabled('puzzle3')) return renderCorrupted();
+    if (!isSolved('puzzle3'))  return renderLockedChapter('puzzle3', 'Méthode III', 'training-4');
+
+    return `
+<div class="doc-paper">
+    <div class="doc-header">
+        <div class="doc-classification">DOSSIER CONFIDENTIEL — MAÎTRE CONFIRMÉ</div>
+        <div class="doc-title">MANUEL D'ENTRAÎNEMENT AU PISTOLET OCCULTE</div>
+        <div class="doc-subtitle">Quatrième Méthode — L'Encaissement du Contrecoup</div>
+        <div class="doc-meta">
+            <span>Rédigé par : Insp. H. DELACROIX</span>
+            <span>Réf : DEL/1893/MAN/V</span>
+        </div>
+    </div>
+
+    <div class="doc-body">
+        <div class="doc-section">
+            <div class="doc-section-title">VOUS RECEVEZ L'ARME</div>
+            <p class="doc-p">
+                Si vous lisez ces lignes, vous avez franchi les trois premiers verrous. Votre
+                Fondation est établie. Votre Précision est formée. Votre Sang-Froid est forgé.
+                L'arme vous est maintenant remise — non plus comme un concept décrit dans ces
+                pages, mais comme un outil concret dans votre main.
+            </p>
+            <p class="doc-p">
+                Prenez-en soin. Ne la confiez à personne qui n'ait pas assimilé l'intégralité
+                de ce manuel. Ne la laissez jamais hors de portée dans un environnement à risque.
+                Et ne tirez jamais plus de deux balles imprégnées simultanément.
+                <strong>Jamais.</strong>
+            </p>
+        </div>
+
+        <hr class="doc-rule">
+
+        <div class="doc-section">
+            <div class="doc-section-title">LA BALLE INCENDIAIRE — AVERTISSEMENT</div>
+            <p class="doc-p">
+                Le Pistolet Occulte recèle une technique destructrice que je n'ai utilisée qu'une
+                seule fois — et qui m'a valu deux jours d'inconscience. Je l'appelle la
+                <strong>Balle Incendiaire</strong> : une concentration maximale d'Énergie Maudite,
+                compressée dans une seule munition jusqu'à saturation complète du circuit des sceaux,
+                puis libérée en une fraction de seconde.
+            </p>
+            <p class="doc-p">
+                L'effet sur la cible est décisif. Sur le tireur, en l'absence de préparation
+                adéquate, il est dévastateur. Le recul généré n'est pas celui d'un pistolet.
+                C'est celui d'un corps qui concentre l'énergie d'un canal occulte complet en un
+                seul point de contact. Un bras non préparé, une épaule non préparée, des côtes
+                non préparées — tout cela se fracasse instantanément.
+            </p>
+            <div class="doc-warning">
+                ⚠ La Balle Incendiaire n'est pas accessible à ce stade de votre entraînement.
+                Ce n'est pas un jugement de vos capacités — c'est une réalité physiologique.
+                Votre corps et votre canal énergétique doivent d'abord être préparés à absorber
+                un impact de cette magnitude. Tentez-la sans cette préparation, et vous n'aurez
+                plus de bras.
+            </div>
+        </div>
+
+        <hr class="doc-rule">
+
+        <div class="doc-section">
+            <div class="doc-section-title">CE QUI VOUS RESTE À APPRENDRE</div>
+            <p class="doc-p">
+                La Quatrième Méthode vise un objectif précis : renforcer votre enveloppe charnelle
+                grâce à l'Énergie Occulte pour qu'elle survive à votre propre attaque. Il s'agit
+                de la répartition d'impact — utiliser l'Énergie Maudite non comme projectile ou
+                amplificateur, mais comme armure momentanée, un amortisseur interne qui redistribue
+                l'onde de choc sur l'ensemble du corps plutôt qu'en un seul point.
+            </p>
+            <ul class="doc-list">
+                <li><strong>Exercice I — L'Amortisseur Passif :</strong> Apprendre à diffuser un impact reçu via l'Énergie Maudite plutôt que de l'absorber purement physiquement. S'exposer à des chocs cinétiques croissants — chutes, arrêts d'objets lourds, assauts d'adversaires puissants. La technique se développe progressivement.</li>
+                <li><strong>Exercice II — L'Armure Momentanée :</strong> Activer délibérément l'amortisseur énergétique en <em>anticipation</em> d'un impact — pas en réaction, mais en préparation. La fenêtre d'activation est brève. Avec l'entraînement, elle devient instinctive.</li>
+                <li><strong>Exercice III — La Répétition du Contrecoup :</strong> Simuler, à fraction de la puissance réelle, le type d'onde de choc que génère la Balle Incendiaire. Habituer le canal énergétique à ce retour brutal sans être déstabilisé. Ce n'est pas confortable. C'est nécessaire.</li>
+            </ul>
+            <div class="doc-warning">
+                ⚠ Cette méthode n'a pas de verrou dans ces pages. Elle se certifie sur le terrain,
+                la première fois que vous tirez une Balle Incendiaire et que votre bras tient.
+                <strong>Prenez votre temps.</strong>
+            </div>
+        </div>
+
+        <hr class="doc-rule">
+
+        <div class="doc-section">
+            <div class="doc-section-title">UN DERNIER MOT</div>
+            <p class="doc-p">
+                Vous êtes arrivé au terme de ce manuel. Ce que vous faites de cette arme et de
+                ces connaissances vous appartient désormais. Je ne peux pas vous guider plus loin.
+            </p>
+            <p class="doc-p">
+                Utilisez l'arme avec discernement. Le Serment d'Entrave n'est pas une limite
+                imposée de l'extérieur — c'est un rappel permanent que la puissance sans
+                contrainte se retourne toujours contre celui qui la détient. Ne le défiez jamais.
+                <strong>C'est la seule leçon qui compte vraiment.</strong>
+            </p>
+            <p class="doc-p">
+                Il y a des choses dans ce monde que personne d'autre que vous ne peut
+                protéger désormais. Faites-le bien.
+            </p>
+        </div>
+
+        <div class="diary-final-line">— H. Delacroix, Inspecteur Principal, Paris, 1893</div>
+    </div>
+</div>`;
 }
 
 // ─── Helpers for locked/corrupted states ──────────────────────────────────────
