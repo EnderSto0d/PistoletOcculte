@@ -307,20 +307,6 @@ function renderTraining1() {
 
         <hr class="doc-rule">
 
-        <div class="doc-section">
-            <div class="doc-section-title">CE QUI VOUS ATTEND</div>
-            <p class="doc-p">
-                L'arme que l'on vous a confiée n'est pas un pistolet ordinaire. Sa nature exige une
-                préparation rigoureuse avant toute utilisation. Ce manuel est divisé en méthodes
-                d'entraînement successives, de la plus fondamentale à la plus avancée.
-            </p>
-            <p class="doc-p">
-                Chaque méthode suppose que la précédente est acquise. Chaque méthode se clôt par
-                une épreuve. Passez l'épreuve, et la méthode suivante vous sera accessible.
-                Échouez, et attendez. Il n'y a pas d'autre voie.
-            </p>
-        </div>
-
         <div class="diary-final-line">— H. Delacroix, Inspecteur Principal, Paris, 1893</div>
     </div>
 </div>`;
