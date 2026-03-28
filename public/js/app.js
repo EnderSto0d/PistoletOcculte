@@ -271,7 +271,7 @@ function renderTraining1() {
     return `
 <div class="doc-paper">
     <div class="doc-header">
-        <div class="doc-classification">DOSSIER CONFIDENTIEL — NIVEAU ABSOLU</div>
+        <div class="doc-classification">ACCÈS RESTREINT — EN ATTENTE DE CONFIRMATION</div>
         <div class="doc-title">MANUEL D'ENTRAÎNEMENT AU PISTOLET OCCULTE</div>
         <div class="doc-subtitle">Introduction — Lettre au Successeur</div>
         <div class="doc-meta">
@@ -285,100 +285,40 @@ function renderTraining1() {
             <div class="doc-section-title">À CELUI OU CELLE QUI TIENT CES PAGES</div>
             <p class="doc-p">
                 Si ce dossier est entre vos mains, c'est que quelqu'un a jugé que vous méritez de connaître
-                la vérité — ou que la vérité, impatiente, a décidé de vous trouver elle-même. Les deux cas
-                sont arrivés à des gens que j'ai connus. Ils n'y étaient pas davantage préparés que vous.
+                la vérité. Ou que la vérité, impatiente, a décidé de vous trouver elle-même.
             </p>
             <p class="doc-p">
-                Je suis Henri Delacroix, Inspecteur Principal de la Brigade Criminelle de Paris. Ou je
-                l'étais. Le temps qu'a mis ce dossier pour vous atteindre m'est inconnu. Ce qui m'est
-                connu, en revanche, c'est ce que vous portez — ou ce que vous vous apprêtez à recevoir —
-                et ce que cela implique.
+                Je suis Henri Delacroix, Inspecteur Principal de la Brigade Criminelle de Paris.
+                Ce manuel documente ce qu'il faut savoir pour maîtriser l'arme qui vous a été — ou
+                vous sera — confiée. Il ne vous sera pas remis d'un coup. Il se déverrouille
+                à mesure que vous progressez.
             </p>
             <p class="doc-p">
-                L'arme que l'on vous a confiée n'est pas un pistolet. C'est un héritage. Le fruit de
-                douze années d'enquête, d'une nuit qui a failli me tuer dans une ruelle du 13ème
-                arrondissement, et de l'enseignement d'un homme que je n'ai jamais entièrement compris
-                mais à qui je dois tout. Ce dossier est la somme de ce que j'ai appris. Il est à vous
-                maintenant.
+                Ce que vous tenez en ce moment n'est que l'entrée. La suite appartient à ceux qui
+                auront prouvé qu'ils méritent de la lire.
             </p>
             <div class="doc-warning">
-                ⚠ Ce que vous apprendrez ici est réel. Ce que vous verrez est réel. La douleur, le danger,
-                le deuil — tout cela est réel. Je ne vous demande pas de m'en remercier. Je vous demande
-                de ne pas gaspiller ce que j'ai mis toute ma vie à comprendre.
+                ⚠ Ce dossier est protégé par des épreuves successives. Chaque section ne s'ouvre
+                qu'une fois la précédente maîtrisée. Ces épreuves ne jugent pas votre courage —
+                elles jugent votre préparation. Un successeur non préparé est plus dangereux
+                qu'un ennemi déclaré.
             </div>
         </div>
 
         <hr class="doc-rule">
 
         <div class="doc-section">
-            <div class="doc-section-title">CE QU'EST LE PISTOLET OCCULTE</div>
+            <div class="doc-section-title">CE QUI VOUS ATTEND</div>
             <p class="doc-p">
-                En apparence, c'est un revolver Modèle 1892 de l'armée française. N'importe quel
-                observateur non initié le tiendrait pour une arme ordinaire — bien entretenue, certes,
-                mais ordinaire. Ce n'est pas le cas.
+                L'arme que l'on vous a confiée n'est pas un pistolet ordinaire. Sa nature exige une
+                préparation rigoureuse avant toute utilisation. Ce manuel est divisé en méthodes
+                d'entraînement successives, de la plus fondamentale à la plus avancée.
             </p>
             <p class="doc-p">
-                Son âme a été forgée à partir du noyau maudit d'un Fléau de Grade 1, vaincu en
-                avril 1893 dans les caves de la Bibliothèque Sainte-Geneviève. Ce noyau — le cœur
-                cristallisé d'une entité qui avait mis vingt-trois personnes dans un état végétatif
-                en deux semaines — a été fondu dans l'acier de Tolède de l'arme. Quatre sceaux y
-                ont été gravés selon les enseignements du Professeur Liú :
-                <strong>死 呪 血 魂</strong>. Mort. Malédiction. Sang. Âme.
+                Chaque méthode suppose que la précédente est acquise. Chaque méthode se clôt par
+                une épreuve. Passez l'épreuve, et la méthode suivante vous sera accessible.
+                Échouez, et attendez. Il n'y a pas d'autre voie.
             </p>
-            <p class="doc-p">
-                Ces sceaux font de l'arme un conduit d'amplification. Une balle ordinaire tirée par
-                ce revolver n'affectera pas plus un Fléau que la mienne ne l'affectait en novembre
-                1892. Mais une balle imprégnée de votre Énergie Maudite, traversant les sceaux au
-                moment du tir, devient quelque chose d'entièrement différent.
-            </p>
-            <p class="doc-p">
-                Il y a un Serment lié à cette arme — une contrainte occulte qui en détermine les
-                limites et en garantit la puissance. Ce Serment est documenté dans la Troisième
-                Méthode. Lisez-la. Comprenez-la. Ne la défiez jamais.
-            </p>
-        </div>
-
-        <hr class="doc-rule">
-
-        <div class="doc-section">
-            <div class="doc-section-title">LES QUATRE MÉTHODES — APERÇU</div>
-            <p class="doc-p">
-                Ce manuel décrit quatre méthodes d'entraînement. Elles sont ordonnées. Elles sont
-                progressives. Chacune suppose que la précédente est acquise.
-            </p>
-            <ul class="doc-list">
-                <li><strong>Première Méthode — Fondation et Ancrage :</strong> Apprendre à exister avec l'arme. Son poids surnaturel exige que vous réorganisiez votre propre énergie autour d'elle avant de penser à tirer.</li>
-                <li><strong>Deuxième Méthode — Focalisation et Précision de l'Âme :</strong> Apprendre à viser avec l'énergie, pas seulement avec les yeux. Une balle occulte n'a de valeur que si elle frappe là où elle doit frapper.</li>
-                <li><strong>Troisième Méthode — L'Art du Sang-Froid :</strong> Forger l'impassibilité nécessaire pour tirer sans hésiter face à ce que vous allez rencontrer. La peur fait trembler le canon. Un canon qui tremble manque sa cible.</li>
-                <li><strong>Quatrième Méthode — L'Encaissement du Contrecoup :</strong> Préparer corps et canal énergétique au recul de la technique ultime. La Balle Incendiaire broierait un bras non préparé.</li>
-            </ul>
-            <p class="doc-p">
-                Chaque méthode se clôt par une épreuve — un verrou qui confirme votre maîtrise avant de
-                vous laisser avancer. Ne tentez pas de forcer ce qui doit venir naturellement. Ces verrous
-                ne jugent pas votre courage. Ils jugent votre compréhension.
-            </p>
-        </div>
-
-        <hr class="doc-rule">
-
-        <div class="doc-section">
-            <div class="doc-section-title">LES FLÉAUX — RAPPEL OPÉRATIONNEL</div>
-            <p class="doc-p">
-                Les entités que vous combattrez sont des manifestations de l'Énergie Maudite accumulée —
-                émotions négatives humaines condensées en formes semi-conscientes, existant simultanément
-                dans le plan physique et dans le plan occulte. Les balles ordinaires les traversent comme
-                à travers du brouillard. Seule une matière elle-même imprégnée d'Énergie Maudite peut les
-                atteindre là où ils existent vraiment.
-            </p>
-            <p class="doc-p">
-                Les Fléaux de Grade 1 et au-delà ne peuvent pas être vaincus sans une maîtrise complète
-                de toutes les méthodes décrites dans ces pages. Je l'ai appris à mes dépens.
-            </p>
-            <div class="doc-warning">
-                ⚠ Ne jamais affronter un Fléau de Grade 1 sans avoir assimilé la totalité de ces méthodes.
-                J'ai failli ne pas survivre à ma propre ignorance. Vous ne disposez peut-être pas d'un
-                Professeur Liú pour vous ramener.
-            </div>
         </div>
 
         <div class="diary-final-line">— H. Delacroix, Inspecteur Principal, Paris, 1893</div>
