@@ -1138,9 +1138,9 @@ function renderJournal3() {
         <div class="diary-date">14 AVRIL 1893 — LA CONFRONTATION</div>
         <p class="diary-line">Je l'ai trouvé au sous-sol de la Bibliothèque Sainte-Geneviève. Comment un Fléau de cette puissance peut-il se trouver dans une bibliothèque universitaire ? Je n'ai pas eu le temps de me poser la question.</p>
         <p class="diary-line">Sa taille fluctuait, s'étendant jusqu'au plafond voûté et se contractant en une masse dense de la taille d'une voiture. Ses appendices traversaient les rayonnages sans les déplacer, purement incorporels dans le plan physique mais d'une matière solide dans le plan occulte.</p>
-        <p class="diary-line">J'ai tiré les deux balles imprégnées. Elles l'ont touché. Elles l'ont blessé — j'ai vu la réaction, une convulsion qui a fait vibrer les murs de la bibliothèque entière. Mais il m'en faudrait cent de plus pour l'arrêter complètement.</p>
+        <p class="diary-line">J'ai tiré cinq balles imprégnées, l'une après l'autre. Chaque impact le secouait — des convulsions qui faisaient vibrer les murs de la bibliothèque entière, une réaction que je n'avais jamais vue sur une créature. Mais même cinq coups directs ne suffisaient pas à l'arrêter.</p>
         <p class="diary-line">Alors j'ai fait quelque chose de stupide.</p>
-        <p class="diary-line">J'ai canalisé <strong>toute</strong> mon Énergie Maudite — absolument tout ce que je possédais — dans une seule balle ordinaire, et je l'ai tirée.</p>
+        <p class="diary-line">J'ai canalisé <strong>toute</strong> mon Énergie Maudite — absolument tout ce que je possédais — dans la dernière balle qui me restait, et je l'ai tirée.</p>
         <p class="diary-line">Je me suis réveillé deux jours plus tard dans ma chambre. Le Professeur Liú était assis à mon chevet. Il avait l'air... presque inquiet.</p>
         <p class="diary-line">« Le Fléau est mort, » a-t-il dit. « Vous aussi, presque. »</p>
     </div>
@@ -1161,7 +1161,7 @@ function renderJournal3() {
         <div class="diary-date">JUIN — JUILLET 1893 — LE PROCESSUS DE FORGE</div>
         <p class="diary-line">Je ne documenterai pas les détails précis du rituel de forge. Certaines connaissances ne doivent pas être consignées librement. Ce que je peux dire :</p>
         <p class="diary-line">Le processus a duré treize jours. Il a nécessité du métal spécifique — de l'acier de Tolède, forgé selon des méthodes anciennes. Il a nécessité du sang — le mien. Il a nécessité la prononciation d'un Serment d'Entrave devant le noyau maudit, qui... réagit aux serments. Il les enregistre. Il les fait respecter.</p>
-        <p class="diary-line">Le Serment que j'ai prononcé : limiter à jamais la capacité de l'arme à deux munitions occultes simultanées, en échange d'une amplification maximale de ces deux munitions. Un serment d'entrave nécessite un témoin occulte. Liú était là.</p>
+        <p class="diary-line">Le Serment que j'ai prononcé : amplifier à son maximum chacune des six munitions que l'arme peut contenir, en échange d'une contrainte absolue gravée dans le métal lui-même — la Balle Incendiaire ne peut être déclenchée qu'une seule fois par chargeur complet, en ultime ressource, au prix de l'intégralité des réserves du canal énergétique. Tenter de la répéter avant rechargement complet est mortel. Un serment d'entrave nécessite un témoin occulte. Liú était là.</p>
     </div>
 
     <div class="diary-separator">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
@@ -1233,7 +1233,7 @@ function renderJournal4() {
         <p class="diary-line">Une dernière chose.</p>
         <p class="diary-line">Ces armes ont été forgées dans la douleur, dans le sang, dans la certitude de ma propre finitude. Elles ont protégé des innocents que la police officielle ne pouvait pas protéger. Elles ont vaincu des entités que la science ne peut même pas admettre.</p>
         <p class="diary-line">Mais elles ont un prix.</p>
-        <p class="diary-line">Le Serment d'Entrave n'est pas juste une limite de munitions. C'est un rappel permanent que le pouvoir sans contrainte se retourne toujours contre celui qui le détient. La limite est la protection, pas l'ennemi.</p>
+        <p class="diary-line">Le Serment d'Entrave n'est pas juste une contrainte sur la Balle Incendiaire. C'est un rappel permanent que le pouvoir sans contrainte se retourne toujours contre celui qui le détient. La limite est la protection, pas l'ennemi.</p>
         <p class="diary-line">Ne cherchez jamais à briser le Serment. Ne le défiez jamais. Acceptez-le. <strong>C'est la seule leçon qui compte vraiment.</strong></p>
         <p class="diary-line">Je ne sais pas ce qui va se passer dans les prochains jours. Je ne sais pas si la silhouette reviendra. Je ne sais pas si je survivrai à ce qui m'attend.</p>
         <p class="diary-line">Mais ces armes, elles, survivront. Et elles attendront.</p>
