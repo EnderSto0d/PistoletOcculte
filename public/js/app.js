@@ -383,6 +383,33 @@ function renderChapter2Content() {
         résistance. Elle ne le surprend pas. Elle le reconnaît.
     </p>
 </div>
+<div class="doc-diagram">
+    <div class="doc-diagram-label">PROGRESSION DE LA FONDATION</div>
+    <svg viewBox="0 0 560 98" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="8" width="163" height="82" rx="1" fill="none" stroke="#8b6840" stroke-width="1.2"/>
+        <line x1="8" y1="26" x2="171" y2="26" stroke="#8b6840" stroke-width="0.7"/>
+        <text x="89" y="21" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#b89450" letter-spacing="1.5">EXERCICE I</text>
+        <text x="89" y="44" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="11" fill="#2a180e">Port Statique</text>
+        <text x="89" y="59" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8.5" fill="#7a5a40" font-style="italic">5 min → 1 heure</text>
+        <text x="89" y="73" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">Ouverture du canal</text>
+        <line x1="173" y1="49" x2="191" y2="49" stroke="#8b6840" stroke-width="1.2"/>
+        <polygon points="191,45.5 199,49 191,52.5" fill="#8b6840"/>
+        <rect x="201" y="8" width="163" height="82" rx="1" fill="none" stroke="#8b6840" stroke-width="1.2"/>
+        <line x1="201" y1="26" x2="364" y2="26" stroke="#8b6840" stroke-width="0.7"/>
+        <text x="282" y="21" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#b89450" letter-spacing="1.5">EXERCICE II</text>
+        <text x="282" y="44" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="11" fill="#2a180e">Port en Mouvement</text>
+        <text x="282" y="59" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8.5" fill="#7a5a40" font-style="italic">Flux ininterrompu</text>
+        <text x="282" y="73" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">Ancrage dynamique</text>
+        <line x1="366" y1="49" x2="384" y2="49" stroke="#8b6840" stroke-width="1.2"/>
+        <polygon points="384,45.5 392,49 384,52.5" fill="#8b6840"/>
+        <rect x="394" y="8" width="158" height="82" rx="1" fill="none" stroke="#b89450" stroke-width="1.8"/>
+        <line x1="394" y1="26" x2="552" y2="26" stroke="#b89450" stroke-width="0.7"/>
+        <text x="473" y="21" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#b89450" letter-spacing="1.5">EXERCICE III</text>
+        <text x="473" y="44" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="11" fill="#2a180e">Synchronisation</text>
+        <text x="473" y="60" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="14" fill="#2a180e">死 呪 血 魂</text>
+        <text x="473" y="78" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">Canal orienté vers l'arme</text>
+    </svg>
+</div>
 <hr class="doc-rule">
 <div class="doc-section">
     <div class="doc-section-title">EXERCICE I — LE PORT STATIQUE</div>
@@ -523,6 +550,26 @@ function renderChapter3Content() {
         pas l'arme — ils en sont le préalable. Ce que vous forgez ici, c'est le canal de perception.
         L'arme ne fait qu'en amplifier la portée le moment venu.
     </p>
+</div>
+<div class="doc-diagram">
+    <div class="doc-diagram-label">ANATOMIE D'UNE CIBLE OCCULTE</div>
+    <svg viewBox="0 0 480 152" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="160" cy="78" rx="128" ry="68" fill="none" stroke="#8b6840" stroke-width="1.2" stroke-dasharray="8 4"/>
+        <text x="255" y="60" font-family="'Playfair Display',Georgia,serif" font-size="12" fill="#8b6840">①</text>
+        <ellipse cx="152" cy="72" rx="82" ry="48" fill="rgba(124,58,237,0.07)" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4 3" opacity="0.9"/>
+        <text x="218" y="72" font-family="'Playfair Display',Georgia,serif" font-size="12" fill="#7c3aed" opacity="0.9">②</text>
+        <circle cx="136" cy="65" r="22" fill="rgba(139,26,26,0.12)" stroke="#8b1a1a" stroke-width="1.4"/>
+        <circle cx="136" cy="65" r="5" fill="#8b1a1a" opacity="0.65"/>
+        <text x="150" y="91" font-family="'Playfair Display',Georgia,serif" font-size="12" fill="#8b1a1a">③</text>
+        <line x1="300" y1="30" x2="300" y2="142" stroke="#8b6840" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.5"/>
+        <text x="310" y="47" font-family="'Playfair Display',Georgia,serif" font-size="9" fill="#8b6840">① Forme physique apparente</text>
+        <text x="310" y="59" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">  Visible à l'œil nu — trompeuse</text>
+        <text x="310" y="80" font-family="'Playfair Display',Georgia,serif" font-size="9" fill="#7c3aed" opacity="0.9">② Signature occulte</text>
+        <text x="310" y="92" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">  Détectable · Position instable</text>
+        <text x="310" y="113" font-family="'Playfair Display',Georgia,serif" font-size="9" fill="#8b1a1a">③ Nœud d'existence</text>
+        <text x="310" y="125" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#8b1a1a" font-style="italic">  Point de tir réel · Variable</text>
+        <text x="160" y="148" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="7.5" fill="#7a5a40" font-style="italic">Fig. II — Anatomie d'une cible occulte (d'après les travaux du Prof. Liú, 1889)</text>
+    </svg>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
@@ -691,6 +738,31 @@ function renderChapter4Content() {
         exercices s'effectuent sans l'arme — ce que vous forgez ici ne dépend pas d'elle.
         Il dépend de vous.
     </p>
+</div>
+<div class="doc-diagram">
+    <div class="doc-diagram-label">PRINCIPE DU SANG-FROID</div>
+    <svg viewBox="0 0 520 105" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="12" width="145" height="80" rx="1" fill="rgba(139,26,26,0.05)" stroke="#8b1a1a" stroke-width="1" stroke-dasharray="5 3"/>
+        <text x="80" y="27" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#8b1a1a" letter-spacing="1">PERTURBATION</text>
+        <path d="M20 53 Q35 42 50 53 Q65 64 80 53 Q95 42 110 53 Q125 64 140 53" fill="none" stroke="#8b1a1a" stroke-width="1.5" opacity="0.7"/>
+        <text x="80" y="74" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#8b1a1a" font-style="italic">Peur · Doute · Pitié</text>
+        <text x="80" y="86" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="7.5" fill="#7a5a40" font-style="italic">(signal enregistré)</text>
+        <line x1="155" y1="52" x2="175" y2="52" stroke="#8b6840" stroke-width="1.2"/>
+        <polygon points="175,48.5 183,52 175,55.5" fill="#8b6840"/>
+        <rect x="185" y="12" width="145" height="80" rx="1" fill="rgba(184,148,80,0.06)" stroke="#b89450" stroke-width="1.5"/>
+        <text x="257" y="27" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#b89450" letter-spacing="1">SANG-FROID</text>
+        <line x1="205" y1="52" x2="310" y2="52" stroke="#b89450" stroke-width="0.8" stroke-dasharray="4 3"/>
+        <circle cx="257" cy="52" r="5" fill="none" stroke="#b89450" stroke-width="1"/>
+        <text x="257" y="70" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#b89450" font-style="italic">Esprit actif,</text>
+        <text x="257" y="82" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#b89450" font-style="italic">mer d'huile</text>
+        <line x1="332" y1="52" x2="352" y2="52" stroke="#8b6840" stroke-width="1.2"/>
+        <polygon points="352,48.5 360,52 352,55.5" fill="#8b6840"/>
+        <rect x="362" y="12" width="145" height="80" rx="1" fill="rgba(22,101,52,0.06)" stroke="#166534" stroke-width="1.5"/>
+        <text x="434" y="27" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#166534" letter-spacing="1">CORPS IMMOBILE</text>
+        <line x1="380" y1="52" x2="490" y2="52" stroke="#166534" stroke-width="2" opacity="0.7"/>
+        <text x="434" y="70" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#166534" font-style="italic">Zéro réaction</text>
+        <text x="434" y="82" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">musculaire</text>
+    </svg>
 </div>
 <hr class="doc-rule">
 <div class="doc-section">
@@ -864,6 +936,37 @@ function renderChapter5Content() {
         amplificateur, mais comme armure momentanée, un amortisseur interne qui redistribue
         l'onde de choc sur l'ensemble du corps plutôt qu'en un seul point.
     </p>
+    <div class="doc-diagram">
+        <div class="doc-diagram-label">REDISTRIBUTION DU CONTRECOUP</div>
+        <svg viewBox="0 0 480 148" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <text x="102" y="15" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="7.5" fill="#8b1a1a" letter-spacing="1">SANS PRÉPARATION</text>
+            <rect x="72" y="24" width="58" height="80" rx="28" fill="none" stroke="#8b6840" stroke-width="1" opacity="0.6"/>
+            <line x1="14" y1="60" x2="68" y2="60" stroke="#8b1a1a" stroke-width="3"/>
+            <polygon points="68,55.5 78,60 68,64.5" fill="#8b1a1a"/>
+            <circle cx="80" cy="60" r="18" fill="rgba(139,26,26,0.18)" stroke="#8b1a1a" stroke-width="1.5"/>
+            <circle cx="80" cy="60" r="4" fill="#8b1a1a" opacity="0.8"/>
+            <line x1="72" y1="52" x2="63" y2="44" stroke="#8b1a1a" stroke-width="1" opacity="0.5"/>
+            <line x1="72" y1="68" x2="63" y2="76" stroke="#8b1a1a" stroke-width="1" opacity="0.5"/>
+            <text x="102" y="122" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#8b1a1a" font-style="italic">Impact concentré</text>
+            <text x="102" y="134" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#8b1a1a" font-style="italic">→ fracture garantie</text>
+            <line x1="220" y1="18" x2="220" y2="140" stroke="#8b6840" stroke-width="0.8" stroke-dasharray="5 4" opacity="0.6"/>
+            <text x="220" y="15" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="10" fill="#8b6840" font-style="italic">vs</text>
+            <text x="358" y="15" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="7.5" fill="#166534" letter-spacing="1">AVEC PRÉPARATION</text>
+            <rect x="328" y="24" width="58" height="80" rx="28" fill="none" stroke="#8b6840" stroke-width="1" opacity="0.6"/>
+            <line x1="270" y1="60" x2="324" y2="60" stroke="#166534" stroke-width="3" opacity="0.8"/>
+            <polygon points="324,55.5 334,60 324,64.5" fill="#166534" opacity="0.8"/>
+            <circle cx="336" cy="60" r="20" fill="rgba(22,101,52,0.1)" stroke="#166534" stroke-width="1" stroke-dasharray="3 2"/>
+            <circle cx="336" cy="60" r="5" fill="#166534" opacity="0.5"/>
+            <line x1="336" y1="40" x2="336" y2="26" stroke="#166534" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+            <line x1="336" y1="80" x2="336" y2="94" stroke="#166534" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+            <line x1="355" y1="52" x2="372" y2="45" stroke="#166534" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+            <line x1="355" y1="68" x2="372" y2="75" stroke="#166534" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+            <line x1="356" y1="60" x2="376" y2="60" stroke="#166534" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+            <text x="358" y="122" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#166534" font-style="italic">Impact redistribué</text>
+            <text x="358" y="134" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#166534" font-style="italic">→ onde absorbée</text>
+            <text x="240" y="147" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="7.5" fill="#7a5a40" font-style="italic">L'Énergie Maudite comme armure momentanée — redistribue, n'oppose pas.</text>
+        </svg>
+    </div>
     <ul class="doc-list">
         <li><strong>Exercice I — L'Amortisseur Passif :</strong> Apprendre à diffuser un impact reçu via l'Énergie Maudite plutôt que de l'absorber purement physiquement. S'exposer à des chocs cinétiques croissants — chutes, arrêts d'objets lourds, assauts d'adversaires puissants. La technique se développe progressivement.</li>
         <li><strong>Exercice II — L'Armure Momentanée :</strong> Activer délibérément l'amortisseur énergétique en <em>anticipation</em> d'un impact — pas en réaction, mais en préparation. La fenêtre d'activation est brève. Avec l'entraînement, elle devient instinctive.</li>
