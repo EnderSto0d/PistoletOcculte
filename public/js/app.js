@@ -1313,23 +1313,43 @@ function renderJournal4() {
         <p class="diary-line">J'ai décidé que je ne pouvais pas garder les revolvers avec moi.</p>
         <p class="diary-line">Ma logique est simple : si quelque chose me cherche, c'est probablement pour s'emparer des armes. Un Fléau de Grade 1 a été vaincu par elles. Un humain assez au fait de notre domaine pour me traquer sait ce qu'elles valent. Je ne peux pas les laisser être prises.</p>
         <p class="diary-line">J'ai pensé à les détruire. J'ai même essayé, brièvement. Le noyau maudit intégré dans le métal les rend pratiquement indestructibles par des moyens conventionnels, et les moyens occultes que je possède ne sont pas suffisants.</p>
-        <p class="diary-line">Donc : je les cache. Séparément. À des endroits que seul quelqu'un de préparé pourrait trouver — quelqu'un qui aurait lu ce manuel jusqu'au bout.</p>
-        <p class="diary-line"><strong>Si vous lisez ces lignes, vous êtes cette personne.</strong></p>
+        <p class="diary-line">Donc : je les sépare. Chacune part dans une direction opposée. L'une vers l'est — vers le pays d'où vient la connaissance qui a rendu leur forge possible. L'autre vers l'ouest — vers un continent assez vaste pour que même ceux qui me traquent aient du mal à la retrouver.</p>
+        <p class="diary-line">Elles portent toutes deux ma marque. Gravée dans la culasse, sobre, définitive : <strong>H. Delacroix</strong>. C'est ainsi qu'on les reconnaîtra. C'est ainsi que vous saurez que ce que vous tenez est réel.</p>
+    </div>
+
+    <div class="diary-separator">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+
+    <div class="diary-entry">
+        <div class="diary-date">16 SEPTEMBRE 1893 — LE PREMIER REVOLVER</div>
+        <p class="diary-line">Pour celle que je destine au Japon, j'ai écrit à Arata Sōjun.</p>
+        <p class="diary-line">Je l'ai rencontré en 1889, lors d'une conférence privée à Lyon — un des rares maîtres des sceaux funéraires japonais à avoir fait le voyage en Europe. Petit homme d'une soixantaine d'années, silencieux, dont les mains dessinaient des formes dans l'air lorsqu'il pensait. Nous avons passé trois nuits à parler, en français approximatif des deux côtés, de la nature des Fléaux, de la différence entre exorcisme occidental et pratique orientale. Il m'a dit que les Japonais travaillent sur ces questions depuis mille ans. Je l'ai cru.</p>
+        <p class="diary-line">Je lui ai expédié le revolver par voie diplomatique, accompagné d'une lettre lui exposant la situation. Sa réponse est arrivée quinze jours plus tard, en trois idéogrammes : <em>je m'en charge</em>.</p>
+        <p class="diary-line">Je sais, par son dernier courrier, qu'il a construit pour elle un tombeau scellé selon les rites de protection anciens — quelque part dans sa région d'origine, dans les terres du nord. Il a lié le verrou à la structure de ce manuel : seul quelqu'un ayant compris les armes jusqu'à leur fondement pourrait en suivre la trace. C'est lui qui a posé cette condition. Pas moi.</p>
+        <p class="diary-line"><strong>Si vous lisez ces lignes, c'est que vous avez retrouvé ce tombeau. C'est que vous êtes cette personne.</strong></p>
+    </div>
+
+    <div class="diary-separator">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+
+    <div class="diary-entry">
+        <div class="diary-date">17 SEPTEMBRE 1893 — LE SECOND REVOLVER</div>
+        <p class="diary-line">L'autre, je l'ai confiée à un intermédiaire qui partait pour les États-Unis. Je ne nommerai pas son nom ici — il opère dans des milieux qu'il vaut mieux ne pas documenter.</p>
+        <p class="diary-line">Ce que je sais : l'arme a traversé l'Atlantique. Elle est arrivée en Amérique. Quelqu'un l'a récupérée là-bas — je ne sais pas qui. Je ne sais pas où elle se trouve à présent. Un pays aussi immense garde ses secrets efficacement.</p>
+        <p class="diary-line">Je n'ai aucune certitude quant à son détenteur actuel, ni quant à sa localisation. Peut-être est-elle en des mains sûres. Peut-être pas. C'est le risque que j'ai accepté en choisissant la distance comme protection.</p>
+        <p class="diary-line">Si vous la cherchez : vous savez désormais ce qu'il faut reconnaître. <strong>H. Delacroix</strong>, gravé dans la culasse. C'est la seule piste que je puisse vous laisser.</p>
     </div>
 
     <div class="diary-separator">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
 
     <div class="diary-entry">
         <div class="diary-date">18 SEPTEMBRE 1893 — 23H47</div>
-        <p class="diary-line">Je mets cette version complète du dossier à l'abri. Les coordonnées des armes elles-mêmes sont encodées dans les pages de garde de ce journal, en utilisant un chiffre que quiconque ayant complété le Manuel d'Entraînement devrait pouvoir reconstituer.</p>
-        <p class="diary-line">Une dernière chose.</p>
+        <p class="diary-line">Je mets cette version complète du dossier à l'abri.</p>
         <p class="diary-line">Ces armes ont été forgées dans la douleur, dans le sang, dans la certitude de ma propre finitude. Elles ont protégé des innocents que la police officielle ne pouvait pas protéger. Elles ont vaincu des entités que la science ne peut même pas admettre.</p>
         <p class="diary-line">Mais elles ont un prix.</p>
         <p class="diary-line">Le Serment d'Entrave n'est pas juste une contrainte sur la Balle Incendiaire. C'est un rappel permanent que le pouvoir sans contrainte se retourne toujours contre celui qui le détient. La limite est la protection, pas l'ennemi.</p>
         <p class="diary-line">Ne cherchez jamais à briser le Serment. Ne le défiez jamais. Acceptez-le. <strong>C'est la seule leçon qui compte vraiment.</strong></p>
         <p class="diary-line">Je ne sais pas ce qui va se passer dans les prochains jours. Je ne sais pas si la silhouette reviendra. Je ne sais pas si je survivrai à ce qui m'attend.</p>
-        <p class="diary-line">Mais ces armes, elles, survivront. Et elles attendront.</p>
-        <p class="diary-line">Elles attendront quelqu'un comme vous.</p>
+        <p class="diary-line">Mais ces armes, elles, survivront. Vous en tenez la preuve entre les mains.</p>
+        <p class="diary-line">Faites bon usage de ce qu'Arata Sōjun a gardé pour vous.</p>
         <div class="diary-final-line">
             — Henri DELACROIX<br>
             Inspecteur Principal, Brigade Criminelle de Paris<br>
