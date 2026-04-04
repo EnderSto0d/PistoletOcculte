@@ -6,13 +6,14 @@
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const state = {
-    user:        null,
-    progress:    [],   // ['puzzle1', 'puzzle2', 'puzzle3']
-    config:      {},
-    attempts:    {},   // { puzzle1: 3, puzzle2: 2, ... } essais restants
-    currentPage: 'training-1',
-    isSuperAdmin: false,
-    playerView:   false, // superadmin toggle: see site as normal player
+    user:          null,
+    progress:      [],   // ['puzzle1', 'puzzle2', 'puzzle3']
+    config:        {},
+    attempts:      {},   // { puzzle1: 3, puzzle2: 2, ... } essais restants
+    currentPage:   'training-1',
+    isSuperAdmin:  false,
+    playerView:    false, // superadmin toggle: see site as normal player
+    hasSecretRole: false, // combinaison secrète trouvée
 };
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -33,7 +34,8 @@ async function init() {
         state.progress    = data.progress    || [];
         state.config      = data.config      || {};
         state.attempts    = data.attempts    || { puzzle1: 3, puzzle2: 3, puzzle3: 3, puzzle4: 3 };
-        state.isSuperAdmin = data.isSuperAdmin === true;
+        state.isSuperAdmin  = data.isSuperAdmin  === true;
+        state.hasSecretRole = data.hasSecretRole === true;
     } catch {
         window.location = '/';
         return;
@@ -62,6 +64,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function isSuperAdminUnlocked() { return state.isSuperAdmin && !state.playerView; }
 function isSolved(puzzleId)  { return isSuperAdminUnlocked() || state.progress.includes(puzzleId); }
+function hasSecretAccess()   { return (state.hasSecretRole || isSuperAdminUnlocked()) && !state.playerView; }
 function isEnabled(puzzleId) {
     if (isSuperAdminUnlocked()) return true;
     const map = { puzzle1: state.config.puzzle1Enabled, puzzle2: state.config.puzzle2Enabled, puzzle3: state.config.puzzle3Enabled, puzzle4: state.config.puzzle4Enabled };
@@ -167,7 +170,7 @@ function renderNav() {
 
     NAV_ITEMS.forEach(item => {
         const li = document.createElement('li');
-        const unlocked = !item.req || isSolved(item.req);
+        const unlocked = !item.req || isSolved(item.req) || (item.section === 'journal' && hasSecretAccess());
         const disabled = item.req && !isEnabled(item.req) && !unlocked;
 
         let cls = 'nav-item';
@@ -1124,7 +1127,8 @@ function renderJournal1() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderJournal2() {
-    if (!isSolved('puzzle1')) return renderJournalLocked('Sceau de Kanjis', 'training-2');
+    if (!isSolved('puzzle1') && !hasSecretAccess()) return renderJournalLocked('Sceau de Kanjis', 'training-2');
+    const kanjisCrypted = !isSolved('puzzle1') && hasSecretAccess();
     return `
 <div class="doc-paper diary-wrap">
     <div class="doc-header">
@@ -1132,7 +1136,7 @@ function renderJournal2() {
         <div class="doc-title">JOURNAL INTIME D'HENRI DELACROIX</div>
         <div class="doc-subtitle">Suite — Décembre 1892 à Mars 1893</div>
         <div class="doc-meta">
-            <span>Déverrouillé par : Le Sceau de Kanjis</span>
+            <span>${isSolved('puzzle1') ? 'Déverrouillé par : Le Sceau de Kanjis' : 'Accès accordé par H. Delacroix'}</span>
             <span>Entrée II — La Forge</span>
         </div>
     </div>
@@ -1181,11 +1185,22 @@ function renderJournal2() {
     <div class="diary-entry">
         <div class="diary-date">5 MARS 1893 — LA GRAVURE</div>
         <p class="diary-line">Trois semaines de préparation. J'ai appris les quatre sceaux du Liú — quatre kanjis qui, gravés dans le métal d'une arme et activés par l'Énergie Maudite de son porteur, créent un circuit d'amplification.</p>
+        ${kanjisCrypted ? `
+        <div class="kanji-redacted-block">
+            <p class="diary-line" style="text-align:center; font-size:1.4rem; letter-spacing:1rem; margin:1rem 0;">
+                <span class="kanji-redact">■</span>&ensp;<span class="kanji-redact">■</span>&ensp;<span class="kanji-redact">■</span>&ensp;<span class="kanji-redact">■</span>
+            </p>
+            <p class="diary-line"><strong class="kanji-redact">■■■</strong> — <span class="kanji-redact-text">████████████████████████████████████████</span></p>
+            <p class="diary-line"><strong class="kanji-redact">■■■</strong> — <span class="kanji-redact-text">████████████████████████████████████████████████████</span></p>
+            <p class="diary-line"><strong class="kanji-redact">■■■</strong> — <span class="kanji-redact-text">████████████████████████████████████████</span></p>
+            <p class="diary-line"><strong class="kanji-redact">■■■</strong> — <span class="kanji-redact-text">████████████████████████████████████████████████████████████</span></p>
+            <p class="kanji-redact-hint">⚑ Ces inscriptions sont sous sceau. Identifiez les Quatre Sceaux dans l'ordre exact pour les révéler.</p>
+        </div>` : `
         <p class="diary-line" style="text-align:center; font-size:1.4rem; letter-spacing:1rem; margin:1rem 0;">死 &nbsp; 呪 &nbsp; 血 &nbsp; 魂</p>
         <p class="diary-line"><strong>死</strong> — La Mort. Le rappel de ce que nous combattons.</p>
         <p class="diary-line"><strong>呪</strong> — La Malédiction. La nature de l'énergie que nous canalisons.</p>
         <p class="diary-line"><strong>血</strong> — Le Sang. Le prix qui a été et sera toujours payé.</p>
-        <p class="diary-line"><strong>魂</strong> — L'Âme. Ce que nous protégeons. Ce pour quoi nous combattons.</p>
+        <p class="diary-line"><strong>魂</strong> — L'Âme. Ce que nous protégeons. Ce pour quoi nous combattons.</p>`}
         <p class="diary-line">L'ordre de gravure est crucial. Pas l'ordre d'activation — l'ordre dans lequel ils ont été tracés pour la première fois conditionne le sens du circuit. J'ai gravé chaque kanji avec un burin que le Professeur Liú avait préparé en le trempant dans une solution dont il n'a pas voulu me donner la composition.</p>
         <p class="diary-line">Ça a pris neuf heures. Ma main tremblait. Je ne voulais pas faire d'erreur.</p>
         <p class="diary-line">Quand j'ai eu fini, et que j'ai tenu le revolver chargé d'une balle imprégnée, j'ai senti quelque chose que je n'avais jamais senti dans une arme : une réciprocité. Comme si l'arme répondait à ma main autant que ma main la tenait.</p>
@@ -1200,7 +1215,7 @@ function renderJournal2() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderJournal3() {
-    if (!isSolved('puzzle2')) return renderJournalLocked('L\'Incantation', 'training-3');
+    if (!isSolved('puzzle2') && !hasSecretAccess()) return renderJournalLocked('L\'Incantation', 'training-3');
     return `
 <div class="doc-paper diary-wrap">
     <div class="doc-header">
@@ -1208,7 +1223,7 @@ function renderJournal3() {
         <div class="doc-title">JOURNAL INTIME D'HENRI DELACROIX</div>
         <div class="doc-subtitle">Suite — Avril à Août 1893</div>
         <div class="doc-meta">
-            <span>Déverrouillé par : L'Incantation</span>
+            <span>${isSolved('puzzle2') ? "Déverrouillé par : L'Incantation" : 'Accès accordé par H. Delacroix'}</span>
             <span>Entrée III — Les Reliques Jumelles</span>
         </div>
     </div>
@@ -1277,7 +1292,7 @@ function renderJournal3() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function renderJournal4() {
-    if (!isSolved('puzzle3')) return renderJournalLocked('La Synchronisation du Barillet', 'training-4');
+    if (!isSolved('puzzle3') && !hasSecretAccess()) return renderJournalLocked('La Synchronisation du Barillet', 'training-4');
     return `
 <div class="doc-paper diary-wrap">
     <div class="doc-header">
@@ -1285,7 +1300,7 @@ function renderJournal4() {
         <div class="doc-title">JOURNAL INTIME D'HENRI DELACROIX</div>
         <div class="doc-subtitle">Entrées finales — Septembre 1893</div>
         <div class="doc-meta">
-            <span>Déverrouillé par : La Synchronisation du Barillet</span>
+            <span>${isSolved('puzzle3') ? 'Déverrouillé par : La Synchronisation du Barillet' : 'Accès accordé par H. Delacroix'}</span>
             <span>Entrée IV — Le Grand Départ</span>
         </div>
     </div>
@@ -1398,6 +1413,7 @@ const ALL_KANJIS = [
     '\u98a8', '\u6c34', '\u571f', '\u6728', '\u91d1',    // 風 水 土 木 金
     '\u8840', '\u547d', '\u529b', '\u5fc3', '\u5149',    // 血 命 力 心 光
     '\u9b42', '\u6708', '\u661f', '\u795e', '\u9b3c',    // 魂 月 星 神 鬼
+    '\u970a', '\u708e', '\u5df1', '\u5e7d', '\u51a5',    // 霊 炎 己 幽 冥
 ];
 
 function renderKanjiGrid() {
@@ -1448,6 +1464,33 @@ function initKanjiPuzzle() {
             grid.style.pointerEvents = 'none';
             progress.textContent = 'Activation en cours...';
 
+            // Vérifier la combinaison secrète en premier (sans consommer d'essai)
+            const secretRes  = await fetch('/api/secret-combo', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ answer: [...sequence] }),
+            });
+            const secretData = await secretRes.json();
+
+            if (secretData.success) {
+                if (!secretData.alreadyUnlocked) {
+                    state.hasSecretRole = true;
+                    renderNav();
+                    await sleep(300);
+                    showDelacroixLetter();
+                }
+                setTimeout(() => {
+                    resetKanjiUI();
+                    sequence = [];
+                    grid.style.pointerEvents = getAttemptsLeft('puzzle1') > 0 ? '' : 'none';
+                    progress.textContent = secretData.alreadyUnlocked
+                        ? 'Lettre de Delacroix déjà reçue. Le verrou reste actif.'
+                        : 'Le journal vous est ouvert. Le verrou reste actif.';
+                }, secretData.alreadyUnlocked ? 0 : 800);
+                return;
+            }
+
+            // Combinaison ordinaire — essai sur puzzle1
             const result = await attemptPuzzle('puzzle1', [...sequence]);
             if (result.success) return;
 
@@ -1475,6 +1518,50 @@ function initKanjiPuzzle() {
         sequence = [];
         progress.textContent = 'Sélection réinitialisée.';
         setTimeout(() => { progress.textContent = 'Sélectionnez les quatre sceaux dans l\'ordre correct...'; }, 800);
+    });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  LETTRE SECRÈTE — H. DELACROIX
+// ═══════════════════════════════════════════════════════════
+
+function showDelacroixLetter() {
+    const existing = document.getElementById('delacroix-letter-overlay');
+    if (existing) { existing.style.display = 'flex'; return; }
+
+    const overlay = document.createElement('div');
+    overlay.id        = 'delacroix-letter-overlay';
+    overlay.className = 'letter-overlay';
+    overlay.innerHTML = `
+<div class="letter-modal">
+    <div class="letter-paper">
+        <div class="letter-wax-seal">✦</div>
+        <div class="letter-date">Paris, le 3 avril 1894</div>
+        <div class="letter-salutation">À celui qui a pris le temps de comprendre,</div>
+        <div class="letter-body-text">
+            <p>Je ne sais pas votre nom. Je ne saurai jamais qui vous êtes, ni à quelle époque vous lirez ces lignes. Mais si vous tenez cette lettre entre les mains, c'est que vous avez fait quelque chose que peu ont la patience ou la lucidité de faire : vous avez lu entre les questions, pas entre les lignes.</p>
+            <p>Vous avez compris ce qu'était la créature — non pas un monstre au sens ordinaire du terme, mais quelque chose qui appartient à un plan que nos mots peinent à nommer. Vous avez compris pourquoi mes balles n'ont servi à rien ce soir-là, et pourquoi ce n'était pas ma lâcheté qui les avait rendues inutiles. Vous avez compris ce qui l'avait repoussée. Et peut-être — je l'espère — vous avez compris d'où venait cette chose en moi, cette énergie que j'ai mis des mois à accepter comme une part de moi-même plutôt que comme une malédiction étrangère.</p>
+            <p>Vous méritez de connaître le reste de mon histoire.</p>
+            <p>Non pas parce que vous avez trouvé la bonne combinaison dans le bon ordre — n'importe quel esprit méthodique peut y parvenir par persévérance. Mais parce que vous avez compris le <em>pourquoi</em>. Et le pourquoi, c'est tout ce qui m'a manqué pendant si longtemps.</p>
+            <p>J'ai écrit ce journal dans l'obscurité, sans être certain que quiconque le lirait jamais. Je l'ai écrit pour moi, d'abord — pour mettre de l'ordre dans quelque chose d'inordonnable. Mais je l'ai laissé ici, accessible, parce qu'une partie de moi espérait qu'un jour quelqu'un comprendrait.</p>
+            <p>Vous avez compris. Alors je vous ouvre ce qui reste.</p>
+            <p>Prenez soin de ce que vous lirez. Ce n'est pas de la fiction. Ce sont les pages d'une vie qui a basculé en quelques secondes dans une ruelle de novembre, et qui ne s'en est jamais tout à fait remise — ni tout à fait regretté d'avoir basculé.</p>
+        </div>
+        <div class="letter-closing">Bonne lecture, ami inconnu. Vous l'avez mérité.</div>
+        <div class="letter-signature">
+            Henri Delacroix
+            <span class="letter-sig-subtitle">Inspecteur. Ou ce qu'il en reste.</span>
+        </div>
+        <button class="letter-close-btn" id="letter-close-btn">Refermer la lettre</button>
+    </div>
+</div>`;
+
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('letter-overlay--visible'));
+
+    overlay.querySelector('#letter-close-btn').addEventListener('click', () => {
+        overlay.classList.remove('letter-overlay--visible');
+        setTimeout(() => { overlay.remove(); navigateTo('journal-2'); }, 600);
     });
 }
 

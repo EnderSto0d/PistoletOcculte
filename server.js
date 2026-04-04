@@ -21,9 +21,11 @@ const SOLUTIONS = {
     puzzle4: 'le corps doit survivre \u00e0 l\'\u00e2me.',
 };
 
-const MAX_ATTEMPTS      = 3;
-const ATTEMPT_WINDOW    = 60 * 60 * 1000; // 1 heure en ms
+const MAX_ATTEMPTS       = 3;
+const ATTEMPT_WINDOW     = 60 * 60 * 1000; // 1 heure en ms
 const SUPERADMIN_ROLE_ID = '1487136331522900020';
+const SECRET_ROLE_ID     = '1490112515827568710';
+const SECRET_SOLUTION    = ['\u9b3c', '\u970a', '\u708e', '\u5df1']; // 鬼 霊 炎 己
 
 // ─── Progress persistence ─────────────────────────────────────────────────────
 
@@ -87,6 +89,19 @@ function recordAttempt(userId, puzzleId) {
 
 function attemptsLeft(userId, puzzleId) {
     return Math.max(0, MAX_ATTEMPTS - getRecentAttempts(userId, puzzleId).length);
+}
+
+function hasSecretCombo(userId) {
+    const all = loadAllProgress();
+    return !!(all[userId]?.secretCombo);
+}
+
+function setSecretCombo(userId) {
+    const all = loadAllProgress();
+    if (!all[userId]) all[userId] = { solvedPuzzles: [] };
+    all[userId].secretCombo  = true;
+    all[userId].lastUpdated  = new Date().toISOString();
+    saveAllProgress(all);
 }
 
 // ─── Discord OAuth2 ───────────────────────────────────────────────────────────
@@ -229,6 +244,7 @@ app.get('/api/user', requireAuth, requireRole, (req, res) => {
         guildNick:     req.user.guildNick,
         discriminator: req.user.discriminator,
         isSuperAdmin,
+        hasSecretRole: hasSecretCombo(req.user.id),
         progress:      progress.solvedPuzzles,
         attempts,
         config: {
@@ -295,6 +311,34 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
     }
 
     return res.json({ success: false, attemptsLeft: left });
+});
+
+// ─── Secret combination ───────────────────────────────────────────────────────
+
+app.post('/api/secret-combo', requireAuth, requireRole, async (req, res) => {
+    const { answer } = req.body;
+
+    const correct = Array.isArray(answer) &&
+                    answer.length === SECRET_SOLUTION.length &&
+                    answer.every((v, i) => String(v) === String(SECRET_SOLUTION[i]));
+
+    if (!correct) return res.json({ success: false });
+
+    if (hasSecretCombo(req.user.id)) {
+        return res.json({ success: true, alreadyUnlocked: true });
+    }
+
+    // Assign Discord role — silently ignore if bot lacks permission
+    try {
+        await axios.put(
+            `https://discord.com/api/v10/guilds/${process.env.GUILD_ID}/members/${req.user.id}/roles/${SECRET_ROLE_ID}`,
+            null,
+            { headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` }, timeout: 5000 }
+        );
+    } catch { /* ignore */ }
+
+    setSecretCombo(req.user.id);
+    return res.json({ success: true });
 });
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
