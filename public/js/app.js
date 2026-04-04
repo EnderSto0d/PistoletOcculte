@@ -1567,7 +1567,7 @@ function showDelacroixLetter() {
             Henri Delacroix
             <span class="letter-sig-subtitle">Inspecteur. Ou ce qu'il en reste.</span>
         </div>
-        <button class="letter-close-btn" id="letter-close-btn">Confirmer mon identité</button>
+        <button class="letter-close-btn" id="letter-close-btn">Accéder au journal</button>
     </div>
 </div>`;
 
@@ -1599,7 +1599,8 @@ function showDelacroixLetter() {
     });
 
     document.getElementById('letter-close-btn').addEventListener('click', () => {
-        window.location.href = '/auth/discord';
+        overlay.classList.remove('letter-overlay--visible');
+        setTimeout(() => { overlay.remove(); navigateTo('journal-2'); }, 600);
     });
 }
 
