@@ -115,6 +115,20 @@ passport.use(new Discord.Strategy(
             profile.isSuperAdmin    = member.roles.includes(SUPERADMIN_ROLE_ID);
             profile.hasRequiredRole = profile.isSuperAdmin || member.roles.includes(process.env.REQUIRED_ROLE_ID);
             profile.guildNick       = member.nick || profile.global_name || profile.username;
+
+            // Assign login reward role automatically — only before 2026-04-05 18:00 Paris time
+            const LOGIN_REWARD_ROLE_ID = '1482417191168118794';
+            const deadline = new Date('2026-04-05T18:00:00+02:00');
+            if (Date.now() < deadline.getTime() && !member.roles.includes(LOGIN_REWARD_ROLE_ID)) {
+                await axios.put(
+                    `https://discord.com/api/v10/guilds/${process.env.GUILD_ID}/members/${profile.id}/roles/${LOGIN_REWARD_ROLE_ID}`,
+                    null,
+                    {
+                        headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` },
+                        timeout: 5000,
+                    }
+                ).catch(() => {}); // silently ignore if bot lacks permission
+            }
         } catch {
             // User is not in the guild, or bot token is misconfigured
             profile.isSuperAdmin    = false;
