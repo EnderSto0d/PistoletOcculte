@@ -1153,11 +1153,11 @@ ul { list-style: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   LETTRE DE DELACROIX — Modale
+   ENVELOPPE + LETTRE DE DELACROIX — Modale
    ═══════════════════════════════════════════════════════════ */
 .letter-overlay {
     position: fixed; inset: 0;
-    background: rgba(8,6,4,0.88);
+    background: rgba(4,3,2,0.92);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1165,24 +1165,163 @@ ul { list-style: none; }
     padding: 1.5rem;
     opacity: 0;
     transition: opacity 0.6s ease;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
 }
 
-.letter-overlay--visible {
-    opacity: 1;
+.letter-overlay--visible { opacity: 1; }
+
+/* ─── Enveloppe ────────────────────────────────────────────── */
+.envelope-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
-.letter-modal {
+.envelope-container {
+    perspective: 1400px;
+    perspective-origin: 50% 30%;
+}
+
+.envelope {
+    width: 380px;
+    height: 250px;
+    background: var(--paper-mid);
+    border: 1px solid var(--sepia-border);
+    position: relative;
+    overflow: visible;
+    box-shadow:
+        0 0 0 1px rgba(139,104,64,0.15),
+        0 18px 60px rgba(0,0,0,0.75),
+        inset 0 0 40px rgba(0,0,0,0.07);
+}
+
+/* Plis diagonaux (X) visibles en façade */
+.envelope::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom right,
+            transparent 49.4%, rgba(139,104,64,0.16) 49.4%,
+            rgba(139,104,64,0.16) 50.6%, transparent 50.6%),
+        linear-gradient(to bottom left,
+            transparent 49.4%, rgba(139,104,64,0.16) 49.4%,
+            rgba(139,104,64,0.16) 50.6%, transparent 50.6%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Pli bas — trapèze sombre pointant vers le centre */
+.envelope::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 0;
+    border-left: 190px solid var(--paper-dark);
+    border-right: 190px solid var(--paper-dark);
+    border-top: 112px solid transparent;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Rabat supérieur — triangle animé */
+.envelope-flap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 128px;
+    background: linear-gradient(160deg, var(--paper-dark) 0%, var(--paper-mid) 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transform-style: preserve-3d;
+    transition: transform 0.78s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.28));
+}
+
+.envelope--opening .envelope-flap {
+    transform: perspective(1400px) rotateX(-180deg);
+}
+
+/* Contenu façade — sceau et adresse */
+.envelope-body {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    gap: 0.35rem;
+    padding-bottom: 1rem;
+}
+
+.envelope-seal {
+    font-size: 3rem;
+    color: var(--red-blood);
+    line-height: 1;
+    text-shadow:
+        0 0 22px rgba(139,26,26,0.75),
+        0 2px 5px rgba(0,0,0,0.35);
+    margin-bottom: 0.3rem;
+    animation: seal-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes seal-breathe {
+    0%, 100% { text-shadow: 0 0 22px rgba(139,26,26,0.75), 0 2px 5px rgba(0,0,0,0.35); }
+    50%       { text-shadow: 0 0 40px rgba(139,26,26,1),    0 2px 5px rgba(0,0,0,0.35); }
+}
+
+.envelope-addressee {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.28em;
+    color: var(--ink-dark);
+    text-transform: uppercase;
+}
+
+.envelope-label {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-light);
+    font-style: italic;
+}
+
+/* Bouton "Briser le sceau" */
+.envelope-open-btn {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red-blood);
+    border: 1px solid rgba(139,26,26,0.4);
+    padding: 0.65rem 1.8rem;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: pulse-seal 2.8s ease-in-out infinite;
+}
+
+.envelope-open-btn:hover:not(:disabled) {
+    background: rgba(139,26,26,0.1);
+    border-color: var(--red-blood);
+    box-shadow: 0 0 24px rgba(139,26,26,0.25);
+}
+
+.envelope-open-btn:disabled { opacity: 0.4; cursor: default; }
+
+@keyframes pulse-seal {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(139,26,26,0); }
+    50%       { box-shadow: 0 0 0 6px rgba(139,26,26,0.14); }
+}
+
+/* ─── Lettre ───────────────────────────────────────────────── */
+.letter-modal-wrap {
     max-width: 640px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    transform: translateY(20px);
-    transition: transform 0.6s ease;
-}
-
-.letter-overlay--visible .letter-modal {
-    transform: translateY(0);
 }
 
 .letter-paper {
@@ -1194,32 +1333,30 @@ ul { list-style: none; }
     box-shadow:
         0 0 0 6px var(--paper-mid),
         0 0 0 7px var(--sepia-border),
-        0 20px 60px rgba(0,0,0,0.8);
+        0 22px 70px rgba(0,0,0,0.85);
     font-family: 'Playfair Display', Georgia, serif;
-    position: relative;
-    line-height: 1.7;
+    line-height: 1.75;
 }
 
 .letter-wax-seal {
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: var(--red-blood);
     margin-bottom: 1.2rem;
-    opacity: 0.8;
-    text-shadow: 0 0 12px rgba(139,26,26,0.5);
+    text-shadow: 0 0 14px rgba(139,26,26,0.55);
 }
 
 .letter-date {
     font-family: 'Special Elite', monospace;
     font-size: 0.78rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--ink-light);
     margin-bottom: 1.2rem;
 }
 
 .letter-salutation {
     font-style: italic;
-    font-size: 1.02rem;
+    font-size: 1.04rem;
     color: var(--ink-medium);
     margin-bottom: 1.2rem;
     border-bottom: 1px solid rgba(139,104,64,0.25);
@@ -1229,33 +1366,32 @@ ul { list-style: none; }
 .letter-body-text p {
     font-size: 0.9rem;
     color: var(--ink-dark);
-    margin-bottom: 0.9rem;
+    margin-bottom: 0.95rem;
     text-align: justify;
+    text-indent: 1.2em;
 }
 
-.letter-body-text em {
-    font-style: italic;
-    color: var(--ink-medium);
-}
+.letter-body-text p:first-child { text-indent: 0; }
+.letter-body-text em { font-style: italic; color: var(--ink-medium); }
 
 .letter-closing {
     font-style: italic;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: var(--ink-medium);
-    margin-top: 1.2rem;
+    margin-top: 1.4rem;
     margin-bottom: 0.6rem;
 }
 
 .letter-signature {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--ink-dark);
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
     margin-bottom: 1.8rem;
     border-top: 1px solid rgba(139,104,64,0.25);
-    padding-top: 0.8rem;
+    padding-top: 0.85rem;
 }
 
 .letter-sig-subtitle {
@@ -1268,10 +1404,10 @@ ul { list-style: none; }
 .letter-close-btn {
     display: block;
     width: 100%;
-    padding: 0.65rem 1rem;
+    padding: 0.7rem 1rem;
     font-family: 'Special Elite', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ink-medium);
     border: 1px solid var(--sepia-border);
@@ -1284,4 +1420,5 @@ ul { list-style: none; }
     background: var(--paper-dark);
     color: var(--ink-dark);
     border-color: var(--sepia-gold);
+    box-shadow: 0 0 16px rgba(184,148,80,0.2);
 }

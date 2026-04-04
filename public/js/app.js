@@ -1533,7 +1533,22 @@ function showDelacroixLetter() {
     overlay.id        = 'delacroix-letter-overlay';
     overlay.className = 'letter-overlay';
     overlay.innerHTML = `
-<div class="letter-modal">
+
+<div class="envelope-scene" id="envelope-scene">
+    <div class="envelope-container">
+        <div class="envelope" id="letter-envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body">
+                <div class="envelope-seal">✦</div>
+                <div class="envelope-addressee">H. Delacroix</div>
+                <div class="envelope-label">Personnel &amp; Confidentiel</div>
+            </div>
+        </div>
+    </div>
+    <button class="envelope-open-btn" id="envelope-open-btn">— Briser le sceau —</button>
+</div>
+
+<div class="letter-modal-wrap" id="letter-modal-wrap" style="display:none; opacity:0;">
     <div class="letter-paper">
         <div class="letter-wax-seal">✦</div>
         <div class="letter-date">Paris, le 3 avril 1894</div>
@@ -1552,16 +1567,39 @@ function showDelacroixLetter() {
             Henri Delacroix
             <span class="letter-sig-subtitle">Inspecteur. Ou ce qu'il en reste.</span>
         </div>
-        <button class="letter-close-btn" id="letter-close-btn">Refermer la lettre</button>
+        <button class="letter-close-btn" id="letter-close-btn">Confirmer mon identité</button>
     </div>
 </div>`;
 
     document.body.appendChild(overlay);
     requestAnimationFrame(() => overlay.classList.add('letter-overlay--visible'));
 
-    overlay.querySelector('#letter-close-btn').addEventListener('click', () => {
-        overlay.classList.remove('letter-overlay--visible');
-        setTimeout(() => { overlay.remove(); navigateTo('journal-2'); }, 600);
+    document.getElementById('envelope-open-btn').addEventListener('click', () => {
+        const btn      = document.getElementById('envelope-open-btn');
+        const envelope = document.getElementById('letter-envelope');
+        const scene    = document.getElementById('envelope-scene');
+        const modal    = document.getElementById('letter-modal-wrap');
+
+        btn.disabled = true;
+        envelope.classList.add('envelope--opening');
+
+        setTimeout(() => {
+            scene.style.transition = 'opacity 0.4s ease';
+            scene.style.opacity    = '0';
+        }, 650);
+
+        setTimeout(() => {
+            scene.style.display    = 'none';
+            modal.style.display    = 'block';
+            requestAnimationFrame(() => {
+                modal.style.transition = 'opacity 0.5s ease';
+                modal.style.opacity    = '1';
+            });
+        }, 1050);
+    });
+
+    document.getElementById('letter-close-btn').addEventListener('click', () => {
+        window.location.href = '/auth/discord';
     });
 }
 
