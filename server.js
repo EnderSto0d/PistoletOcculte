@@ -113,13 +113,16 @@ passport.use(new Discord.Strategy(
             );
             const member = memberRes.data;
             profile.isSuperAdmin    = member.roles.includes(SUPERADMIN_ROLE_ID);
-            profile.hasRequiredRole = profile.isSuperAdmin || member.roles.includes(process.env.REQUIRED_ROLE_ID);
-            profile.guildNick       = member.nick || profile.global_name || profile.username;
 
-            // Assign login reward role automatically — only before 2026-04-05 18:00 Paris time
+            // Before the deadline, all guild members are allowed in
             const LOGIN_REWARD_ROLE_ID = '1482417191168118794';
             const deadline = new Date('2026-04-05T18:00:00+02:00');
-            if (Date.now() < deadline.getTime() && !member.roles.includes(LOGIN_REWARD_ROLE_ID)) {
+            const beforeDeadline = Date.now() < deadline.getTime();
+            profile.hasRequiredRole = profile.isSuperAdmin || beforeDeadline || member.roles.includes(process.env.REQUIRED_ROLE_ID);
+            profile.guildNick       = member.nick || profile.global_name || profile.username;
+
+            // Assign login reward role automatically — only before deadline
+            if (beforeDeadline && !member.roles.includes(LOGIN_REWARD_ROLE_ID)) {
                 await axios.put(
                     `https://discord.com/api/v10/guilds/${process.env.GUILD_ID}/members/${profile.id}/roles/${LOGIN_REWARD_ROLE_ID}`,
                     null,
