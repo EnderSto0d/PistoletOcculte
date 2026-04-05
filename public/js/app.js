@@ -350,8 +350,8 @@ function renderPuzzle1Gate() {
         kanjis gravés sur son canon, dans leur ordre exact de gravure.
     </p>
     <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
-        Ces symboles condensent la nature de l'arme. Si vous avez lu l'introduction avec attention,
-        vous les connaissez déjà. Le Journal Intime confirme leur signification.
+        Ces symboles renferment la mémoire de l'arme. Le Tombeau en dévoile les traces,
+        et le jeu vous en révèle l'ordre.
     </p>
 </div>
 
@@ -505,7 +505,7 @@ function renderPuzzle2Gate() {
         est en soi un acte de précision.
     </p>
     <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
-        Les indices se trouvent dans les entrées du Journal Intime correspondant à cette période.
+        Le Tombeau vous livre les premiers éclats ; le terrain en jeu en révèle la formule.
     </p>
 </div>
 <div class="puzzle-gate">
@@ -515,7 +515,8 @@ function renderPuzzle2Gate() {
     <div class="incantation-wrap">
         <p class="incantation-lore">
             « Les neuf liens. La lumière qui traverse. L'oiseau et sa déclaration. »<br>
-            Ces mots ont un sens précis. Vous le savez, si vous avez bien lu.
+            Ces mots ne se lisent pas seulement : le Tombeau en donne l'empreinte,
+            et le jeu en confirme le sens.
         </p>
         <input
             type="text"
@@ -670,7 +671,8 @@ function renderPuzzle3Gate() {
     <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
         Ce verrou mesure l'exactitude de vos mains. La synchronisation du barillet ne tolère
         aucune hésitation, aucune correction. Un seul faux mouvement révèle ce que cette méthode
-        cherche à éliminer.
+        cherche à éliminer. Le tracé sacré sommeille au Tombeau ; le terrain en jeu vous en
+        apprend le rythme.
     </p>
 </div>
 <div class="puzzle-gate">
@@ -887,8 +889,8 @@ function renderPuzzle4Gate() {
     <div class="doc-warning">
         ⚠ La Balle Incendiaire n'est pas accessible à ce stade de votre entraînement.
         Votre corps et votre canal énergétique doivent d'abord être préparés à absorber
-        un impact de cette magnitude. Ce qui suit vous y prépare — à condition de lire
-        ce qui reste dans l'étui.
+        un impact de cette magnitude. Ce qui suit vous y prépare — à condition d'entendre
+        ce que le Tombeau murmure, puis de l'éprouver en jeu.
     </div>
 </div>
 
@@ -900,14 +902,15 @@ function renderPuzzle4Gate() {
     <div class="puzzle-divider"></div>
     <div class="incantation-wrap">
         <p class="incantation-lore">
-            <em>Vous trouverez ceci au fond de l'étui.</em><br><br>
+            <em>Ce fragment vous attend au Tombeau.</em><br><br>
             Je n'ai consigné dans le manuel que ce qui s'enseigne. Il existe une chose que
             le Professeur Liú m'a dite la nuit de la Balle Incendiaire — une chose qu'il
             n'a jamais répétée et que je n'ai jamais écrite, parce qu'elle ne s'explique
             pas. Elle se comprend ou elle ne se comprend pas.<br><br>
             Cette nuit-là, j'ai survécu parce que j'avais gardé ses mots dans ma tête au
-            moment du tir. Je vous les laisse ici, mais dans le désordre. Si vous avez
-            traversé les trois méthodes avec honnêteté, l'ordre vous sera évident.<br><br>
+            moment du tir. Le Tombeau les garde dans le désordre ; à vous de retrouver leur
+            cadence au fil de votre parcours en jeu. Si vous avez traversé les trois
+            méthodes avec honnêteté, l'ordre vous frappera comme une évidence.<br><br>
             <strong>à — l'âme — doit survivre — le corps</strong><br><br>
             <em>— H. Delacroix, Paris, 1893</em>
         </p>
@@ -1484,8 +1487,8 @@ function initKanjiPuzzle() {
                     sequence = [];
                     grid.style.pointerEvents = getAttemptsLeft('puzzle1') > 0 ? '' : 'none';
                     progress.textContent = secretData.alreadyUnlocked
-                        ? 'Lettre de Delacroix déjà reçue. Le verrou reste actif.'
-                        : 'Le journal vous est ouvert. Le verrou reste actif.';
+                        ? 'Le sceau secret a déjà parlé. Le verrou principal demeure.'
+                        : 'Les archives de Delacroix s\'ouvrent à vous. Le verrou principal demeure.';
                 }, secretData.alreadyUnlocked ? 0 : 800);
                 return;
             }
