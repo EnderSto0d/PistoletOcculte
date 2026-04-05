@@ -349,10 +349,6 @@ function renderPuzzle1Gate() {
         Avant de porter l'arme, prouvez que vous en connaissez l'âme : identifiez les quatre
         kanjis gravés sur son canon, dans leur ordre exact de gravure.
     </p>
-    <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
-        Ces symboles renferment la mémoire de l'arme. Le Tombeau en dévoile les traces,
-        et le jeu vous en révèle l'ordre.
-    </p>
 </div>
 
 <div class="puzzle-gate">
@@ -504,20 +500,12 @@ function renderPuzzle2Gate() {
         occulte au moment de viser. Prononcer cette phrase sans hésitation ni approximation
         est en soi un acte de précision.
     </p>
-    <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
-        Le Tombeau vous livre les premiers éclats ; le terrain en jeu en révèle la formule.
-    </p>
 </div>
 <div class="puzzle-gate">
     <div class="puzzle-gate-title">L'INCANTATION DE FOCALISATION</div>
     <div class="puzzle-gate-subtitle">VERROU II — FORMULATION OCCULTE EXACTE</div>
     <div class="puzzle-divider"></div>
     <div class="incantation-wrap">
-        <p class="incantation-lore">
-            « Les neuf liens. La lumière qui traverse. L'oiseau et sa déclaration. »<br>
-            Ces mots ne se lisent pas seulement : le Tombeau en donne l'empreinte,
-            et le jeu en confirme le sens.
-        </p>
         <input
             type="text"
             id="incantation-input"
@@ -667,12 +655,6 @@ function renderPuzzle3Gate() {
         sur la lucidité et le sang-froid. Les Fléaux que vous affronterez useront de tout pour
         vous empêcher de tirer. La peur, le doute, la pitié feront trembler votre canon.
         <strong>Votre esprit doit être une mer d'huile.</strong>
-    </p>
-    <p class="doc-p" style="color:var(--ink-light); font-size:0.8rem;">
-        Ce verrou mesure l'exactitude de vos mains. La synchronisation du barillet ne tolère
-        aucune hésitation, aucune correction. Un seul faux mouvement révèle ce que cette méthode
-        cherche à éliminer. Le tracé sacré sommeille au Tombeau ; le terrain en jeu vous en
-        apprend le rythme.
     </p>
 </div>
 <div class="puzzle-gate">
@@ -890,7 +872,7 @@ function renderPuzzle4Gate() {
         ⚠ La Balle Incendiaire n'est pas accessible à ce stade de votre entraînement.
         Votre corps et votre canal énergétique doivent d'abord être préparés à absorber
         un impact de cette magnitude. Ce qui suit vous y prépare — à condition d'entendre
-        ce que le Tombeau murmure, puis de l'éprouver en jeu.
+        ce que le Tombeau murmure, puis de l'éprouver en terrain.
     </div>
 </div>
 
@@ -902,23 +884,20 @@ function renderPuzzle4Gate() {
     <div class="puzzle-divider"></div>
     <div class="incantation-wrap">
         <p class="incantation-lore">
-            <em>Ce fragment vous attend au Tombeau.</em><br><br>
             Je n'ai consigné dans le manuel que ce qui s'enseigne. Il existe une chose que
             le Professeur Liú m'a dite la nuit de la Balle Incendiaire — une chose qu'il
             n'a jamais répétée et que je n'ai jamais écrite, parce qu'elle ne s'explique
             pas. Elle se comprend ou elle ne se comprend pas.<br><br>
             Cette nuit-là, j'ai survécu parce que j'avais gardé ses mots dans ma tête au
-            moment du tir. Le Tombeau les garde dans le désordre ; à vous de retrouver leur
-            cadence au fil de votre parcours en jeu. Si vous avez traversé les trois
-            méthodes avec honnêteté, l'ordre vous frappera comme une évidence.<br><br>
-            <strong>à — l'âme — doit survivre — le corps</strong><br><br>
+            moment du tir. Si vous avez traversé les trois méthodes avec honnêteté,
+            vous savez ce que ces mots signifient.<br><br>
             <em>— H. Delacroix, Paris, 1893</em>
         </p>
         <input
             type="text"
             id="letter-input"
             class="incantation-input"
-            placeholder="Remettez les mots dans l'ordre..."
+            placeholder="Saisissez les mots du Professeur Liú..."
             autocomplete="off"
             spellcheck="false"
         />
