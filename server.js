@@ -25,6 +25,7 @@ const MAX_ATTEMPTS       = 3;
 const ATTEMPT_WINDOW     = 60 * 60 * 1000; // 1 heure en ms
 const SUPERADMIN_ROLE_ID = '1487136331522900020';
 const SECRET_ROLE_ID     = '1490112515827568710';
+const ENIGMA_FOUND_CHANNEL_ID = process.env.ENIGMA_FOUND_CHANNEL_ID || '1490141439194173541';
 const SECRET_SOLUTION    = ['\u9b3c', '\u970a', '\u708e', '\u5df1']; // 鬼 霊 炎 己
 
 // ─── Progress persistence ─────────────────────────────────────────────────────
@@ -102,6 +103,32 @@ function setSecretCombo(userId) {
     all[userId].secretCombo  = true;
     all[userId].lastUpdated  = new Date().toISOString();
     saveAllProgress(all);
+}
+
+async function notifyEnigmaSolved({ userId, guildNick, username, puzzleId }) {
+    const puzzleLabels = {
+        puzzle1: 'Énigme 1',
+        puzzle2: 'Énigme 2',
+        puzzle3: 'Énigme 3',
+        puzzle4: 'Énigme 4',
+    };
+
+    const displayName = guildNick || username || `Utilisateur ${userId}`;
+    const puzzleLabel = puzzleLabels[puzzleId] || puzzleId;
+    const content = `✅ ${displayName} (<@${userId}>) a trouvé ${puzzleLabel}.`;
+
+    try {
+        await axios.post(
+            `https://discord.com/api/v10/channels/${ENIGMA_FOUND_CHANNEL_ID}/messages`,
+            { content },
+            {
+                headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` },
+                timeout: 5000,
+            }
+        );
+    } catch (err) {
+        console.error('Discord notification failed for solved enigma:', err?.response?.status || err.message);
+    }
 }
 
 // ─── Discord OAuth2 ───────────────────────────────────────────────────────────
@@ -307,6 +334,12 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
 
     if (correct) {
         const updated = addSolvedPuzzle(req.user.id, puzzleId);
+        notifyEnigmaSolved({
+            userId: req.user.id,
+            guildNick: req.user.guildNick,
+            username: req.user.username,
+            puzzleId,
+        });
         return res.json({ success: true, progress: updated.solvedPuzzles, attemptsLeft: left });
     }
 

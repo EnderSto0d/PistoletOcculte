@@ -43,6 +43,7 @@ cp .env.example .env
 | `DISCORD_CLIENT_SECRET` | Your app's Client Secret (OAuth2 tab) |
 | `DISCORD_CALLBACK_URL` | `http://localhost:3000/auth/discord/callback` |
 | `DISCORD_BOT_TOKEN` | Your bot's token (Bot tab) |
+| `ENIGMA_FOUND_CHANNEL_ID` | Optional channel ID for solved enigma notifications (defaults to `1490141439194173541`) |
 | `GUILD_ID` | Your Discord server ID (right-click server → Copy ID) |
 | `REQUIRED_ROLE_ID` | The role ID required to access content |
 | `SESSION_SECRET` | Any long random string |
