@@ -7,6 +7,7 @@ const Discord   = require('passport-discord');
 const axios     = require('axios');
 const fs        = require('fs');
 const path      = require('path');
+const content   = require('./content');
 
 const app        = express();
 const PORT       = process.env.PORT || 3000;
@@ -200,6 +201,16 @@ passport.use(new Discord.Strategy(
 // ─── Middleware ───────────────────────────────────────────────────────────────
 
 app.set('trust proxy', 1);
+
+// ─── Security headers ─────────────────────────────────────────────────────────
+app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+    next();
+});
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -391,6 +402,47 @@ app.post('/api/secret-combo', requireAuth, requireRole, async (req, res) => {
         puzzleId: 'secretCombo',
     });
     return res.json({ success: true });
+});
+
+// ─── Protected content API ────────────────────────────────────────────────────
+
+app.get('/api/content/:pageId', requireAuth, requireRole, (req, res) => {
+    const userId     = req.user.id;
+    const isSuperAdmin = req.user.isSuperAdmin === true;
+    const progress   = getUserProgress(userId).solvedPuzzles;
+    const secret     = hasSecretCombo(userId);
+
+    const { pageId } = req.params;
+
+    // Access rules — superadmin bypasses all puzzle requirements
+    const ACCESS = {
+        chapter2: () => isSuperAdmin || progress.includes('puzzle1'),
+        chapter3: () => isSuperAdmin || progress.includes('puzzle2'),
+        chapter4: () => isSuperAdmin || progress.includes('puzzle3'),
+        chapter5: () => isSuperAdmin || progress.includes('puzzle4'),
+        journal2: () => isSuperAdmin || progress.includes('puzzle1') || secret,
+        journal3: () => isSuperAdmin || progress.includes('puzzle2') || secret,
+        journal4: () => isSuperAdmin || progress.includes('puzzle3') || secret,
+    };
+
+    const check = ACCESS[pageId];
+    if (!check) return res.status(404).json({ error: 'Page inconnue.' });
+    if (!check()) return res.status(403).json({ error: 'Accès refusé.' });
+
+    const HTML_FN = {
+        chapter2: () => content.chapter2(),
+        chapter3: () => content.chapter3(),
+        chapter4: () => content.chapter4(),
+        chapter5: () => content.chapter5(),
+        journal2: () => content.journal2({
+            isSolvedPuzzle1: progress.includes('puzzle1'),
+            hasSecret: secret || isSuperAdmin,
+        }),
+        journal3: () => content.journal3({ isSolvedPuzzle2: progress.includes('puzzle2') }),
+        journal4: () => content.journal4({ isSolvedPuzzle3: progress.includes('puzzle3') }),
+    };
+
+    res.json({ html: HTML_FN[pageId]() });
 });
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
