@@ -121,6 +121,7 @@ async function notifyEnigmaSolved({ userId, guildNick, username, puzzleId }) {
         puzzle2: 'Énigme 2',
         puzzle3: 'Énigme 3',
         puzzle4: 'Énigme 4',
+        secretCombo: 'la combinaison secrète (résolution easter egg)',
     };
 
     const displayName = guildNick || username || `Utilisateur ${userId}`;
@@ -383,6 +384,12 @@ app.post('/api/secret-combo', requireAuth, requireRole, async (req, res) => {
     } catch { /* ignore */ }
 
     setSecretCombo(req.user.id);
+    await notifyEnigmaSolved({
+        userId: req.user.id,
+        guildNick: req.user.guildNick,
+        username: req.user.username,
+        puzzleId: 'secretCombo',
+    });
     return res.json({ success: true });
 });
 
