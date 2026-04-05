@@ -106,6 +106,16 @@ function setSecretCombo(userId) {
 }
 
 async function notifyEnigmaSolved({ userId, guildNick, username, puzzleId }) {
+    if (!process.env.DISCORD_BOT_TOKEN) {
+        console.error('Discord notification skipped: DISCORD_BOT_TOKEN is missing.');
+        return;
+    }
+
+    if (!ENIGMA_FOUND_CHANNEL_ID) {
+        console.error('Discord notification skipped: ENIGMA_FOUND_CHANNEL_ID is missing.');
+        return;
+    }
+
     const puzzleLabels = {
         puzzle1: 'Énigme 1',
         puzzle2: 'Énigme 2',
@@ -127,7 +137,9 @@ async function notifyEnigmaSolved({ userId, guildNick, username, puzzleId }) {
             }
         );
     } catch (err) {
-        console.error('Discord notification failed for solved enigma:', err?.response?.status || err.message);
+        const status = err?.response?.status || 'n/a';
+        const reason = err?.response?.data?.message || err?.response?.data?.error || err?.message || 'unknown error';
+        console.error(`Discord notification failed for solved enigma (channel ${ENIGMA_FOUND_CHANNEL_ID}, user ${userId}): status=${status}, reason=${reason}`);
     }
 }
 
@@ -283,7 +295,7 @@ app.get('/api/user', requireAuth, requireRole, (req, res) => {
     });
 });
 
-app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
+app.post('/api/attempt', requireAuth, requireRole, async (req, res) => {
     const { puzzleId, answer } = req.body;
     const valid = ['puzzle1', 'puzzle2', 'puzzle3', 'puzzle4'];
 
@@ -334,7 +346,7 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
 
     if (correct) {
         const updated = addSolvedPuzzle(req.user.id, puzzleId);
-        notifyEnigmaSolved({
+        await notifyEnigmaSolved({
             userId: req.user.id,
             guildNick: req.user.guildNick,
             username: req.user.username,
