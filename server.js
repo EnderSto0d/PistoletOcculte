@@ -12,20 +12,43 @@ const app        = express();
 const PORT       = process.env.PORT || 3000;
 const gameConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf-8'));
 
-// ─── Solutions (server-side only — never sent to client) ──────────────────────
-
-const SOLUTIONS = {
-    puzzle1: ['\u6b7b', '\u546a', '\u8840', '\u9b42'], // 死 呪 血 魂
-    puzzle2: 'neuf cordes. lumi\u00e8re polaris\u00e9e. corbeau et d\u00e9claration.',
-    puzzle3: [1, 4, 2, 5, 3, 6],
-    puzzle4: 'le corps doit survivre \u00e0 l\'\u00e2me.',
-};
-
 const MAX_ATTEMPTS       = 3;
 const ATTEMPT_WINDOW     = 60 * 60 * 1000; // 1 heure en ms
 const SUPERADMIN_ROLE_ID = '1487136331522900020';
 const SECRET_ROLE_ID     = '1490112515827568710';
-const SECRET_SOLUTION    = ['\u9b3c', '\u970a', '\u708e', '\u5df1']; // 鬼 霊 炎 己
+
+function readRequiredEnv(name) {
+    const value = process.env[name];
+    if (!value || !value.trim()) {
+        throw new Error(`Missing required environment variable: ${name}`);
+    }
+    return value.trim();
+}
+
+function readDelimitedEnv(name, expectedLength) {
+    const values = readRequiredEnv(name)
+        .split('|')
+        .map(value => value.trim());
+
+    if (values.some(value => value.length === 0)) {
+        throw new Error(`Invalid empty entry in environment variable: ${name}`);
+    }
+
+    if (typeof expectedLength === 'number' && values.length !== expectedLength) {
+        throw new Error(`Environment variable ${name} must contain exactly ${expectedLength} values`);
+    }
+
+    return values;
+}
+
+const SOLUTIONS = {
+    puzzle1: readDelimitedEnv('PUZZLE_1_SOLUTION', 4),
+    puzzle2: readRequiredEnv('PUZZLE_2_SOLUTION'),
+    puzzle3: readDelimitedEnv('PUZZLE_3_SOLUTION', 6),
+    puzzle4: readRequiredEnv('PUZZLE_4_SOLUTION'),
+};
+
+const SECRET_SOLUTION = readDelimitedEnv('SECRET_COMBO_SOLUTION', 4);
 
 // ─── Progress persistence ─────────────────────────────────────────────────────
 
@@ -104,6 +127,16 @@ function setSecretCombo(userId) {
     saveAllProgress(all);
 }
 
+function renderJournal2RevealHtml() {
+    const [firstKanji, secondKanji, thirdKanji, fourthKanji] = SOLUTIONS.puzzle1;
+    return `
+        <p class="diary-line" style="text-align:center; font-size:1.4rem; letter-spacing:1rem; margin:1rem 0;">${firstKanji} &nbsp; ${secondKanji} &nbsp; ${thirdKanji} &nbsp; ${fourthKanji}</p>
+        <p class="diary-line"><strong>${firstKanji}</strong> — La Mort. Le rappel de ce que nous combattons.</p>
+        <p class="diary-line"><strong>${secondKanji}</strong> — La Malédiction. La nature de l'énergie que nous canalisons.</p>
+        <p class="diary-line"><strong>${thirdKanji}</strong> — Le Sang. Le prix qui a été et sera toujours payé.</p>
+        <p class="diary-line"><strong>${fourthKanji}</strong> — L'Âme. Ce que nous protégeons. Ce pour quoi nous combattons.</p>`;
+}
+
 // ─── Discord OAuth2 ───────────────────────────────────────────────────────────
 
 passport.serializeUser((user, done) => done(null, user));
@@ -161,7 +194,20 @@ passport.use(new Discord.Strategy(
 
 app.set('trust proxy', 1);
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+function setNoStoreHeaders(res) {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+}
+
+app.use((req, res, next) => {
+    res.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-Frame-Options', 'DENY');
+    res.set('Referrer-Policy', 'no-referrer');
+    next();
+});
 
 app.use(cookieSession({
     name:    'session',
@@ -181,6 +227,22 @@ app.use((req, res, next) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/api', (req, res, next) => {
+    setNoStoreHeaders(res);
+    next();
+});
+
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain').send('User-agent: *\nDisallow: /');
+});
+
+app.get('/js/app.js', requireAuth, requireRole, (req, res, next) => {
+    setNoStoreHeaders(res);
+    next();
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── Auth guards ──────────────────────────────────────────────────────────────
 
@@ -216,10 +278,12 @@ app.get('/auth/discord/callback',
 );
 
 app.get('/denied', (req, res) => {
+    setNoStoreHeaders(res);
     res.sendFile(path.join(__dirname, 'views', 'denied.html'));
 });
 
 app.get('/dashboard', requireAuth, requireRole, (req, res) => {
+    setNoStoreHeaders(res);
     res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
@@ -245,6 +309,7 @@ app.get('/api/user', requireAuth, requireRole, (req, res) => {
         discriminator: req.user.discriminator,
         isSuperAdmin,
         hasSecretRole: hasSecretCombo(req.user.id),
+        journal2RevealHtml: progress.solvedPuzzles.includes('puzzle1') ? renderJournal2RevealHtml() : null,
         progress:      progress.solvedPuzzles,
         attempts,
         config: {
@@ -277,7 +342,9 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
     // Déjà résolu
     const progress = getUserProgress(req.user.id);
     if (progress.solvedPuzzles.includes(puzzleId)) {
-        return res.json({ success: true, alreadySolved: true, progress: progress.solvedPuzzles });
+        const response = { success: true, alreadySolved: true, progress: progress.solvedPuzzles };
+        if (puzzleId === 'puzzle1') response.journal2RevealHtml = renderJournal2RevealHtml();
+        return res.json(response);
     }
 
     // Rate limit (superadmin bypass)
@@ -307,7 +374,9 @@ app.post('/api/attempt', requireAuth, requireRole, (req, res) => {
 
     if (correct) {
         const updated = addSolvedPuzzle(req.user.id, puzzleId);
-        return res.json({ success: true, progress: updated.solvedPuzzles, attemptsLeft: left });
+        const response = { success: true, progress: updated.solvedPuzzles, attemptsLeft: left };
+        if (puzzleId === 'puzzle1') response.journal2RevealHtml = renderJournal2RevealHtml();
+        return res.json(response);
     }
 
     return res.json({ success: false, attemptsLeft: left });

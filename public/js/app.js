@@ -257,6 +257,9 @@ async function attemptPuzzle(puzzleId, answer) {
     if (data.success && !data.alreadySolved) {
         state.progress             = data.progress;
         state.attempts[puzzleId]   = data.attemptsLeft ?? 0;
+        if (data.journal2RevealHtml) {
+            state.user.journal2RevealHtml = data.journal2RevealHtml;
+        }
         flashSuccess();
         await sleep(800);
         renderNav();
@@ -409,7 +412,7 @@ function renderChapter2Content() {
         <line x1="394" y1="26" x2="552" y2="26" stroke="#b89450" stroke-width="0.7"/>
         <text x="473" y="21" text-anchor="middle" font-family="'Cinzel',Georgia,serif" font-size="8" fill="#b89450" letter-spacing="1.5">EXERCICE III</text>
         <text x="473" y="44" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="11" fill="#2a180e">Synchronisation</text>
-        <text x="473" y="60" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="14" fill="#2a180e">死 呪 血 魂</text>
+        <text x="473" y="60" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="14" fill="#2a180e">SCEAUX FONDATEURS</text>
         <text x="473" y="78" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="8" fill="#7a5a40" font-style="italic">Canal orienté vers l'arme</text>
     </svg>
 </div>
@@ -452,7 +455,7 @@ function renderChapter2Content() {
     <div class="doc-section-title">EXERCICE III — LA SYNCHRONISATION</div>
     <p class="doc-p">
         L'étape finale de la Fondation. Ouvrez votre main dominante, doigts légèrement écartés.
-        Visualisez les quatre sceaux — <strong>死 呪 血 魂</strong> — gravés dans l'air devant vous,
+        Visualisez les quatre sceaux fondateurs gravés dans l'air devant vous,
         à l'endroit exact où reposerait le canon. Concentrez délibérément votre Énergie Maudite
         dans votre paume, jusque dans vos doigts, vers ce point précis. Projetez-la.
     </p>
@@ -901,14 +904,12 @@ function renderPuzzle4Gate() {
     <div class="incantation-wrap">
         <p class="incantation-lore">
             <em>Vous trouverez ceci au fond de l'étui.</em><br><br>
-            Je n'ai consigné dans le manuel que ce qui s'enseigne. Il existe une chose que
-            le Professeur Liú m'a dite la nuit de la Balle Incendiaire — une chose qu'il
-            n'a jamais répétée et que je n'ai jamais écrite, parce qu'elle ne s'explique
-            pas. Elle se comprend ou elle ne se comprend pas.<br><br>
-            Cette nuit-là, j'ai survécu parce que j'avais gardé ses mots dans ma tête au
-            moment du tir. Je vous les laisse ici, mais dans le désordre. Si vous avez
-            traversé les trois méthodes avec honnêteté, l'ordre vous sera évident.<br><br>
-            <strong>à — l'âme — doit survivre — le corps</strong><br><br>
+            Je n'ai consigné dans le manuel que ce qui s'enseigne. Il existe une phrase que
+            le Professeur Liú m'a dite la nuit de la Balle Incendiaire — une phrase qui ne
+            supporte ni la simplification ni l'approximation.<br><br>
+            Cette nuit-là, j'ai survécu parce que j'avais retenu son sens au moment du tir.
+            Je vous laisse seulement l'indication: elle parle du corps, de l'âme, et de ce
+            que la préparation permet d'encaisser.<br><br>
             <em>— H. Delacroix, Paris, 1893</em>
         </p>
         <input
@@ -1129,6 +1130,8 @@ function renderJournal1() {
 function renderJournal2() {
     if (!isSolved('puzzle1') && !hasSecretAccess()) return renderJournalLocked('Sceau de Kanjis', 'training-2');
     const kanjisCrypted = !isSolved('puzzle1') && hasSecretAccess();
+    const journal2RevealHtml = state.user?.journal2RevealHtml || `
+        <p class="diary-line" style="text-align:center; font-size:1rem; font-style:italic; opacity:0.75;">Les sceaux se dévoilent une fois le verrou franchi.</p>`;
     return `
 <div class="doc-paper diary-wrap">
     <div class="doc-header">
@@ -1196,11 +1199,7 @@ function renderJournal2() {
             <p class="diary-line"><strong class="kanji-redact">■■■</strong> — <span class="kanji-redact-text">████████████████████████████████████████████████████████████</span></p>
             <p class="kanji-redact-hint">⚑ Ces inscriptions sont sous sceau. Identifiez les Quatre Sceaux dans l'ordre exact pour les révéler.</p>
         </div>` : `
-        <p class="diary-line" style="text-align:center; font-size:1.4rem; letter-spacing:1rem; margin:1rem 0;">死 &nbsp; 呪 &nbsp; 血 &nbsp; 魂</p>
-        <p class="diary-line"><strong>死</strong> — La Mort. Le rappel de ce que nous combattons.</p>
-        <p class="diary-line"><strong>呪</strong> — La Malédiction. La nature de l'énergie que nous canalisons.</p>
-        <p class="diary-line"><strong>血</strong> — Le Sang. Le prix qui a été et sera toujours payé.</p>
-        <p class="diary-line"><strong>魂</strong> — L'Âme. Ce que nous protégeons. Ce pour quoi nous combattons.</p>`}
+        ${journal2RevealHtml}`}
         <p class="diary-line">L'ordre de gravure est crucial. Pas l'ordre d'activation — l'ordre dans lequel ils ont été tracés pour la première fois conditionne le sens du circuit. J'ai gravé chaque kanji avec un burin que le Professeur Liú avait préparé en le trempant dans une solution dont il n'a pas voulu me donner la composition.</p>
         <p class="diary-line">Ça a pris neuf heures. Ma main tremblait. Je ne voulais pas faire d'erreur.</p>
         <p class="diary-line">Quand j'ai eu fini, et que j'ai tenu le revolver chargé d'une balle imprégnée, j'ai senti quelque chose que je n'avais jamais senti dans une arme : une réciprocité. Comme si l'arme répondait à ma main autant que ma main la tenait.</p>

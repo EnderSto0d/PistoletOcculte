@@ -78,13 +78,17 @@ Visit `http://localhost:3000`
 
 ---
 
-## Puzzle Solutions (GM Reference)
+## Puzzle Configuration
 
-| Lock | Name | Solution |
-|---|---|---|
-| Lock 1 | Le Sceau de Kanjis | Click in order: **死 → 呪 → 血 → 魂** |
-| Lock 2 | L'Incantation | `Neuf cordes. Lumière polarisée. Corbeau et déclaration.` (case-insensitive) |
-| Lock 3 | La Synchronisation du Barillet | Connect dots: **1 → 4 → 2 → 5 → 3 → 6** |
+The exact puzzle answers are loaded at runtime from private environment variables and are not stored in source control.
+
+Set these privately when deploying:
+
+- `PUZZLE_1_SOLUTION`
+- `PUZZLE_2_SOLUTION`
+- `PUZZLE_3_SOLUTION`
+- `PUZZLE_4_SOLUTION`
+- `SECRET_COMBO_SOLUTION`
 
 Each solved puzzle unlocks:
 - The corresponding training chapter content
